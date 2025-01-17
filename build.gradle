@@ -1,0 +1,56 @@
+plugins {
+    id 'java'
+}
+
+group = 'org.example' // TODO(Nathan): Change once we have a proper name
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.xerial:sqlite-jdbc:3.48.0.0' // Sqlite database driver https://github.com/xerial/sqlite-jdbc#samplejava
+
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+sourceSets {
+    main.java.srcDirs = ["src"]
+    test.java.srcDirs = ["test"]
+}
+
+java { // Working with the latest LTS release: https://adoptium.net/temurin/releases/?version=21
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+        vendor = JvmVendorSpec.ADOPTIUM
+    }
+}
+
+jar {
+    archiveFileName = "out.jar"
+    manifest{
+        attributes 'Main-Class': "Main"
+    }
+}
+
+tasks.register('run', JavaExec) {
+    dependsOn classes
+    mainClass = "Main"
+    classpath = sourceSets.main.runtimeClasspath
+    standardInput = System.in
+//    workingDir = "resources"
+    ignoreExitValue = true
+
+    systemProperties += System.properties
+
+    jvmArgs += "-XX:+ShowCodeDetailsInExceptionMessages"
+
+    if (project.hasProperty("args")) args += project.property("args")
+    if (project.hasProperty("jvmArgs")) jvmArgs((List<String>)Eval.me(project.getProperties()["jvmArgs"]))
+}
