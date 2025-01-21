@@ -1,19 +1,46 @@
 plugins {
     id 'java'
+    id 'org.springframework.boot' version '3.4.1'
+    id 'io.spring.dependency-management' version '1.1.7'
 }
 
 group = 'org.example' // TODO(Nathan): Change once we have a proper name
 version = '1.0-SNAPSHOT'
+
+java { // Working with the latest LTS release: https://adoptium.net/temurin/releases/?version=21
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    implementation 'org.xerial:sqlite-jdbc:3.48.0.0' // Sqlite database driver https://github.com/xerial/sqlite-jdbc#samplejava
+    // Spring related
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-data-rest'
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.session:spring-session-jdbc'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
-    testImplementation platform('org.junit:junit-bom:5.10.0')
-    testImplementation 'org.junit.jupiter:junit-jupiter'
+    // Lombok
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    // Database
+    runtimeOnly 'com.h2database:h2'
 }
 
 test {
@@ -22,35 +49,6 @@ test {
 
 sourceSets {
     main.java.srcDirs = ["src"]
+    main.resources.srcDirs = ["src/resources"]
     test.java.srcDirs = ["test"]
-}
-
-java { // Working with the latest LTS release: https://adoptium.net/temurin/releases/?version=21
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
-        vendor = JvmVendorSpec.ADOPTIUM
-    }
-}
-
-jar {
-    archiveFileName = "out.jar"
-    manifest{
-        attributes 'Main-Class': "Main"
-    }
-}
-
-tasks.register('run', JavaExec) {
-    dependsOn classes
-    mainClass = "Main"
-    classpath = sourceSets.main.runtimeClasspath
-    standardInput = System.in
-//    workingDir = "resources"
-    ignoreExitValue = true
-
-    systemProperties += System.properties
-
-    jvmArgs += "-XX:+ShowCodeDetailsInExceptionMessages"
-
-    if (project.hasProperty("args")) args += project.property("args")
-    if (project.hasProperty("jvmArgs")) jvmArgs((List<String>)Eval.me(project.getProperties()["jvmArgs"]))
 }
