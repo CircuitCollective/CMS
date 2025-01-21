@@ -62,7 +62,7 @@ class DummyController {
 
     /** This is only an example; validates the dummy to make sure there is a non-blank value */
     private void validateDummy(DummyEntity dummy) throws InvalidDummyException {
-        if (dummy == null || dummy.val.isBlank()) throw new InvalidDummyException("Invalid Dummy val! " + (dummy == null ? "<null>" : dummy.toString()));
+        if (dummy.val == null || dummy.val.isBlank()) throw new InvalidDummyException("Invalid Dummy val! " + (dummy == null ? "<null>" : dummy.toString()));
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
