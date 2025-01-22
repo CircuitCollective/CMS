@@ -41,6 +41,9 @@ dependencies {
 
     // Database
     runtimeOnly 'com.h2database:h2'
+
+    // CSV Ingest
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.18.2'
 }
 
 test {
