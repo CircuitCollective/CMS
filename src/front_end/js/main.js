@@ -22,7 +22,7 @@ function add_user() {
     userRow.id = String(value)
 
     let userID  = document.createElement("td")
-    userID.innerHTML = value_id
+    userID.innerHTML = value_id;
     userRow.appendChild(userID)
 
     let userName = document.createElement("td")
@@ -58,6 +58,8 @@ function add_user() {
 
     input_id.value = ""
     input_name.value = ""
+    input_program.value = ""
+    input_faculty.value = ""
 }
 
 function remove_row(row_value) {
