@@ -6,7 +6,13 @@ function add_user() {
     const input_name = document.getElementById("name")
     const value_name = input_name.value
 
-    if (value_id === "" || value_name === "") {
+    const input_program = document.getElementById("program")
+    const value_program = input_program.value
+
+    const input_faculty = document.getElementById("faculty")
+    const value_faculty = input_faculty.value
+
+    if (value_id === "" || value_name === "" || value_program === "" || value_faculty === "") {
         return;
     }
 
@@ -15,13 +21,21 @@ function add_user() {
     let userRow = document.createElement("tr")
     userRow.id = String(value)
 
-    let userID = document.createElement("td")
+    let userID  = document.createElement("td")
     userID.innerHTML = value_id
     userRow.appendChild(userID)
 
     let userName = document.createElement("td")
     userName.innerHTML = value_name
     userRow.appendChild(userName)
+
+    let userProgram  = document.createElement("td")
+    userProgram.innerHTML = value_program
+    userRow.appendChild(userProgram)
+
+    let userFaculty  = document.createElement("td")
+    userFaculty.innerHTML = value_faculty
+    userRow.appendChild(userFaculty)
 
     let editUserButton = document.createElement("td")
     let editUser_OnClick = document.createElement("button")
