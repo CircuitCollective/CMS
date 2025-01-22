@@ -1,9 +1,13 @@
 package circuitcollective.dummy;
 
+import com.fasterxml.jackson.dataformat.csv.*;
 import jakarta.servlet.http.*;
 import org.springframework.http.*;
+import org.springframework.transaction.annotation.*;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.*;
 
+import java.io.*;
 import java.util.*;
 
 @RestController
@@ -18,9 +22,20 @@ class DummyController {
     //region Multiple Entity Methods
 
     /** Lists all dummies */
-    @GetMapping()
+    @GetMapping
     List<DummyEntity> list() {
         return repo.findAll();
+    }
+
+    /** Batch upload new dummies */
+    @Transactional
+    @PostMapping(value = "/batch", consumes = "multipart/form-data")
+    public void uploadMultipart(@RequestParam("file") MultipartFile file) throws IOException {
+        var mapper = new CsvMapper();
+        var schema = mapper.schemaFor(DummyEntity.class)
+            .rebuild().removeColumn(0).build(); // Remove the id column.
+        var reader = mapper.readerFor(DummyEntity.class).with(schema);
+        reader.<DummyEntity>readValues(file.getInputStream()).forEachRemaining(this::create);
     }
 
     //endregion
@@ -62,7 +77,7 @@ class DummyController {
 
     /** This is only an example; validates the dummy to make sure there is a non-blank value */
     private void validateDummy(DummyEntity dummy) throws InvalidDummyException {
-        if (dummy.val == null || dummy.val.isBlank()) throw new InvalidDummyException("Invalid Dummy val! " + (dummy == null ? "<null>" : dummy.toString()));
+        if (dummy.val == null || dummy.val.isBlank()) throw new InvalidDummyException("Invalid Dummy val! " + dummy);
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
