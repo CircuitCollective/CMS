@@ -6,10 +6,10 @@ function add_user() {
     const input_name = document.getElementById("name")
     const value_name = input_name.value
 
-    const input_program = document.getElementById("id")
+    const input_program = document.getElementById("program")
     const value_program = input_program.value
 
-    const input_faculty = document.getElementById("name")
+    const input_faculty = document.getElementById("faculty")
     const value_faculty = input_faculty.value
 
     if (value_id === "" || value_name === "" || value_program === "" || value_faculty === "") {
