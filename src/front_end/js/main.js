@@ -22,7 +22,7 @@ function add_user() {
     userRow.id = String(value)
 
     let userID  = document.createElement("td")
-    userID.innerHTML = value_id;
+    userID.innerHTML = value_id
     userRow.appendChild(userID)
 
     let userName = document.createElement("td")
