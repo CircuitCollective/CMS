@@ -58,6 +58,8 @@ function add_user() {
 
     input_id.value = ""
     input_name.value = ""
+    input_program.value = ""
+    input_faculty.value = ""
 }
 
 function remove_row(row_value) {
