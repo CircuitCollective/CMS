@@ -61,7 +61,9 @@ class DummyController {
         validateDummy(dummy);
         return repo.findById(id)
             .map(old -> {
-                old.val = dummy.val;
+                old.name = dummy.name;
+                old.program = dummy.program;
+                old.faculty = dummy.faculty;
                 return repo.save(old);
             }).orElseGet(() -> repo.save(dummy));
     }
@@ -77,7 +79,9 @@ class DummyController {
 
     /** This is only an example; validates the dummy to make sure there is a non-blank value */
     private void validateDummy(DummyEntity dummy) throws InvalidDummyException {
-        if (dummy.val == null || dummy.val.isBlank()) throw new InvalidDummyException("Invalid Dummy val! " + dummy);
+        if (dummy.name == null || dummy.name.isBlank()) throw new InvalidDummyException("Invalid Dummy name! " + dummy);
+        if (dummy.program == null || dummy.program.isBlank()) throw new InvalidDummyException("Invalid Dummy program! " + dummy);
+        if (dummy.faculty == null || dummy.faculty.isBlank()) throw new InvalidDummyException("Invalid Dummy faculty! " + dummy);
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
