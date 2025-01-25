@@ -1,7 +1,6 @@
 let value = 0;
-function add_user() {
-    const input_id = document.getElementById("id")
-    const value_id = input_id.value
+function create_user_row() {
+    const value_id = String(Math.round((Math.random() * 100)))
 
     const input_name = document.getElementById("name")
     const value_name = input_name.value
@@ -41,7 +40,7 @@ function add_user() {
     let editUser_OnClick = document.createElement("button")
     editUser_OnClick.type = "button"
     editUser_OnClick.textContent = "Edit User"
-    editUser_OnClick.addEventListener("click", function(){edit_row(parseInt(userRow.id))})
+    editUser_OnClick.addEventListener("click", function(){edit_user_data(this)})
     editUserButton.appendChild(editUser_OnClick)
     userRow.appendChild(editUserButton)
 
@@ -56,7 +55,6 @@ function add_user() {
 
     userData.appendChild(userRow)
 
-    input_id.value = ""
     input_name.value = ""
     input_program.value = ""
     input_faculty.value = ""
@@ -71,7 +69,21 @@ function remove_row(row_value) {
     }
 }
 
-function edit_row(row_value) {
-    let userData_Table = document.getElementById("user_data")
-    let userRow_Data = document.getElementById(row_value)
+function edit_user_data(edit_user_button) {
+    let userData_Row = edit_user_button.parentNode.parentNode
+
+    let newID_Data = userData_Row.cells[0]
+    let newName_Data = userData_Row.cells[1]
+    let newProgram_Data = userData_Row.cells[2]
+    let newFaculty_Data = userData_Row.cells[3]
+
+    let newID_Input = prompt("Please enter the updated ID information for this specific user:", newID_Data.innerHTML)
+    let newName_Input = prompt("Please enter the updated Name information for this specific user:", newName_Data.innerHTML)
+    let newProgram_Input = prompt("Please enter the updated Program information for this specific user:", newProgram_Data.innerHTML)
+    let newFaculty_Input = prompt("Please enter the updated Faculty information for this specific user:", newFaculty_Data.innerHTML)
+
+    newID_Data.innerHTML = newID_Input
+    newName_Data.innerHTML = newName_Input
+    newProgram_Data.innerHTML = newProgram_Input
+    newFaculty_Data.innerHTML = newFaculty_Input
 }
