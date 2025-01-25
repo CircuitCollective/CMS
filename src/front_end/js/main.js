@@ -58,7 +58,6 @@ function create_user_row() {
     input_name.value = ""
     input_program.value = ""
     input_faculty.value = ""
-
 }
 
 function remove_row(row_value) {

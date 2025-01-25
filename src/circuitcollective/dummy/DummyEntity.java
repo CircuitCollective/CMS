@@ -10,19 +10,24 @@ public class DummyEntity {
     @Getter
     private long id;
 
-    public String val;
+    public String name, program, faculty;
 
+    /** No-arg constructor for Persistence. */
     protected DummyEntity() {}
 
-    public DummyEntity(String value) {
-        this.val = value;
+    public DummyEntity(String name, String program, String faculty) {
+        this.name = name;
+        this.program = program;
+        this.faculty = faculty;
     }
 
     @Override
     public String toString() {
         return "DummyEntity{" +
             "id=" + id +
-            ", val='" + val + '\'' +
+            ", name='" + name + '\'' +
+            ", program='" + program + '\'' +
+            ", faculty='" + faculty + '\'' +
             '}';
     }
 }
