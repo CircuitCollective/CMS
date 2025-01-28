@@ -30,9 +30,10 @@ class DummyController {
     /** Batch upload new dummies */
     @Transactional
     @PostMapping(value = "/batch", consumes = "multipart/form-data")
-    void uploadMultipart(@RequestParam("file") MultipartFile file) throws IOException {
+    public void uploadMultipart(@RequestParam("file") MultipartFile file) throws IOException {
         var mapper = new CsvMapper();
-        var schema = mapper.typedSchemaFor(DummyEntity.class).rebuild().removeColumn(0).build(); // Schema without the ID column.
+        var schema = mapper.schemaFor(DummyEntity.class)
+            .rebuild().removeColumn(0).build(); // Remove the id column.
         var reader = mapper.readerFor(DummyEntity.class).with(schema);
         reader.<DummyEntity>readValues(file.getInputStream()).forEachRemaining(this::create);
     }
@@ -78,9 +79,9 @@ class DummyController {
 
     /** This is only an example; validates the dummy to make sure there is a non-blank value */
     private void validateDummy(DummyEntity dummy) throws InvalidDummyException {
-        if (dummy.name == null || dummy.name.isBlank() || dummy.name.length() > 255) throw new InvalidDummyException("Invalid Dummy name! " + dummy);
-        if (dummy.program == null || dummy.program.isBlank() || dummy.program.length() > 255) throw new InvalidDummyException("Invalid Dummy program! " + dummy);
-        if (dummy.faculty == null || dummy.faculty.isBlank() || dummy.faculty.length() > 255) throw new InvalidDummyException("Invalid Dummy faculty! " + dummy);
+        if (dummy.name == null || dummy.name.isBlank()) throw new InvalidDummyException("Invalid Dummy name! " + dummy);
+        if (dummy.program == null || dummy.program.isBlank()) throw new InvalidDummyException("Invalid Dummy program! " + dummy);
+        if (dummy.faculty == null || dummy.faculty.isBlank()) throw new InvalidDummyException("Invalid Dummy faculty! " + dummy);
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)

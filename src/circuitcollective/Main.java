@@ -1,6 +1,5 @@
 package circuitcollective;
 
-import org.springdoc.core.models.*;
 import org.springframework.boot.*;
 import org.springframework.boot.autoconfigure.*;
 import org.springframework.context.annotation.*;
@@ -20,10 +19,5 @@ public class Main {
                 registry.addMapping("/**").allowedMethods("*");
             }
         };
-    }
-
-    @Bean
-    public GroupedOpenApi apiDocs() { // http://localhost:8080/swagger-ui.html
-        return GroupedOpenApi.builder().group("API Docs").packagesToScan("circuitcollective").build();
     }
 }
