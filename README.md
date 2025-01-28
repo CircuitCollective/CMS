@@ -9,4 +9,4 @@
 `dummy` package contains Lab2 work.
 
 ### REST
-Interactive API docs are available at http://localhost:8080/swagger-ui.html once the project is running.
+API hosted at `http://localhost:8080`. API specifications in `DummyController.java`. Use IDEA for the endpoints view.
