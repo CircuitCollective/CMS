@@ -1,7 +1,19 @@
-let initialized_row_value = 0;
+let initialized_row_value = 0
 let url_backend = "http://localhost:8080"
+let generated_id //variable to store randomly generated id
+
+fetch(`${url_backend}/dummy/${generated_id ?? -1}`, {
+    mode: "cors",
+    method: "GET",
+    headers: {
+        "Accept": "application/json",
+        "Access-Control-Allow-Origin": "*",
+    }
+}).then(entity => generated_id = entity.id)
+    .catch(error => {
+        console.log(error)})
+
 function create_user_row() {
-    const value_id = String(Math.round((Math.random() * 100)))
 
     const input_name = document.getElementById("name")
     const value_name = input_name.value
@@ -12,7 +24,7 @@ function create_user_row() {
     const input_faculty = document.getElementById("faculty")
     const value_faculty = input_faculty.value
 
-    if (value_id === "" || value_name === "" || value_program === "" || value_faculty === "") {
+    if (value_name === "" || value_program === "" || value_faculty === "") {
         return;
     }
 
@@ -22,7 +34,7 @@ function create_user_row() {
     userRow.id = String(initialized_row_value)
 
     let userID  = document.createElement("td")
-    userID.innerHTML = value_id
+    userID.innerHTML = generated_id
     userRow.appendChild(userID)
 
     let userName = document.createElement("td")
@@ -53,7 +65,20 @@ function create_user_row() {
     removeUserButton.appendChild(removeUser_OnClick)
     userRow.appendChild(removeUserButton)
 
-    save_to_database(url_backend, value_id, value_name, value_program, value_faculty)
+    fetch(`${url_backend}/dummy/${generated_id}`, {
+        mode: "cors",
+        method: "PUT",
+        body: JSON.stringify({
+            "name": value_name,
+            "program": value_program,
+            "faculty": value_faculty,
+        }),
+        headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+        }
+    }).catch(error => {console.log(error.message())})
+
     userData.appendChild(userRow)
 
 
@@ -90,23 +115,10 @@ function edit_user_data(edit_user_button) {
     newFaculty_Data.innerHTML = newFaculty_Input
 }
 
-function save_to_database(url_link, id_value, name_value, program_value, faculty_value)
-{
-    fetch(`${url_link}/dummy/${id_value}`, {
-        method: "PUT",
-        body: JSON.stringify(
-            {"id" : id_value,
-                "name" : name_value,
-                "program" : program_value,
-                "faculty" : faculty_value}),
-        headers: {"Content-Type": "application/json"}
-    }).then(when_refreshed)
-}
-
 function when_refreshed() {
     fetch(`${url_backend}/dummy/}`)
-        .then(response => response.json())
-        .then(load_database_data)
+        .then(response => load_database_data(response.json()))
+        .catch(error => {console.log(error.message())})
 }
 
 function load_database_data(database_data) {
@@ -151,3 +163,7 @@ function load_database_data(database_data) {
         userRow_Table.appendChild(loadUser_Data)
     }
 }
+
+(function() {
+    when_refreshed()
+})()
