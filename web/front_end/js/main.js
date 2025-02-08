@@ -25,6 +25,7 @@ function create_user_row() {
     const value_faculty = input_faculty.value
 
     if (value_name === "" || value_program === "" || value_faculty === "") {
+        alert("The input fields cannot be empty!")
         return;
     }
 
@@ -118,7 +119,7 @@ function edit_user_data(edit_user_button) {
 function when_refreshed() {
     fetch(`${url_backend}/dummy/}`)
         .then(response => load_database_data(response.json()))
-        .catch(error => {console.log(error.message())})
+        .catch(error => {console.log(error.message)})
 }
 
 function load_database_data(database_data) {
