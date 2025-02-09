@@ -1,19 +1,9 @@
 let initialized_row_value = 0
 let url_backend = "http://localhost:8080"
-let generated_id //variable to store randomly generated id
-
-fetch(`${url_backend}/dummy/${generated_id ?? -1}`, {
-    mode: "cors",
-    method: "GET",
-    headers: {
-        "Accept": "application/json",
-        "Access-Control-Allow-Origin": "*",
-    }
-}).then(entity => generated_id = entity.id)
-    .catch(error => {
-        console.log(error)})
 
 function create_user_row() {
+    let generated_id = Math.floor(Math.random() * 1000) + 1 //variable to store randomly generated id
+
 
     const input_name = document.getElementById("name")
     const value_name = input_name.value
@@ -78,7 +68,7 @@ function create_user_row() {
             "Content-Type": "application/json",
             "Access-Control-Allow-Origin": "*",
         }
-    }).catch(error => {console.log(error.message())})
+    }).catch(error => {console.log(error.message)})
 
     userData.appendChild(userRow)
 

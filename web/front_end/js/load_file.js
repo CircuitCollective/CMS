@@ -67,6 +67,6 @@ function load_csv_data() {
         }
     }
 }
-
+load_csv_data()
 
 
