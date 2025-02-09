@@ -57,7 +57,6 @@ function create_user_row() {
     userRow.appendChild(removeUserButton)
 
     fetch(`${url_backend}/dummy/${generated_id}`, {
-        mode: "cors",
         method: "PUT",
         body: JSON.stringify({
             "name": value_name,
@@ -66,9 +65,9 @@ function create_user_row() {
         }),
         headers: {
             "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
         }
-    }).catch(error => {console.log(error.message)})
+    }).then(obtain_database_data)
+        .catch(error => {console.log(error.message)})
 
     userData.appendChild(userRow)
 
@@ -106,55 +105,52 @@ function edit_user_data(edit_user_button) {
     newFaculty_Data.innerHTML = newFaculty_Input
 }
 
-function when_refreshed() {
+function obtain_database_data() {
     fetch(`${url_backend}/dummy/}`)
-        .then(response => load_database_data(response.json()))
+        .then(response => response.json())
+        .then(load_database_data)
         .catch(error => {console.log(error.message)})
-}
+    function load_database_data(database_data) {
+        let userRow_Table = document.getElementById("user_data")
 
-function load_database_data(database_data) {
-    let userRow_Table = document.getElementById("user_data")
+        for (const row_data of database_data) {
+            let loadUser_Data = document.createElement("tr")
 
-    for (const row_data of database_data) {
-        let loadUser_Data = document.createElement("tr")
+            let loadedUser_ID = document.createElement("td")
+            loadedUser_ID.innerHTML = row_data.id
+            loadUser_Data.appendChild(loadedUser_ID)
 
-        let loadedUser_ID = document.createElement("td")
-        loadedUser_ID.innerHTML = row_data.id
-        loadUser_Data.appendChild(loadedUser_ID)
+            let loadedUser_Name = document.createElement("td")
+            loadedUser_Name.innerHTML = row_data.name
+            loadUser_Data.appendChild(loadedUser_Name)
 
-        let loadedUser_Name = document.createElement("td")
-        loadedUser_Name.innerHTML = row_data.name
-        loadUser_Data.appendChild(loadedUser_Name)
+            let loadedUser_Program = document.createElement("td")
+            loadedUser_Program.innerHTML = row_data.program
+            loadUser_Data.appendChild(loadedUser_Program)
 
-        let loadedUser_Program = document.createElement("td")
-        loadedUser_Program.innerHTML = row_data.program
-        loadUser_Data.appendChild(loadedUser_Program)
-
-        let loadedUser_Faculty = document.createElement("td")
-        loadedUser_Faculty.innerHTML = row_data.faculty
-        loadUser_Data.appendChild(loadedUser_Faculty)
+            let loadedUser_Faculty = document.createElement("td")
+            loadedUser_Faculty.innerHTML = row_data.faculty
+            loadUser_Data.appendChild(loadedUser_Faculty)
 
 
-        const editUserButton = document.createElement("td")
-        let editUser_OnClick = document.createElement("button")
-        editUser_OnClick.type = "button"
-        editUser_OnClick.textContent = "Edit User"
-        editUser_OnClick.addEventListener("click", function(){edit_user_data(this)})
-        editUserButton.appendChild(editUser_OnClick)
-        loadUser_Data.appendChild(editUserButton)
+            const editUserButton = document.createElement("td")
+            let editUser_OnClick = document.createElement("button")
+            editUser_OnClick.type = "button"
+            editUser_OnClick.textContent = "Edit User"
+            editUser_OnClick.addEventListener("click", function(){edit_user_data(this)})
+            editUserButton.appendChild(editUser_OnClick)
+            loadUser_Data.appendChild(editUserButton)
 
-        const removeUserButton = document.createElement("td")
-        let removeUser_OnClick = document.createElement("button")
-        removeUser_OnClick.type = "button"
-        removeUser_OnClick.textContent = "Remove User"
-        removeUser_OnClick.addEventListener("click", function(){remove_row(parseInt(row_data.id))})
-        removeUserButton.appendChild(removeUser_OnClick)
-        loadUser_Data.appendChild(removeUserButton)
+            const removeUserButton = document.createElement("td")
+            let removeUser_OnClick = document.createElement("button")
+            removeUser_OnClick.type = "button"
+            removeUser_OnClick.textContent = "Remove User"
+            removeUser_OnClick.addEventListener("click", function(){remove_row(parseInt(row_data.id))})
+            removeUserButton.appendChild(removeUser_OnClick)
+            loadUser_Data.appendChild(removeUserButton)
 
-        userRow_Table.appendChild(loadUser_Data)
+            userRow_Table.appendChild(loadUser_Data)
+        }
     }
 }
-
-(function() {
-    when_refreshed()
-})()
+obtain_database_data()
