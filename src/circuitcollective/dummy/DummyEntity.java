@@ -23,7 +23,6 @@ public class DummyEntity {
         this.program = program;
         this.faculty = faculty;
     }
-
     @Override
     public String toString() {
         return "DummyEntity{" +
