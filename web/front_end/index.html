@@ -4,14 +4,17 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <script src="js/papaparse.js"></script>
-
     <script src="js/main.js"></script>
 </head>
 <body>
 <link rel="stylesheet" href="css/style.css">
-<input type="file" id="desired_file_upload" accept="text/csv" hidden="hidden">
-<button type="button" id="choose_desired_file">Choose File</button>
-<span id="text_file_name">No File Chosen</span>
+
+<form method="post" enctype="multipart/form-data" id="form">
+    <input type="file" id="desired_file_upload" accept="text/csv" hidden="hidden">
+    <button type="button" id="choose_desired_file">Choose File</button>
+    <span id="text_file_name">No File Chosen</span>
+</form>
+
 <script src="js/load_file.js"></script>
 <button id="import_file_data" onclick="import_csv_data()">Import File Data</button>
 <table>
