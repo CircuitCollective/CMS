@@ -43,15 +43,13 @@ function load_csv_data() {
             loadUser_Data.appendChild(loadedUser_Faculty)
 
 
-            const editUserButton = document.createElement("td")
+            let editUserButton = document.createElement("td")
             let editUser_OnClick = document.createElement("button")
             editUser_OnClick.type = "button"
             editUser_OnClick.textContent = "Edit User"
-            editUser_OnClick.addEventListener("click", function () {
-                edit_user_data(this)
-            })
+            editUser_OnClick.addEventListener("click", function(){edit_user_menu(this, parseInt(userRow.id))})
             editUserButton.appendChild(editUser_OnClick)
-            loadUser_Data.appendChild(editUserButton)
+            userRow.appendChild(editUserButton)
 
             const removeUserButton = document.createElement("td")
             let removeUser_OnClick = document.createElement("button")
@@ -67,5 +65,5 @@ function load_csv_data() {
         }
     }
 }
-
+load_csv_data()
 
