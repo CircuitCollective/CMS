@@ -20,7 +20,7 @@ function import_csv_data() {
 }
 
 function load_csv_data() {
-    fetch(`${url}/dummy`).then(c => c.json()).then(render_csv_data)
+    fetch(`${url}/dummy`).then(csv_contents => csv_contents.json()).then(render_csv_data)
     function render_csv_data(csvData) {
         let userRow_Table = document.getElementById("user_data")
         for (const row_data of csvData) {
