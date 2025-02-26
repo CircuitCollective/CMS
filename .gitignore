@@ -41,5 +41,11 @@ bin/
 .DS_Store
 
 ### DB ###
+games.mv.db
+games.trace.db
+# Old db files
 demo.trace.db
 demo.mv.db
+
+### Lucene Search Incices ###
+searchindex/
