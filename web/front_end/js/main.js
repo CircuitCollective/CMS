@@ -55,7 +55,7 @@ function create_user_row() {
     removeUserButton.appendChild(removeUser_OnClick)
     userRow.appendChild(removeUserButton)
 
-    fetch(`${url_backend}/dummy/${generated_id}`, {
+    fetch(`${url_backend}/game/${generated_id}`, {
         method: "PUT",
         body: JSON.stringify({
             "id" : generated_id,
@@ -200,7 +200,7 @@ function cancel_row_edit(row_value) {
 
 
 function obtain_database_data() {
-    fetch(`${url_backend}/dummy/}`)
+    fetch(`${url_backend}/game/}`)
         .then(response => response.json())
         .then(load_database_data)
         .catch(error => {console.log(error.message)})
