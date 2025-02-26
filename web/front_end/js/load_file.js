@@ -13,14 +13,14 @@ inputFile_Location.addEventListener("change", function (){
 
 function import_csv_data() {
     inputFile_Location.addEventListener("change", () =>
-            fetch(`${url}/dummy/batch`, {
+            fetch(`${url}/game/batch`, {
                 method: "POST",
                 body: new FormData(document.getElementById("form"))
             }).then(load_csv_data))
 }
 
 function load_csv_data() {
-    fetch(`${url}/dummy`).then(csv_contents => csv_contents.json()).then(render_csv_data)
+    fetch(`${url}/game`).then(csv_contents => csv_contents.json()).then(render_csv_data)
     function render_csv_data(csvData) {
         let userRow_Table = document.getElementById("user_data")
         for (const row_data of csvData) {

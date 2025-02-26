@@ -6,7 +6,6 @@
 ### Structure
 `src` contains the java source, all work is under the `circuitcollective` package
 
-`dummy` package contains Lab2 work.
 
 ### REST
 Interactive API docs are available at http://localhost:8080/swagger-ui.html once the project is running.
