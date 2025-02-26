@@ -55,7 +55,7 @@ function create_user_row() {
     removeUserButton.appendChild(removeUser_OnClick)
     userRow.appendChild(removeUserButton)
 
-    fetch(`${url_backend}/game/${generated_id}`, {
+    fetch(`${url_backend}/game`, {
         method: "PUT",
         body: JSON.stringify({
             "id" : generated_id,

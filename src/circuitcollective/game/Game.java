@@ -2,12 +2,16 @@ package circuitcollective.game;
 
 import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import lombok.*;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.*;
 
+import java.util.*;
+
 @Entity
 @Indexed
-@JsonPropertyOrder({"id", "name", "program", "faculty"})
+@JsonPropertyOrder({"id", "name", "desc", "stock", "tags"})
+@ToString
 public class Game {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,26 +19,24 @@ public class Game {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private long id;
 
+    /** Game name */
     @FullTextField
+    @NotBlank
+    @Size(max = 100)
     public String name;
 
-    public String program, faculty;
+    /** Game description */
+    @NotBlank
+    @Size(max = 10_000)
+    public String desc;
 
-    /** No-arg constructor for Persistence. */
+    /** Number of copies in stock */
+    @Min(0)
+    public int stock;
+
+    @ElementCollection @CollectionTable
+    public HashSet<String> tags = new HashSet<>();
+
+    /** No-arg constructor for Persistence */
     protected Game() {}
-
-    public Game(String name, String program, String faculty) {
-        this.name = name;
-        this.program = program;
-        this.faculty = faculty;
-    }
-    @Override
-    public String toString() {
-        return "Game{" +
-            "id=" + id +
-            ", name='" + name + '\'' +
-            ", program='" + program + '\'' +
-            ", faculty='" + faculty + '\'' +
-            '}';
-    }
 }
