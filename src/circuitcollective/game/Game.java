@@ -35,7 +35,7 @@ public class Game {
     public int stock;
 
     @ElementCollection @CollectionTable
-    public HashSet<String> tags = new HashSet<>();
+    public Set<String> tags = new HashSet<>();
 
     /** No-arg constructor for Persistence */
     protected Game() {}
