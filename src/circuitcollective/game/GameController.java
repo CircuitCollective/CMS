@@ -2,8 +2,9 @@ package circuitcollective.game;
 
 import com.fasterxml.jackson.dataformat.csv.*;
 import jakarta.servlet.http.*;
-import org.springframework.http.*;
+import jakarta.validation.*;
 import org.springframework.transaction.annotation.*;
+import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.*;
 
@@ -14,9 +15,13 @@ import java.util.*;
 @RequestMapping("game")
 class GameController {
     private final GameRepository repo;
+    private final GameMapper gameMapper;
+    private final Validator validator;
 
-    GameController(GameRepository repo) {
+    GameController(GameRepository repo, GameMapper gameMapper, Validator validator) {
         this.repo = repo;
+        this.gameMapper = gameMapper;
+        this.validator = validator;
     }
 
     //region Multiple Entity Methods
@@ -48,7 +53,7 @@ class GameController {
         @RequestParam(name = "o", required = false, defaultValue = "0") int offset,
         @RequestParam(name = "f", required = false, defaultValue = "name") String... fields // Comma separated list: a,b,c
     ) {
-        if (limit > 10 || limit < 1) throw new IllegalArgumentException("Invalid limit. Must be 1-10");
+        if (limit > 25 || limit < 1) throw new IllegalArgumentException("Invalid limit. Must be 1-25");
         if (offset < 0) throw new IllegalArgumentException("Invalid offset. Cannot be below 0");
         return repo.search(query, limit, offset, fields);
     }
@@ -62,20 +67,16 @@ class GameController {
 
     /** Creates a game */
     @PostMapping
-    Game create(@RequestBody Game game) {
-        validateGame(game);
+    Game create(@Valid @RequestBody Game game) {
         return repo.save(game);
     }
 
     /** Replaces a game entirely (or saves a new one if it doesn't exist) */
-    @PutMapping("{id}")
-    Game replace(@RequestBody Game game, @PathVariable long id) {
-        validateGame(game);
-        return repo.findById(id)
+    @PutMapping
+    Game replace(@Valid @RequestBody Game game) {
+        return repo.findById(game.getId())
             .map(old -> {
-                old.name = game.name;
-                old.program = game.program;
-                old.faculty = game.faculty;
+                gameMapper.updateGame(game, old);
                 return repo.save(old);
             }).orElseGet(() -> repo.save(game));
     }
@@ -84,23 +85,6 @@ class GameController {
     @DeleteMapping("{id}")
     void delete(@PathVariable long id) {
         repo.deleteById(id);
-    }
-
-    //endregion
-    //region Validation
-
-    /** This is only an example; validates the game to make sure there is a non-blank value */
-    private void validateGame(Game game) throws InvalidGameException {
-        if (game.name == null || game.name.isBlank() || game.name.length() > 255) throw new InvalidGameException("Invalid Game name! " + game);
-        if (game.program == null || game.program.isBlank() || game.program.length() > 255) throw new InvalidGameException("Invalid Game program! " + game);
-        if (game.faculty == null || game.faculty.isBlank() || game.faculty.length() > 255) throw new InvalidGameException("Invalid Game faculty! " + game);
-    }
-
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    private static class InvalidGameException extends IllegalArgumentException {
-        public InvalidGameException(String s) {
-            super(s);
-        }
     }
 
     //endregion
