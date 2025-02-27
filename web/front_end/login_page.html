@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Games Catalog Administrator Login Page</title>
+</head>
+<body>
+<link rel="stylesheet" href="css/login_ui.css">
+<h1>Games Catalog Administrator Login Page</h1>
+<button id="open_menu" onclick="document.getElementById('login_menu').style.display='block'">
+    Open Administrator Login Page</button>
+
+<div id="login_menu" class="menu_page">
+    <span onclick="document.getElementById('login_menu').style.display='none'"
+          class="close_menu" title="Exit Login Page">&times;</span>
+
+    <form action="" method="post" class="appearing_login_menu">
+        <div class="admin_image_logo">
+            <img src="test_ui_images/Ridgebacks_Spirit_Paw_Shield_RGB_150ppi.png" width="300px" height="300px">
+        </div>
+
+        <div class="login_info">
+            <label id="user_name"><b>Administrator Username</b></label>
+            <input type="text" placeholder="Enter Username" name="user_name" required>
+
+            <label id="login_password"><b>Password</b></label>
+            <input type="password" placeholder="Enter Password" name="password" required>
+
+            <button type="submit" id="login_button">Login</button>
+        </div>
+
+        <div class="cancel_login_process" style="background-color:#461fc5;">
+            <button type="button" onclick="document.getElementById('login_menu').style.display='none'"
+                    class="cancel_button">Cancel</button>
+        </div>
+    </form>
+
+</div>
+
+</body>
+</html>
