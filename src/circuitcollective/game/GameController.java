@@ -16,12 +16,10 @@ import java.util.*;
 class GameController {
     private final GameRepository repo;
     private final GameMapper gameMapper;
-    private final Validator validator;
 
     GameController(GameRepository repo, GameMapper gameMapper, Validator validator) {
         this.repo = repo;
         this.gameMapper = gameMapper;
-        this.validator = validator;
     }
 
     //region Multiple Entity Methods
