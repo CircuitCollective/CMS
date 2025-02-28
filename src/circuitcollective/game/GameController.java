@@ -1,25 +1,18 @@
 package circuitcollective.game;
 
-import com.fasterxml.jackson.dataformat.csv.*;
 import jakarta.servlet.http.*;
-import jakarta.validation.*;
-import org.springframework.transaction.annotation.*;
-import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.*;
 
-import java.io.*;
 import java.util.*;
 
+/** Public endpoints for game listing */
 @RestController
-@RequestMapping("game")
+@RequestMapping("api/game")
 class GameController {
     private final GameRepository repo;
-    private final GameMapper gameMapper;
 
-    GameController(GameRepository repo, GameMapper gameMapper, Validator validator) {
+    GameController(GameRepository repo) {
         this.repo = repo;
-        this.gameMapper = gameMapper;
     }
 
     //region Multiple Entity Methods
@@ -28,16 +21,6 @@ class GameController {
     @GetMapping
     List<Game> list() {
         return repo.findAll();
-    }
-
-    /** Batch upload new games */
-    @Transactional
-    @PostMapping(value = "/batch", consumes = "multipart/form-data")
-    void uploadMultipart(@RequestParam("file") MultipartFile file) throws IOException {
-        var mapper = new CsvMapper();
-        var schema = mapper.typedSchemaFor(Game.class).rebuild().removeColumn(0).build(); // Schema without the ID column.
-        var reader = mapper.readerFor(Game.class).with(schema);
-        reader.<Game>readValues(file.getInputStream()).forEachRemaining(this::create);
     }
 
     //endregion
@@ -61,28 +44,6 @@ class GameController {
     Game get(@PathVariable long id, HttpServletResponse response) {
         response.setStatus(HttpServletResponse.SC_NOT_FOUND);
         return repo.getReferenceById(id);
-    }
-
-    /** Creates a game */
-    @PostMapping
-    Game create(@Valid @RequestBody Game game) {
-        return repo.save(game);
-    }
-
-    /** Replaces a game entirely (or saves a new one if it doesn't exist) */
-    @PutMapping
-    Game replace(@Valid @RequestBody Game game) {
-        return repo.findById(game.getId())
-            .map(old -> {
-                gameMapper.updateGame(game, old);
-                return repo.save(old);
-            }).orElseGet(() -> repo.save(game));
-    }
-
-    /** Deletes a game */
-    @DeleteMapping("{id}")
-    void delete(@PathVariable long id) {
-        repo.deleteById(id);
     }
 
     //endregion

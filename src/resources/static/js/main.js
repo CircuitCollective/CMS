@@ -1,5 +1,5 @@
 let initialized_row_value = 0
-let url_backend = "http://localhost:8080"
+const api = "http://localhost:8080/api"
 
 function create_user_row() {
     const generated_id = Math.floor(Math.random() * 1000) + 1 //variable to store randomly generated id
@@ -55,7 +55,7 @@ function create_user_row() {
     removeUserButton.appendChild(removeUser_OnClick)
     userRow.appendChild(removeUserButton)
 
-    fetch(`${url_backend}/game`, {
+    fetch(`${api}/admin/game`, {
         method: "PUT",
         body: JSON.stringify({
             "id" : generated_id,
@@ -200,8 +200,8 @@ function cancel_row_edit(row_value) {
 
 
 function obtain_database_data() {
-    fetch(`${url_backend}/game/}`)
-        .then(response => response.json())
+    fetch(`${api}/game`)
+        .then(response => { console.log(response); response.json() })
         .then(load_database_data)
         .catch(error => {console.log(error.message)})
     function load_database_data(database_data) {
