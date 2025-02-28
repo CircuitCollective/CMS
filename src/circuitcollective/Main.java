@@ -18,16 +18,6 @@ public class Main {
         SpringApplication.run(Main.class, args);
     }
 
-//    @Bean
-//    public WebMvcConfigurer corsConfigurer() {
-//        return new WebMvcConfigurer() {
-//            @Override
-//            public void addCorsMappings(CorsRegistry registry) {
-//                registry.addMapping("/**").allowedMethods("*");
-//            }
-//        };
-//    }
-
     @Bean
     public GroupedOpenApi apiDocs() { // http://localhost:8080/swagger-ui.html
         return GroupedOpenApi.builder().group("API Docs").packagesToScan("circuitcollective").build();
