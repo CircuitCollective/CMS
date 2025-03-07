@@ -7,13 +7,13 @@ function create_user_row() {
     const input_name = document.getElementById("name")
     const value_name = input_name.value
 
-    const input_desc = document.getElementById("program")
+    const input_desc = document.getElementById("desc")
     const value_desc = input_desc.value
 
-    const input_stock = document.getElementById("faculty")
+    const input_stock = document.getElementById("stock")
     const value_stock = input_stock.value
 
-    const input_tags = document.getElementById("faculty")
+    const input_tags = document.getElementById("tags")
     const value_tags = input_tags.value
 
     if (value_name === "" || value_desc === "" || value_stock === "" || value_tags === "") {
