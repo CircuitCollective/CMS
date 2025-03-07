@@ -1,4 +1,4 @@
-const url = "http://localhost:8080"
+const api_url = "http://localhost:8080/api"
 
 let inputFile_Location = document.getElementById("desired_file_upload")
 let chooseFile_Button = document.getElementById("choose_desired_file")
@@ -13,14 +13,14 @@ inputFile_Location.addEventListener("change", function (){
 
 function import_csv_data() {
     inputFile_Location.addEventListener("change", () =>
-            fetch(`${url}/game/batch`, {
+            fetch(`${api_url}/game/batch`, {
                 method: "POST",
                 body: new FormData(document.getElementById("form"))
             }).then(load_csv_data))
 }
 
 function load_csv_data() {
-    fetch(`${url}/game`).then(csv_contents => csv_contents.json()).then(render_csv_data)
+    fetch(`${api_url}/game`).then(csv_contents => csv_contents.json()).then(render_csv_data)
     function render_csv_data(csvData) {
         let userRow_Table = document.getElementById("user_data")
         for (const row_data of csvData) {
@@ -65,7 +65,3 @@ function load_csv_data() {
         }
     }
 }
-
-(function() {
-    load_csv_data()
-})()
