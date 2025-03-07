@@ -247,7 +247,4 @@ function obtain_database_data() {
         }
     }
 }
-
-(function() {
-    obtain_database_data()
-})()
+obtain_database_data()
