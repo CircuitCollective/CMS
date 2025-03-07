@@ -16,16 +16,16 @@ function init() {
         itemsRow.innerHTML += `<th>${input}</th>`
     }
 
-    inputTable.innerHTML += '<td><button id="create_user" onclick="create_user_row()">Create User</button></td>'
+    inputTable.innerHTML += '<td><button id="create_game" onclick="create_game_row()">Create Game</button></td>'
 }
 
-function create_user_row() {
+function create_game_row() {
     const obj = Object.fromEntries(inputs.map(input => [input, document.getElementById(input).value]))
-    upsert_user(obj)
+    upsert_game(obj)
 }
 
-/** Inserts or updates a user */
-function upsert_user(obj, id = undefined) {
+/** Inserts or updates a game */
+function upsert_game(obj, id = undefined) {
     for (let input in obj) {
         let value = obj[input]
 
@@ -55,39 +55,39 @@ function upsert_user(obj, id = undefined) {
 }
 
 function remove_row(row_value) {
-    let userData_Table = document.getElementById("user_data")
-    let userRow_Data = document.getElementById(row_value)
+    let gameData_Table = document.getElementById("game_data")
+    let gameRow_Data = document.getElementById(row_value)
     let editing_data_row = document.getElementById("editing_row")
 
     fetch(`${api}/admin/game/${row_value}`, { method: "DELETE", headers: { 'X-XSRF-TOKEN': csrfToken } }).then(() => {
-        if (userData_Table.rows.length > 0) {
-            userData_Table.removeChild(userRow_Data)
-            if (editing_data_row) userData_Table.removeChild(editing_data_row)
+        if (gameData_Table.rows.length > 0) {
+            gameData_Table.removeChild(gameRow_Data)
+            if (editing_data_row) gameData_Table.removeChild(editing_data_row)
         }
     }).catch(error => console.error(error))
 }
 
-function edit_user_menu(edit_user_button, userId) {
-    const currentRow = document.getElementById(userId)
+function edit_game_menu(edit_game_button, gameId) {
+    const currentRow = document.getElementById(gameId)
 
     const editInputs = document.createElement("tr")
     editInputs.id = "editing_row"
 
-    editInputs.innerHTML += `<td>${userId}</td>`
+    editInputs.innerHTML += `<td>${gameId}</td>`
     for (const input of inputs) {
-        editInputs.innerHTML += `<td><input type="text" id="${input}-${userId}" placeholder="${input}"></td>`
+        editInputs.innerHTML += `<td><input type="text" id="${input}-${gameId}" placeholder="${input}"></td>`
     }
 
-    const saveUserButton = document.createElement("td")
-    const saveUser_OnClick = document.createElement("button")
-    saveUser_OnClick.type = "button"
-    saveUser_OnClick.textContent = "Save New Game"
-    saveUser_OnClick.onclick = () => {
-        upsert_user(Object.fromEntries(inputs.map(input => [input, document.getElementById(`${input}-${userId}`).value])), userId)
+    const saveGameButton = document.createElement("td")
+    const saveGame_OnClick = document.createElement("button")
+    saveGame_OnClick.type = "button"
+    saveGame_OnClick.textContent = "Save New Game"
+    saveGame_OnClick.onclick = () => {
+        upsert_game(Object.fromEntries(inputs.map(input => [input, document.getElementById(`${input}-${gameId}`).value])), gameId)
         cancel_row_edit(editInputs.id)
     }
-    saveUserButton.appendChild(saveUser_OnClick)
-    editInputs.appendChild(saveUserButton)
+    saveGameButton.appendChild(saveGame_OnClick)
+    editInputs.appendChild(saveGameButton)
 
     // TODO: Rewrite
     const cancelEditButton = document.createElement("td")
@@ -100,50 +100,50 @@ function edit_user_menu(edit_user_button, userId) {
     cancelEditButton.appendChild(cancelEdit_OnClick)
     editInputs.appendChild(cancelEditButton)
 
-    $(edit_user_button).ready(function() { // TODO: This is the sole place we use jQuery. We should either use it more or remove it entirely.
+    $(edit_game_button).ready(function() { // TODO: This is the sole place we use jQuery. We should either use it more or remove it entirely.
         $(editInputs).insertAfter(currentRow)
     })
 }
 
 function cancel_row_edit(row_value) {
-    let userData_Table = document.getElementById("user_data")
-    let userRow_Data = document.getElementById(row_value)
+    let gameData_Table = document.getElementById("game_data")
+    let gameRow_Data = document.getElementById(row_value)
 
-    if (userData_Table.rows.length > 0) {
-        userData_Table.removeChild(userRow_Data)
+    if (gameData_Table.rows.length > 0) {
+        gameData_Table.removeChild(gameRow_Data)
     }
 }
 
-/** Adds a row with a user from json */
-function upsertRow(user_data, id = undefined) { // TODO: Remove the id param on rewrite
-    const userRow_Table = document.getElementById("user_data")
+/** Adds a row with a game from json */
+function upsertRow(game_data, id = undefined) { // TODO: Remove the id param on rewrite
+    const gameRow_Table = document.getElementById("game_data")
     const row = document.createElement("tr")
-    for (const col in user_data) {
+    for (const col in game_data) {
         let td = document.createElement("td")
-        td.textContent = user_data[col]
+        td.textContent = game_data[col]
         row.appendChild(td)
     }
 
     // TODO: Rewrite
-    const editUserButton = document.createElement("td")
-    let editUser_OnClick = document.createElement("button")
-    editUser_OnClick.type = "button"
-    editUser_OnClick.textContent = "Edit User"
-    editUser_OnClick.onclick = () => edit_user_menu(this, user_data.id)
-    editUserButton.appendChild(editUser_OnClick)
-    row.appendChild(editUserButton)
+    const editGameButton = document.createElement("td")
+    let editGame_OnClick = document.createElement("button")
+    editGame_OnClick.type = "button"
+    editGame_OnClick.textContent = "Edit Game"
+    editGame_OnClick.onclick = () => edit_game_menu(this, game_data.id)
+    editGameButton.appendChild(editGame_OnClick)
+    row.appendChild(editGameButton)
 
-    const removeUserButton = document.createElement("td")
-    let removeUser_OnClick = document.createElement("button")
-    removeUser_OnClick.type = "button"
-    removeUser_OnClick.textContent = "Remove User"
-    removeUser_OnClick.addEventListener("click", function(){remove_row(parseInt(user_data.id))})
-    removeUserButton.appendChild(removeUser_OnClick)
-    row.appendChild(removeUserButton)
+    const removeGameButton = document.createElement("td")
+    let removeGame_OnClick = document.createElement("button")
+    removeGame_OnClick.type = "button"
+    removeGame_OnClick.textContent = "Remove Game"
+    removeGame_OnClick.addEventListener("click", function(){remove_row(parseInt(game_data.id))})
+    removeGameButton.appendChild(removeGame_OnClick)
+    row.appendChild(removeGameButton)
 
-    row.id = user_data.id
+    row.id = game_data.id
     if (typeof id !== "undefined") document.getElementById(id).replaceWith(row) // Update row
-    else userRow_Table.appendChild(row) // Insert row
+    else gameRow_Table.appendChild(row) // Insert row
 }
 
 function obtain_database_data() {
