@@ -142,7 +142,7 @@ function upsertRow(user_data, id = undefined) { // TODO: Remove the id param on 
     row.appendChild(removeUserButton)
 
     row.id = user_data.id
-    if (typeof id !== "undefined") document.getElementById(id).outerHTML = row.outerHTML // Update row TODO: This breaks the edit user button
+    if (typeof id !== "undefined") document.getElementById(id).replaceWith(row) // Update row
     else userRow_Table.appendChild(row) // Insert row
 }
 
