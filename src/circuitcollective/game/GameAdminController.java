@@ -11,7 +11,7 @@ import java.io.*;
 /** Private endpoints for game management */
 @RestController
 @RequestMapping("api/admin/game")
-public class GameAdminController {
+class GameAdminController {
     private final GameRepository repo;
     private final GameMapper gameMapper;
 
@@ -42,9 +42,9 @@ public class GameAdminController {
     }
 
     /** Replaces a game entirely (or saves a new one if it doesn't exist) */
-    @PutMapping
-    Game replace(@Valid @RequestBody Game game) {
-        return repo.findById(game.getId())
+    @PutMapping("/{id}")
+    Game replace(@Valid @RequestBody Game game, @PathVariable long id) {
+        return repo.findById(id)
             .map(old -> {
                 gameMapper.updateGame(game, old);
                 return repo.save(old);
@@ -52,7 +52,7 @@ public class GameAdminController {
     }
 
     /** Deletes a game */
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     void delete(@PathVariable long id) {
         repo.deleteById(id);
     }

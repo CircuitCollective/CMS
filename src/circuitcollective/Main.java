@@ -41,7 +41,11 @@ public class Main {
                 .anyRequest().permitAll() // All other requests are fine
             )
             .formLogin(AbstractAuthenticationFilterConfigurer::permitAll) // Default login page
-            .logout(LogoutConfigurer::permitAll); // Default logout page
+            .logout(LogoutConfigurer::permitAll) // Default logout page
+            .csrf(csrf -> csrf // Enable csrf for http requests
+                .disable()
+//                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+            );
 
         return http.build();
     }
