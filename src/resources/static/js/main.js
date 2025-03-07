@@ -1,4 +1,5 @@
 let initialized_row_value = 0
+
 const api = "http://localhost:8080/api"
 
 function create_user_row() {
@@ -85,13 +86,17 @@ function create_user_row() {
 }
 
 function remove_row(row_value) {
-    let userData_Table = document.getElementById("user_data")
-    let userRow_Data = document.getElementById(row_value)
+    let gameData_Table = document.getElementById("game_data")
+    let gameRow_Data = document.getElementById(row_value)
     let editing_data_row = document.getElementById("editing_row")
 
-    if (userData_Table.rows.length > 0) {
-        userData_Table.removeChild(userRow_Data)
-        userData_Table.removeChild(editing_data_row)
+    if (gameData_Table.rows.length > 0) {
+        gameData_Table.removeChild(gameRow_Data)
+        gameData_Table.removeChild(editing_data_row)
+
+        fetch(`${api}/admin/game/${gameRow_Data.id}`)
+            .then(obtain_database_data)
+            .catch(error => console.log(error.message))
     }
 }
 
@@ -197,6 +202,20 @@ function save_edited_game(edit_user_button, row_value, edited_id, edited_name, e
     newDescription_Data.innerHTML = edited_desc.value
     newStock_Data.innerHTML = edited_stock.value
     newTags_Data.innerHTML = edited_tags.value
+
+    fetch(`${api}/admin/game`, {
+        method: "PUT",
+        body: JSON.stringify({
+            "id": edited_id,
+            "name": edited_name,
+            "desc": edited_desc,
+            "stock": edited_stock,
+            "tags": edited_tags
+        }),
+        headers: {
+            "Content-Type": "application/json",
+        }
+    }).then(response => console.log(response))
 
     edited_id.value = ""
     edited_name.value = ""
