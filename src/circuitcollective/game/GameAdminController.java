@@ -27,7 +27,7 @@ class GameAdminController {
     @PostMapping(value = "/batch", consumes = "multipart/form-data")
     void uploadMultipart(@RequestParam("file") MultipartFile file) throws IOException {
         var mapper = new CsvMapper();
-        var schema = mapper.typedSchemaFor(Game.class).rebuild().removeColumn(0).build(); // Schema without the ID column.
+        var schema = mapper.typedSchemaFor(Game.class).rebuild().removeColumn(0).build().withHeader().withColumnReordering(true); // Schema without the ID column.
         var reader = mapper.readerFor(Game.class).with(schema);
         reader.<Game>readValues(file.getInputStream()).forEachRemaining(this::create);
     }

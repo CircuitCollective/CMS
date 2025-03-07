@@ -17,6 +17,11 @@ function init() {
     }
 
     inputTable.innerHTML += '<td><button id="create_game" onclick="create_game_row()">Create Game</button></td>'
+
+    // CSV Parsing.
+    const file = document.getElementById("file")
+    file.addEventListener("change", () =>
+        fetch(`${api}/admin/game/batch`, { method: "POST", body: new FormData(document.getElementById("form")) }).then(refresh))
 }
 
 function create_game_row() {
@@ -146,7 +151,8 @@ function upsertRow(game_data, id = undefined) { // TODO: Remove the id param on 
     else gameRow_Table.appendChild(row) // Insert row
 }
 
-function obtain_database_data() {
+function refresh() {
+    document.getElementById("game_data").innerHTML = "" // Clear the existing game list
     fetch(`${api}/game`)
         .then(response => response.json())
         .then(response => response.forEach(r => upsertRow(r)))
@@ -154,6 +160,6 @@ function obtain_database_data() {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    obtain_database_data()
+    refresh()
     init()
 }, false);
