@@ -32,13 +32,15 @@ table, th, td {
     flex-direction: row;
     display: flex;
 }
+
+* {box-sizing: border-box;}
+
 .top_nav {
-    box-sizing: border-box;
     overflow: hidden;
-    background-color: #57d6fe;
+    background-color: #57F1D2;
 }
 .search_bar{
-    box-sizing: border-box;
+
     float: right;
     padding: 15px;
     border: none;
