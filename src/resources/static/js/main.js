@@ -216,6 +216,7 @@ function save_edited_game(edit_user_button, row_value, edited_id, edited_name, e
             "Content-Type": "application/json",
         }
     }).then(response => console.log(response))
+        .catch(error => {console.log(error.message)})
 
     edited_id.value = ""
     edited_name.value = ""
