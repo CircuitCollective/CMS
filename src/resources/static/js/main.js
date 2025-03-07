@@ -22,6 +22,22 @@ function init() {
     const file = document.getElementById("file")
     file.addEventListener("change", () =>
         fetch(`${api}/admin/game/batch`, { method: "POST", body: new FormData(document.getElementById("form")) }).then(refresh))
+
+    // Search Bar
+    const searchInput = document.getElementById("search_bar")
+    searchInput.addEventListener("keydown", e => { // On enter: update search
+        if (e.key !== "Enter") return
+
+        const query = searchInput.value
+        if (query.trim() === "") refresh() // Blank: do full refresh
+        else { // Otherwise: load search results
+            clearTable()
+            fetch(`${api}/game/search?l=25&q=${query}`)
+                .then(response => response.json())
+                .then(response => response.forEach(r => upsertRow(r)))
+                .catch(error => console.error(error))
+        }
+    })
 }
 
 function create_game_row() {
@@ -151,12 +167,18 @@ function upsertRow(game_data, id = undefined) { // TODO: Remove the id param on 
     else gameRow_Table.appendChild(row) // Insert row
 }
 
+/** Refreshes the table */
 function refresh() {
-    document.getElementById("game_data").innerHTML = "" // Clear the existing game list
+    clearTable()
     fetch(`${api}/game`)
         .then(response => response.json())
         .then(response => response.forEach(r => upsertRow(r)))
         .catch(error => console.error(error))
+}
+
+/** Clears the table */
+function clearTable() {
+    document.getElementById("game_data").innerHTML = "" // Clear the existing game list
 }
 
 document.addEventListener('DOMContentLoaded', function() {
