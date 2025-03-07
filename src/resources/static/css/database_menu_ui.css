@@ -1,0 +1,58 @@
+* {
+    font-size: 17px;
+}
+
+#choose_desired_file {
+    background-color: #81cef5;
+    border: 1px solid #f7f38f;
+    font-family: "Times New Roman", serif;
+    border-collapse: separate;
+    font-weight: bold;
+    margin: 8px;
+}
+
+#import_file_data {
+    background-color: #f7f38f;
+    border: 1px solid #44BFFD;
+    font-family: "Times New Roman", serif;
+    border-collapse: separate;
+    font-weight: bold;
+    margin: 8px;
+}
+
+table, th, td {
+    border: 1px solid black;
+    border-collapse: separate;
+    margin: 5px;
+}
+
+
+
+.row {
+    flex-direction: row;
+    display: flex;
+}
+.top_nav {
+    box-sizing: border-box;
+    overflow: hidden;
+    background-color: #57d6fe;
+}
+.search_bar{
+    box-sizing: border-box;
+    float: right;
+    padding: 15px;
+    border: none;
+    margin-top: 15px;
+    margin-right: 8px;
+    font-size: 17px;
+}
+
+.find_game_button {
+    box-sizing: border-box;
+    float: right;
+    padding: 15px;
+    border: none;
+    margin-top: 15px;
+    margin-right: 8px;
+    font-size: 17px;
+}
