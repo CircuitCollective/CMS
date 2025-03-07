@@ -4,12 +4,15 @@ import org.springdoc.core.models.*;
 import org.springframework.boot.*;
 import org.springframework.boot.autoconfigure.*;
 import org.springframework.context.annotation.*;
+import org.springframework.http.*;
 import org.springframework.security.config.annotation.web.builders.*;
 import org.springframework.security.config.annotation.web.configuration.*;
 import org.springframework.security.config.annotation.web.configurers.*;
 import org.springframework.security.core.userdetails.*;
 import org.springframework.security.provisioning.*;
 import org.springframework.security.web.*;
+import org.springframework.security.web.authentication.*;
+import org.springframework.security.web.util.matcher.*;
 
 @SpringBootApplication
 @EnableWebSecurity
@@ -28,7 +31,12 @@ public class Main {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .authorizeHttpRequests((requests) -> requests
+            // Define returned status code for unauthorized users
+            .exceptionHandling(except -> except
+                .defaultAuthenticationEntryPointFor(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED), new AntPathRequestMatcher("api/**"))
+            )
+            // Define auth requirements for specific paths
+            .authorizeHttpRequests(requests -> requests
                 .requestMatchers("api/admin/**").hasRole("ADMIN") // All requests to games require admin role
                 .anyRequest().permitAll() // All other requests are fine
             )
