@@ -10,49 +10,33 @@
 <link rel="stylesheet" href="css/database_menu_ui.css">
 
 <div class="top_nav">
-    <button type="submit" class="find_game_button">Find Game</button>
-    <input type="text" class="search_bar" placeholder="Search For Games...">
+<!--    <button type="submit" class="find_game_button">Find Game</button> TODO: Not using this for now as its easier if we don't -->
+    <input type="text" id="search_bar" class="search_bar" placeholder="Search For Games...">
 </div>
 
 <form method="post" enctype="multipart/form-data" id="form">
-    <input type="file" id="desired_file_upload" accept="text/csv" hidden="hidden">
-    <button type="button" id="choose_desired_file">Choose File</button>
-    <span id="text_file_name">No File Chosen</span>
-    <button id="import_file_data" onclick="import_csv_data()">Import File Data</button>
+    <input type="file" name="file" id="file" accept="text/csv"/>
 </form>
-
-<script src="js/load_file.js"></script>
 
 <table>
     <thead id="creation_header">
-    <tr>
-        <th style="background-color: #e593f7">Name</th>
-        <th style="background-color: #f793e5">Program</th>
-        <th style="background-color: #f7f38f">Faculty</th>
+    <tr id="game_creation_head">
     </tr>
     </thead>
 
     <tbody id="creation_inputs">
-    <tr>
-        <td><input type="text" id="name" placeholder="Name"></td>
-        <td><input type="text" id="program" placeholder="Program"></td>
-        <td><input type="text" id="faculty" placeholder="Faculty"></td>
-        <td><button id="create_user" onclick="create_user_row()">Create User</button></td>
+    <tr id="game_creation_inputs">
     </tr>
     </tbody>
 </table>
 
 <table id="items_list">
     <thead>
-    <tr>
-        <th style="background-color: #81cef5">ID</th>
-        <th style="background-color: #e593f7">Name</th>
-        <th style="background-color: #f793e5">Program</th>
-        <th style="background-color: #f7f38f">Faculty</th>
+    <tr id="items_row">
     </tr>
     </thead>
 
-    <tbody id="user_data">
+    <tbody id="game_data">
     </tbody>
 </table>
 
