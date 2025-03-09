@@ -1,10 +1,10 @@
 ### CMS (Catalouge Managment System)
 
-This project was developed as a course project for the course Software Design and Analysis during the 2025 Winter Semester Term at Ontario Tech University. It's main function is to serve as a inventory catalogue for a hypothetical videogame distribution company. 
+This project was developed as a course project for the course Software Design and Analysis during the 2025 Winter Semester Term at Ontario Tech University. It's main function is to serve as an inventory catalogue for a hypothetical video game distribution company. 
 
 ## Description
 
-CMS is a basic catalouge management system that allows authorated users to add, delete, and edit videogame stock storted in it's catalouge. Unauthorised users can only view items in the catalouige, and must login using the administrator username and password to become authorised. CMS offfers a search function to search the catalouge, and the ablilty to load in iventory from a csv file. 
+CMS is a basic catalogue management system that allows authorated users to add, delete, and edit video game stock stored in it's catalogue. Unauthorized users can only view items in the catalogue, and must login using the administrator username and password to become authorized. CMS offers a search function to search the catalogue, and the ability to load in inventory from a csv file. 
 
 ## Getting Started
 
