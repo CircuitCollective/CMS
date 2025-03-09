@@ -21,7 +21,9 @@ CMS is a basic catalouge management system that allows authorated users to add, 
 
 ### Building and running the project using IDE
 Clone master branch. 
+
 Run `src/circuitcollective/Main.java`
+
 Run `index.html` or connect to `http://localhost:8080`
 
 ### Structure
@@ -33,8 +35,12 @@ Interactive API docs are available at http://localhost:8080/swagger-ui.html once
 
 ## Authors
 
-* William Wedemire
-* Bryce Gill
-* Nathan Aguiar
-* Tobenna Nnaobi
-* Jerry Yang
+William Wedemire
+
+Bryce Gill
+
+Nathan Aguiar
+
+Tobenna Nnaobi
+
+Jerry Yang
