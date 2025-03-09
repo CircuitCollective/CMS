@@ -33,26 +33,38 @@ public class Main {
         http
             // Define returned status code for unauthorized users
             .exceptionHandling(except -> except
-                .defaultAuthenticationEntryPointFor(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED), new AntPathRequestMatcher("api/**"))
+                .defaultAuthenticationEntryPointFor(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED), new AntPathRequestMatcher("/api/**"))
             )
             // Define auth requirements for specific paths
             .authorizeHttpRequests(requests -> requests
-                .requestMatchers("api/admin/**").hasRole("ADMIN") // All requests to games require admin role
+                .requestMatchers("/api/admin/**").hasRole("ADMIN") // All requests to games require admin role
                 .anyRequest().permitAll() // All other requests are fine
             )
-            .formLogin(AbstractAuthenticationFilterConfigurer::permitAll) // Default login page
+            .formLogin(login -> login // Custom login page
+                .loginPage("/login").permitAll()
+            )
             .logout(LogoutConfigurer::permitAll) // Default logout page
-            .csrf(csrf -> csrf // Enable csrf for http requests
-                .disable()
-//                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+            .csrf(csrf -> csrf
+//                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()) // Enable CSRF for http requests
+                .disable() // CSRF Doesn't work with localhost and i cant seem to get it to
             );
 
         return http.build();
     }
 
+    // Doesn't work for whatever reason.
+//    /** Configure CORS: Allow requests from localhost:8080 */
+//    @Bean
+//    public CorsConfiguration getCorsConfiguration() {
+//        CorsConfiguration config = new CorsConfiguration();
+//        config.addAllowedOrigin("http://localhost:8080");
+//        return config;
+//    }
+
+    /** Configure auth users: Add admin account with admin password */
     @Bean
     public UserDetailsService userDetailsService() {
-        var admin = User.withDefaultPasswordEncoder() // Add a generic admin account
+        var admin = User.withDefaultPasswordEncoder()
             .username("admin")
             .password("admin")
             .roles("ADMIN")
