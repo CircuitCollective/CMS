@@ -14,11 +14,15 @@ CMS is a basic catalouge management system that allows authorated users to add, 
 * Gradle
 * IDE with Spring integration (ex. InteliJ Idea) 
 
-### Building and running the project
+### Building and running the project directly
 `gradlew bootJar` builds a jar under build/libs/jar.
 
-`gradlew bootRun` runs the project directly. Alternatively use an IDE with spring support builtin.
+`gradlew bootRun` runs the project directly. 
 
+### Building and running the project using IDE
+Clone master branch. 
+Run `src/circuitcollective/Main.java`
+Run `index.html` or connect to `http://localhost:8080`
 
 ### Structure
 `src` contains the java source, all work is under the `circuitcollective` package.
