@@ -29,8 +29,8 @@ Interactive API docs are available at http://localhost:8080/swagger-ui.html once
 
 ## Authors
 
-William Wedemire
-Bryce Gill
-Nathan Aguiar
-Tobenna Nnaobi
-Jerry Yang
+* William Wedemire
+* Bryce Gill
+* Nathan Aguiar
+* Tobenna Nnaobi
+* Jerry Yang
