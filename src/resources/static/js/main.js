@@ -1,10 +1,9 @@
 let initialized_row_value = 0
+let loaded_data_row_value = 0
 
 const api = "http://localhost:8080/api"
 
 function create_user_row() {
-    let generated_id = String(Math.floor(Math.random() * 100000000000000000000000) + 1)
-
     const input_name = document.getElementById("name")
     const value_name = input_name.value
 
@@ -27,6 +26,7 @@ function create_user_row() {
     let gameRow = document.createElement("tr")
     gameRow.id = String(initialized_row_value)
 
+    const generated_id = String(Math.floor(Math.random() * 100000000000000000000000) + 1)
     let gameID  = document.createElement("td")
     gameID.innerHTML = generated_id
     gameRow.appendChild(gameID)
@@ -95,7 +95,7 @@ function remove_row(row_value) {
         gameData_Table.removeChild(editing_data_row)
 
         fetch(`${api}/admin/game/${gameRow_Data.id}`)
-            .then(obtain_database_data)
+            .then(response => console.log(response))
             .catch(error => console.log(error.message))
     }
 }
@@ -180,8 +180,14 @@ function edit_game_menu(edit_game_button, game_row_id) {
     })
 }
 
-function save_edited_game(edit_user_button, row_value, edited_id, edited_name, edited_desc, edited_stock, edited_tags) {
-    if (edited_id.value === "" || edited_name.value === "" || edited_desc.value === "" || edited_stock.value === "" || edited_tags.value === "") {
+function save_edited_game(edit_user_button, row_value,
+                          edited_id, edited_name,
+                          edited_desc, edited_stock, edited_tags) {
+    if (edited_id.value === "" ||
+        edited_name.value === "" ||
+        edited_desc.value === "" ||
+        edited_stock.value === "" ||
+        edited_tags.value === "") {
         alert("The input fields cannot be empty!")
         return
     }
@@ -227,6 +233,9 @@ function save_edited_game(edit_user_button, row_value, edited_id, edited_name, e
     if (gameData_Table.rows.length > 0) {
         gameData_Table.removeChild(gameRow_Data)
     }
+
+
+
 }
 
 function cancel_row_edit(row_value) {
@@ -248,9 +257,9 @@ function obtain_database_data() {
         let gameRow_Table = document.getElementById("game_data")
 
         for (const row_data of database_data) {
-            let gameData = document.getElementById("game_data")
+            loaded_data_row_value++
             let gameRow = document.createElement("tr")
-            gameRow.id = String(initialized_row_value)
+            gameRow.id = String(loaded_data_row_value)
 
             let gameID  = document.createElement("td")
             gameID.innerHTML = row_data.id
@@ -287,6 +296,9 @@ function obtain_database_data() {
             removeGame_OnClick.addEventListener("click", function(){remove_row(parseInt(gameRow.id))})
             removeGameButton.appendChild(removeGame_OnClick)
             gameRow.appendChild(removeGameButton)
+
+            gameRow_Table.appendChild(gameRow)
         }
     }
 }
+obtain_database_data()
