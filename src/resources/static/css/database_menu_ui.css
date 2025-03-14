@@ -1,19 +1,19 @@
-* {
-    font-size: 17px;
-}
-
 #choose_desired_file {
-    background-color: #81cef5;
-    border: 1px solid #f7f38f;
+    background-color: #fd68a6;
+    border: 4px solid #8083ff;
     font-family: "Times New Roman", serif;
     border-collapse: separate;
     font-weight: bold;
     margin: 8px;
 }
 
+#text_file_name {
+    font-weight: bold;
+}
+
 #import_file_data {
-    background-color: #f7f38f;
-    border: 1px solid #44BFFD;
+    background-color: #f83939;
+    border: 4px solid #9444dc;
     font-family: "Times New Roman", serif;
     border-collapse: separate;
     font-weight: bold;
@@ -23,29 +23,31 @@
 table, th, td {
     border: 1px solid black;
     border-collapse: separate;
+    background-color: #7500de;
     margin: 5px;
 }
-
-
 
 .row {
     flex-direction: row;
     display: flex;
 }
 
-* {box-sizing: border-box;}
+* {
+    box-sizing: border-box;
+    font-size: 17px;
+}
 
 .top_nav {
+    text-align: center;
     overflow: hidden;
-    background-color: #57F1D2;
+    background-color: #498ae8;
 }
-.search_bar{
-
+.top_nav input[type="text"]{
     float: right;
     padding: 15px;
     border: none;
-    margin-top: 15px;
-    margin-right: 8px;
+    margin-top: 8px;
+    margin-right: 11px;
     font-size: 17px;
 }
 
@@ -57,4 +59,22 @@ table, th, td {
     margin-top: 15px;
     margin-right: 8px;
     font-size: 17px;
+}
+
+body {
+    background: url("../test_ui_images/database_background.jpg") no-repeat;
+    float: left;
+    display: block;
+}
+
+@media screen and (max-width: 1250px) {
+    table, th, td, #choose_desired_file, #import_file_data, #text_file_name, input {
+        width: 100%;
+    }
+}
+
+@media screen and (max-height: 450px) {
+    table, th, td, #choose_desired_file, #import_file_data, #text_file_name, input{
+        height: 100%;
+    }
 }

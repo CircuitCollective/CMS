@@ -1,9 +1,20 @@
+//Used to initialize the value of a game object's
+//row value after an object's initialization.
 let initialized_row_value = 0
+
+//Used to initialize the value of a game object's
+//row value after an object loads its data from
+//either a file.
 let loaded_data_row_value = 0
 
-const api = "http://localhost:8080/api"
+const api_url = "http://localhost:8080/api"
 
-function create_user_row() {
+//The purpose of this function is to create a new
+//game object with list on the database's front-end.
+function create_game_object_row() {
+
+    //Gain access to the front-end's input fields and
+    //gain their inputted values.
     const input_name = document.getElementById("name")
     const value_name = input_name.value
 
@@ -16,37 +27,46 @@ function create_user_row() {
     const input_tags = document.getElementById("tags")
     const value_tags = input_tags.value
 
+    //Statement used to create an alert prompt that prevents the
+    //admin from initializing an empty game object into the database.
     if (value_name === "" || value_desc === "" || value_stock === "" || value_tags === "") {
         alert("The input fields cannot be empty!")
         return;
     }
 
-    initialized_row_value++
-    let gameData = document.getElementById("game_data")
-    let gameRow = document.createElement("tr")
-    gameRow.id = String(initialized_row_value)
+    initialized_row_value++ //increase the new role value by one
+    let gameData = document.getElementById("game_data") //Gain access to the database table
+    let gameRow = document.createElement("tr") //Initialize a new row to store the game object information
+    gameRow.id = String(initialized_row_value) //Set the row's numerical id value
 
-    const generated_id = String(Math.floor(Math.random() * 100000000000000000000000) + 1)
-    let gameID  = document.createElement("td")
-    gameID.innerHTML = generated_id
-    gameRow.appendChild(gameID)
+    //Initializing the game object's ID, Name,
+    //Description, Stock Value, & Tags elements
+    //and add them to the row.
+    const pending_id = "ID Pending" //Sets the new object ID as pending as the object true ID is initialized in the database
+    let gameID  = document.createElement("td") //Initializes gameID table element.
+    gameID.innerHTML = pending_id //Store the "ID Pending" value into the gameID table element as the object's true ID will be uploaded to the front-end upon reload.
+    gameRow.appendChild(gameID) //Store the gameID table element into the row object.
 
-    let gameName = document.createElement("td")
-    gameName.innerHTML = value_name
-    gameRow.appendChild(gameName)
+    let gameName = document.createElement("td") //Initializes gameName table element.
+    gameName.innerHTML = value_name //Get the game's name obtained from the input field and store in the table element.
+    gameRow.appendChild(gameName)//Store the gameName table element into the row object.
 
-    let gameDescription = document.createElement("td")
-    gameDescription.innerHTML = value_desc
-    gameRow.appendChild(gameDescription)
+    let gameDescription = document.createElement("td") //Initializes gameDescription table element.
+    gameDescription.innerHTML = value_desc //Get the game description obtained from the input field and store in the table element.
+    gameRow.appendChild(gameDescription) //Store the gameDescription table element into the row object.
 
-    let gameStock = document.createElement("td")
-    gameStock.innerHTML = value_stock
-    gameRow.appendChild(gameStock)
+    let gameStock = document.createElement("td") //Initializes gameStock table element.
+    gameStock.innerHTML = value_stock //Get the game's stock value obtained from the input field and store in the table element.
+    gameRow.appendChild(gameStock) //Store the gameStock table element into the row object.
 
-    let gameTags = document.createElement("td")
-    gameTags.innerHTML = value_tags
-    gameRow.appendChild(gameTags)
+    let gameTags = document.createElement("td") //Initializes gameTags table element.
+    gameTags.innerHTML = value_tags //Get the game's genre tags obtained from the input field and store in the table element.
+    gameRow.appendChild(gameTags) //Store the gameTags table element into the row object.
 
+
+    //Initializes a clickable "Edit Game" button that will initialize a menu below the
+    //chosen game object for the administrator to update its contents in both the
+    //front-end and the back-end.
     let editGameButton = document.createElement("td")
     let editGame_OnClick = document.createElement("button")
     editGame_OnClick.type = "button"
@@ -55,6 +75,8 @@ function create_user_row() {
     editGameButton.appendChild(editGame_OnClick)
     gameRow.appendChild(editGameButton)
 
+    //Initializes a clickable "Remove Game" button that will delete the chosen
+    //game object and its contents from both the front-end and the back-end.
     let removeGameButton = document.createElement("td")
     let removeGame_OnClick = document.createElement("button")
     removeGame_OnClick.type = "button"
@@ -63,30 +85,39 @@ function create_user_row() {
     removeGameButton.appendChild(removeGame_OnClick)
     gameRow.appendChild(removeGameButton)
 
-    fetch(`${api}/admin/game`, {
+    //Using the fetch() method initializes a new game object into the database
+    //via JSON using the stores values obtained from the input fields.
+    fetch(`${api_url}/admin/game`, {
         method: "PUT",
         body: JSON.stringify({
             "name": value_name,
             "desc": value_desc,
             "stock": value_stock,
-            "tags": value_tags
+            "tags": new Set(value_tags)
         }),
         headers: {
             "Content-Type": "application/json",
         }
-    }).then(obtain_database_data).catch(error => console.log(error.message))
+    }).then(obtain_database_data)
+        .catch(error => console.log(error.message))
 
+    //After all elements have been initialized and added to the row
+    //all the row and its contents to the database's game list table.
     gameData.appendChild(gameRow)
 
 
+    //After initializing a new game object, set the values
+    //of all input fields back to their default values.
     input_name.value = ""
     input_desc.value = ""
     input_stock.value = ""
     input_tags.value = ""
 }
 
+
+//The purpose of this function
 function remove_row(row_value) {
-    let gameData_Table = document.getElementById("game_data")
+    let gameData_Table = document.getElementById("game_data") //Gain access to the database table
     let gameRow_Data = document.getElementById(row_value)
     let editing_data_row = document.getElementById("editing_row")
 
@@ -94,12 +125,11 @@ function remove_row(row_value) {
         gameData_Table.removeChild(gameRow_Data)
         gameData_Table.removeChild(editing_data_row)
 
-        fetch(`${api}/admin/game/${gameRow_Data.id}`)
+        fetch(`${api_url}/admin/game/${gameRow_Data.id}`)
             .then(response => console.log(response))
             .catch(error => console.log(error.message))
     }
 }
-
 
 
 function edit_game_menu(edit_game_button, game_row_id) {
@@ -175,6 +205,8 @@ function edit_game_menu(edit_game_button, game_row_id) {
     cancelEditButton.appendChild(cancelEdit_OnClick)
     edit_row_inputs.appendChild(cancelEditButton)
 
+    //This code using jQuery is just to make sure that editing
+    //menu for the chosen game object
     $(edit_game_button).ready(function() {
         $(edit_row_inputs).insertAfter(get_current_row)
     })
@@ -183,6 +215,7 @@ function edit_game_menu(edit_game_button, game_row_id) {
 function save_edited_game(edit_user_button, row_value,
                           edited_id, edited_name,
                           edited_desc, edited_stock, edited_tags) {
+
     if (edited_id.value === "" ||
         edited_name.value === "" ||
         edited_desc.value === "" ||
@@ -192,10 +225,11 @@ function save_edited_game(edit_user_button, row_value,
         return
     }
 
-    let gameData_Table = document.getElementById("game_data")
+    let gameData_Table = document.getElementById("game_data") //Gain access to the database table
     let gameRow_Data = document.getElementById(row_value)
     let edit_user_row = edit_user_button.parentNode.parentNode
 
+    //Gain access to the contents of the chosen game object.
     let newID_Data = edit_user_row.cells[0]
     let newName_Data = edit_user_row.cells[1]
     let newDescription_Data = edit_user_row.cells[2]
@@ -209,7 +243,9 @@ function save_edited_game(edit_user_button, row_value,
     newStock_Data.innerHTML = edited_stock.value
     newTags_Data.innerHTML = edited_tags.value
 
-    fetch(`${api}/admin/game`, {
+    //Using the fetch() method to update the current game object's values in
+    //the database via JSON using the stores values obtained from the input fields.
+    fetch(`${api_url}/admin/game`, {
         method: "PUT",
         body: JSON.stringify({
             "id": edited_id,
@@ -224,18 +260,19 @@ function save_edited_game(edit_user_button, row_value,
     }).then(response => console.log(response))
         .catch(error => {console.log(error.message)})
 
+    //After initializing the game object's updated values, set the
+    //values of all input fields back to their default values.
     edited_id.value = ""
     edited_name.value = ""
     edited_desc.value = ""
     edited_stock.value = ""
     edited_tags.value = ""
 
+    //Delete the editing menu after initializing
+    //the updated object values.
     if (gameData_Table.rows.length > 0) {
         gameData_Table.removeChild(gameRow_Data)
     }
-
-
-
 }
 
 function cancel_row_edit(row_value) {
@@ -247,11 +284,15 @@ function cancel_row_edit(row_value) {
     }
 }
 
+function clearGame_ListData() {
+    document.getElementById("game_data").innerHTML = "";
+}
+
 
 function obtain_database_data() {
-    fetch(`${api}/admin/game/}`)
+    fetch(`${api_url}/game/}`)
         .then(response => response.json())
-        .then(load_database_data)
+        .then(response => response.forEach(load_database_data))
         .catch(error => {console.log(error.message)})
     function load_database_data(database_data) {
         let gameRow_Table = document.getElementById("game_data")
@@ -278,7 +319,7 @@ function obtain_database_data() {
             gameRow.appendChild(gameStock)
 
             let gameTags = document.createElement("td")
-            gameTags.innerHTML = row_data.tags
+            gameTags.innerHTML = String(row_data.tags)
             gameRow.appendChild(gameTags)
 
             let editGameButton = document.createElement("td")
@@ -301,4 +342,11 @@ function obtain_database_data() {
         }
     }
 }
-obtain_database_data()
+
+function refresh_the_page() {
+    clearGame_ListData()
+    obtain_database_data()
+}
+document.addEventListener("DOMContentLoaded", function() {
+    refresh_the_page()
+}, false)

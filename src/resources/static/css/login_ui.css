@@ -1,10 +1,13 @@
 form {
-    border: 3px solid #461fc5;
-    background-color: #9cc7ff;
+    border: 10px solid #461fc5;
+    background-color: #922cee;
 }
 
 body {
     font-family: Arial, Helvetica, sans-serif;
+    background: url("../test_ui_images/login_logout_background.jpg") no-repeat;
+    float: left;
+    display: block;
 }
 
 .admin_image_logo {
@@ -12,7 +15,7 @@ body {
     margin: 22px 0px 10px 0px;
 }
 
-button {
+button, #login_button {
     font-family:Georgia, 'Times New Roman', Times, serif;
     font-weight: bold;
     background-color: #b473f9;
@@ -44,12 +47,12 @@ button:hover {
 
 .cancel_button {
     padding: 15px 23px;
-    background-color: #399ff1;
+    background-color: #3654e8;
     width: 100%;
 }
 
 #open_menu {
-    background-color: #faf62a;
+    background-color: #a81379;
 }
 
 .menu_page {
@@ -74,15 +77,15 @@ button:hover {
 .close_menu {
     position: absolute;
     right: 25px;
-    top: 0px;
-    color: #000;
-    font-size: 35px;
+    margin-top: 20px;
+    color: #500e98;
+    font-size: 60px;
     font-weight: bold;
 }
 
 .close_menu:hover,
 .close:focus {
-    color: #0008ef;
+    color: #ad8efa;
     cursor: pointer;
 }
 
@@ -99,6 +102,12 @@ button:hover {
     .cancel_button {
         width: 100%;
     }
+}
+
+#invalid_username_password, #logged_out {
+    color: #922cee;
+    font-weight: bold;
+    font-size: 25px;
 }
 
 @-webkit-keyframes animatezoom {

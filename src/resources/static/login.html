@@ -1,12 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Games Catalog Administrator Login Page</title>
 </head>
 <body>
 <link rel="stylesheet" href="css/login_ui.css">
-<h1>Games Catalog Administrator Login Page</h1>
+<h1 style="color: #ffffff;">Games Catalog Administrator Login Page</h1>
+
+<div id="invalid_username_password" th:if="${param.error}">
+    Invalid Username And/Or Password.
+</div>
+<div id="logged_out" th:if="${param.logout}">
+    You Have Been Logged Out.
+</div>
+
+
 <button id="open_menu" onclick="document.getElementById('login_menu').style.display='block'">
     Open Administrator Login Page</button>
 
@@ -14,19 +24,25 @@
     <span onclick="document.getElementById('login_menu').style.display='none'"
           class="close_menu" title="Exit Login Page">&times;</span>
 
-    <form action="/login" method="post" class="appearing_login_menu">
+    <form th:action="@{/login}" method="post" class="appearing_login_menu">
         <div class="admin_image_logo">
             <img src="test_ui_images/Ridgebacks_Spirit_Paw_Shield_RGB_150ppi.png" width="300px" height="300px">
         </div>
 
         <div class="login_info">
-            <label id="user_name"><b>Administrator Username</b></label>
-            <input type="text" placeholder="Enter Username" name="user_name" required>
-
-            <label id="login_password"><b>Password</b></label>
-            <input type="password" placeholder="Enter Password" name="password" required>
-
-            <button type="submit" id="login_button" onclick="location.href='index.html'">Login</button>
+            <div>
+                <label id="user_name">
+                    <b>Administrator Username</b>
+                    <input type="text" placeholder="Enter Username" maxlength="500" name="user_name" required>
+                </label>
+            </div>
+            <div>
+                <label id="login_password">
+                    <b>Password</b>
+                    <input type="password" placeholder="Enter Password" maxlength="500" name="password" required>
+                </label>
+            </div>
+            <input type="submit" id="login_button" value="Login">
         </div>
 
         <div class="cancel_login_process" style="background-color:#461fc5;">

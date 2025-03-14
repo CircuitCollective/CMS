@@ -1,61 +1,75 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Games Catalog Administrator Database</title>
     <script src="jQuery/jquery-3.7.1.min.js"></script>
     <script src="js/main.js"></script>
+    <script src="js/search_engine.js"></script>
 </head>
+
 <body>
 <link rel="stylesheet" href="css/database_menu_ui.css">
 
 <div class="top_nav">
-    <div class="search_menu">
-        <form action="">
-            <input type="text" class="search_bar" placeholder="Search For Games...">
-            <button type="submit" class="find_game_button">Find Game</button>
-        </form>
+
+    <div th:fragment="header">
+        <div sec:authorize="!isAuthenticated()">
+            <a th:href="@{/login}"></a>
+        </div>
+        <div sec:authorize="isAuthenticated()">
+            <form th:action="{@/login}" method="post">
+                <button type="submit" id="logout_button" th:action="@{/logout}">Logout</button>
+            </form>
+        </div>
     </div>
+    <div>
+        <input type="text" class="search_bar" id="search_bar_input" placeholder="Search For Games...">
+    </div>
+
 </div>
 
 <form method="post" enctype="multipart/form-data" id="form">
     <input type="file" id="desired_file_upload" accept="text/csv" hidden="hidden">
     <button type="button" id="choose_desired_file">Choose File</button>
-    <span id="text_file_name">No File Chosen</span>
-    <button id="import_file_data" onclick="import_csv_data()">Import File Data</button>
+    <span id="text_file_name" style="color: #ffffff;">No File Chosen</span>
+    <button type="button" id="import_file_data" onclick="import_csv_data()">Import File Data</button>
 </form>
 
 <script src="js/load_file.js"></script>
 
 <table>
     <thead id="creation_header">
-    <tr>
-        <th style="background-color: #e593f7">Name</th>
-        <th style="background-color: #f793e5">Description</th>
-        <th style="background-color: #f7f38f">Stocks</th>
-        <th style="background-color: #81cef5">Tag</th>
+    <tr id="creation_header_values">
+        <th style="background-color: #fc63f0">Name</th>
+        <th style="background-color: #fd68a6">Description</th>
+        <th style="background-color: #7676fa">Stocks</th>
+        <th style="background-color: #b56bf8">Tag</th>
     </tr>
     </thead>
 
-    <tbody id="creation_inputs">
-    <tr>
+    <tbody id="creation_input">
+    <tr id="creation_input_fields">
         <td><input type="text" id="name" placeholder="Name"></td>
         <td><input type="text" id="desc" placeholder="Description"></td>
         <td><input type="text" id="stock" placeholder="Stock"></td>
         <td><input type="text" id="tags" placeholder="Tags"></td>
-        <td><button id="create_user" onclick="create_user_row()">Create User</button></td>
+        <td><button id="create_user" onclick="create_game_object_row()">Create User</button></td>
     </tr>
     </tbody>
 </table>
 
 <table id="items_list">
-    <thead>
-    <tr>
-        <th style="background-color: #f5BC60">ID</th>
-        <th style="background-color: #e593f7">Name</th>
-        <th style="background-color: #f793e5">Description</th>
-        <th style="background-color: #f7f38f">Stocks</th>
-        <th style="background-color: #81cef5">Tags</th>
+    <thead id="items_row">
+    <tr id="items_row_headers">
+        <th style="background-color: #5e9eff">ID</th>
+        <th style="background-color: #fc63f0">Name</th>
+        <th style="background-color: #fd68a6">Description</th>
+        <th style="background-color: #7676fa">Stocks</th>
+        <th style="background-color: #b56bf8">Tags</th>
     </tr>
     </thead>
 
