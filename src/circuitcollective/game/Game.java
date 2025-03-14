@@ -37,6 +37,10 @@ public class Game {
     @ElementCollection @CollectionTable
     public Set<String> tags = new HashSet<>();
 
-    /** No-arg constructor for Persistence */
+//    /** Revenue produced by sales of the game */
+//    @Min(0) @Generated @ColumnDefault("0")
+//    public double revenue;
+
+    /** No-arg constructor for persistence */
     protected Game() {}
 }
