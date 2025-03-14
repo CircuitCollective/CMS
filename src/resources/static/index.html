@@ -13,19 +13,18 @@
 
 <body>
 <link rel="stylesheet" href="css/database_menu_ui.css">
+<div th:fragment="header">
+    <div sec:authorize="!isAuthenticated()">
+        <a th:href="@{/login}"></a>
+    </div>
+    <div sec:authorize="isAuthenticated()">
+        <form th:action="{@/login}" method="post">
+            <button type="submit" id="logout_button" th:action="@{/logout}">Logout</button>
+        </form>
+    </div>
+</div>
 
 <div class="top_nav">
-
-    <div th:fragment="header">
-        <div sec:authorize="!isAuthenticated()">
-            <a th:href="@{/login}"></a>
-        </div>
-        <div sec:authorize="isAuthenticated()">
-            <form th:action="{@/login}" method="post">
-                <button type="submit" id="logout_button" th:action="@{/logout}">Logout</button>
-            </form>
-        </div>
-    </div>
     <div>
         <input type="text" class="search_bar" id="search_bar_input" placeholder="Search For Games...">
     </div>
