@@ -183,6 +183,7 @@ function edit_game_menu(edit_game_button, game_row_id) {
     idCannot_BeChanged.style.backgroundColor = "#0cabdc"
     edit_row_inputs.appendChild(idCannot_BeChanged)
 
+    //Add editing input field in the editing menu for the game's name.
     const newName_input = document.createElement("td")
     newName_input.style.backgroundColor = "#0cabdc"
     const edit_name = document.createElement("input")
@@ -195,6 +196,7 @@ function edit_game_menu(edit_game_button, game_row_id) {
     newName_input.appendChild(edit_name)
     edit_row_inputs.appendChild(newName_input)
 
+    //Add editing input field in the editing menu for the game's description
     const newDescription_input = document.createElement("td")
     newDescription_input.style.backgroundColor = "#0cabdc"
     const edit_desc = document.createElement("input")
@@ -207,6 +209,7 @@ function edit_game_menu(edit_game_button, game_row_id) {
     newDescription_input.appendChild(edit_desc)
     edit_row_inputs.appendChild(newDescription_input)
 
+    //Add editing input field in the editing menu for the game's stock
     const newStock_input = document.createElement("td")
     newStock_input.style.backgroundColor = "#0cabdc"
     const edit_stock = document.createElement("input")
@@ -219,6 +222,7 @@ function edit_game_menu(edit_game_button, game_row_id) {
     newStock_input.appendChild(edit_stock)
     edit_row_inputs.appendChild(newStock_input)
 
+    //Add editing input field in the editing menu for the game's revenue generated
     const newRevenue_input = document.createElement("td")
     newRevenue_input.style.backgroundColor = "#0cabdc"
     const edit_revenue = document.createElement("input")
@@ -231,6 +235,7 @@ function edit_game_menu(edit_game_button, game_row_id) {
     newRevenue_input.appendChild(edit_revenue)
     edit_row_inputs.appendChild(newRevenue_input)
 
+    //Add editing input field in the editing menu for the game's price
     const newPrice_input = document.createElement("td")
     newPrice_input.style.backgroundColor = "#0cabdc"
     const edit_price = document.createElement("input")
@@ -243,6 +248,7 @@ function edit_game_menu(edit_game_button, game_row_id) {
     newPrice_input.appendChild(edit_price)
     edit_row_inputs.appendChild(newPrice_input)
 
+    //Add editing input field in the editing menu for the game's tags.
     const newTags_input = document.createElement("td")
     newTags_input.style.backgroundColor = "#0cabdc"
     const edit_tags = document.createElement("input")
