@@ -1,6 +1,6 @@
 package circuitcollective.game;
 
-import jakarta.servlet.http.*;
+import org.springframework.transaction.annotation.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -8,7 +8,7 @@ import java.util.*;
 /** Public endpoints for game listing */
 @RestController
 @RequestMapping("api/game")
-class GameController {
+public class GameController {
     private final GameRepository repo;
 
     GameController(GameRepository repo) {
@@ -40,10 +40,10 @@ class GameController {
     }
 
     /** Gets a game */
-    @GetMapping("{id}")
-    Game get(@PathVariable long id, HttpServletResponse response) {
-        response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-        return repo.getReferenceById(id);
+    @Transactional
+    @GetMapping("/{id}")
+    Game get(@PathVariable long id) {
+        return repo.findById(id).get();
     }
 
     //endregion

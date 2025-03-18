@@ -11,7 +11,7 @@ import java.io.*;
 /** Private endpoints for game management */
 @RestController
 @RequestMapping("api/admin/game")
-class GameAdminController {
+public class GameAdminController {
     private final GameRepository repo;
     private final GameMapper gameMapper;
 
@@ -55,6 +55,15 @@ class GameAdminController {
     @DeleteMapping("/{id}")
     void delete(@PathVariable long id) {
         repo.deleteById(id);
+    }
+
+    /** Sells some number of copies of a game: Decreases stock, increases revenue accordingly. */
+    @PostMapping("/sell/{id}")
+    void sell(@PathVariable long id, @RequestParam("sales") int count) {
+        var game = repo.getReferenceById(id);
+        if (count > game.stock) throw new IllegalArgumentException("Invalid number of sales, (" + count + ") > stock (" + game.stock + ")");
+        game.stock -= count;
+        game.revenue += game.price * count;
     }
 
     //endregion
