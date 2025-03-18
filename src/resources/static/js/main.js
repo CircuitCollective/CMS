@@ -144,6 +144,7 @@ function create_game_object_row() {
         }),
         headers: {
             "Content-Type": "application/json",
+            'X-XSRF-TOKEN': csrfToken,
         }
     }).then(obtain_database_data)
         .catch(error => console.log(error.message))
@@ -380,6 +381,7 @@ function save_edited_game(edit_user_button, row_value,
         }),
         headers: {
             "Content-Type": "application/json",
+            'X-XSRF-TOKEN': csrfToken,
         }
     }).then(response => console.log(response))
         .catch(error => {
