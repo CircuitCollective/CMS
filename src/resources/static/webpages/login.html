@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <title>Games Catalog Administrator Login Page</title>
+</head>
+<body>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/login_ui.css">
+<h1 style="color: #ffffff;">Games Catalog Administrator Login Page</h1>
+
+<div id="invalid_username_password" th:if="${param.error}">
+    Invalid Username And/Or Password.
+</div>
+<div id="logged_out" th:if="${param.logout}">
+    You Have Been Logged Out.
+</div>
+
+
+<button id="open_menu" onclick="document.getElementById('login_menu').style.display='block'">
+    Open Administrator Login Page</button>
+
+<div id="login_menu" class="menu_page">
+    <span onclick="document.getElementById('login_menu').style.display='none'"
+          class="close_menu" title="Exit Login Page">&times;</span>
+
+    <form th:action="@{/login}" method="post" class="appearing_login_menu">
+        <div class="admin_image_logo">
+            <img src="../user_interface_images/Ridgebacks_Spirit_Paw_Shield_RGB_150ppi.png" width="300px" height="300px">
+        </div>
+
+        <div class="login_info">
+            <div>
+                <label id="user_name">
+                    <b>Administrator Username</b>
+                    <input type="text" placeholder="Enter Username" maxlength="500" name="user_name" required>
+                </label>
+            </div>
+            <div>
+                <label id="login_password">
+                    <b>Password</b>
+                    <input type="password" placeholder="Enter Password" maxlength="500" name="password" required>
+                </label>
+            </div>
+            <input type="submit" id="login_button" value="Login">
+        </div>
+
+        <div class="cancel_login_process" style="background-color:#461fc5;">
+            <button type="button" onclick="document.getElementById('login_menu').style.display='none'"
+                    class="cancel_button">Cancel</button>
+        </div>
+    </form>
+
+</div>
+
+</body>
+</html>
