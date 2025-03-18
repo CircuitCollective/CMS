@@ -1,5 +1,7 @@
-const search_input_menu = document.getElementById("search_bar_input")
+const search_input_menu = document.getElementById("search_bar_input") //Gain access to the search bar
 
+//Implement a addEventListener() "keydown" event that allows the administrator
+//to search for any game they need to view using specific keywords in the string.
 search_input_menu.addEventListener("keydown", function(event_key) {
     if (event_key.key !== "Enter") {
         return
