@@ -9,22 +9,27 @@ CMS is a basic catalogue management system that allows authorated users to add, 
 ## Getting Started
 
 ### Dependencies
+* Requires JDK 21
+* IDE with Spring integration recommended (ex. IntelliJ IDEA) 
 
-* Java 21 JDK 
-* Gradle
-* IDE with Spring integration (ex. InteliJ Idea) 
+### Building & Running the project
+#### Command line
+##### Unix
+`./gradlew bootJar` builds a jar under build/libs/jar
 
-### Building and running the project directly
-`gradlew bootJar` builds a jar under build/libs/jar.
+`./gradlew bootRun` runs the project directly
+##### Windows
+`gradlew.bat bootJar` builds a jar under build/libs/jar
 
-`gradlew bootRun` runs the project directly. 
+`gradlew.bat bootRun` runs the project directly
 
-### Building and running the project using IDE
-Clone master branch. 
+#### IDE
+Add a Spring task for `Main.java` if possible. Otherwise, add a gradle task for `bootRun`
 
-Run `src/circuitcollective/Main.java`
+### Accessing the web-ui
+Navigate to http://localhost:8080
 
-Run `index.html` or connect to `http://localhost:8080`
+Keep in mind that login is required for mutation of data.
 
 ### Structure
 `src` contains the java source, all work is under the `circuitcollective` package.
