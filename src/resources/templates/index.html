@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Games Catalog Administrator Database</title>
+    <script src="/jQuery/jquery-3.7.1.min.js"></script>
+    <script src="/js/main.js"></script>
+</head>
+<body>
+<div th:replace="fragments/header :: header"></div>
+<link rel="stylesheet" href="/css/database_menu_ui.css">
+
+<div class="top_nav">
+    <input type="text" id="search_bar" class="search_bar" placeholder="Search For Games...">
+</div>
+
+<form method="post" enctype="multipart/form-data" id="form">
+    <label for="file" class="btn">Upload CSV</label> <!--/* TODO: Prettify */-->
+    <input type="file" name="file" id="file" accept="text/csv" style="display:none;"/>
+</form>
+
+<table>
+    <thead id="creation_header">
+    <tr id="game_creation_head">
+    </tr>
+    </thead>
+
+    <tbody id="creation_inputs">
+    <tr id="game_creation_inputs">
+    </tr>
+    </tbody>
+</table>
+
+<table id="items_list">
+    <thead>
+    <tr id="items_row">
+    </tr>
+    </thead>
+
+    <tbody id="game_data">
+    </tbody>
+</table>
+
+</body>
+</html>

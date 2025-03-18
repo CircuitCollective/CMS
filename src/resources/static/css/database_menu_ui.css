@@ -1,82 +1,50 @@
+* {
+    font-size: 17px;
+}
+
 #choose_desired_file {
-    background-color: #fd68a6;
-    border: 4px solid #8083ff;
+    background-color: #81cef5;
+    border: 1px solid #f7f38f;
+    font-family: "Times New Roman", serif;
     border-collapse: separate;
     font-weight: bold;
     margin: 8px;
-}
-
-#text_file_name {
-    font-weight: bold;
 }
 
 #import_file_data {
-    background-color: #f83939;
-    border: 4px solid #9444dc;
+    background-color: #f7f38f;
+    border: 1px solid #44BFFD;
+    font-family: "Times New Roman", serif;
     border-collapse: separate;
     font-weight: bold;
     margin: 8px;
 }
 
-table, th {
+table, th, td {
     border: 1px solid black;
     border-collapse: separate;
-    background-color: #5a01af;
-    color: #ffffff;
     margin: 5px;
 }
 
-tr:nth-child(even) {
-    td {
-        border: 1px solid black;
-        background-color: #8d82e1;
-    }
-}
-
-td {
-    border: 1px solid black;
-    background-color: #5847e1;
-}
 
 
 .row {
     flex-direction: row;
     display: flex;
 }
-
-* {
-    box-sizing: border-box;
-    font-family: "Outfit", sans-serif;
-    font-style: normal;
-    font-size: 17px;
-}
-
 .top_nav {
-    text-align: center;
+    box-sizing: border-box;
     overflow: hidden;
-    background-color: #494ce8;
-    margin-right: -7px;
+    background-color: #57d6fe;
 }
-.top_nav input[type="text"]{
+.search_bar{
+    box-sizing: border-box;
     float: right;
     padding: 15px;
     border: none;
-    margin-top: 8px;
-    margin-right: 15px;
-    font-size: 20px;
-    font-weight: bolder;
-}
-
-.search_bar {
-    margin-bottom: -5px;
-    margin-left: 70px;
-    width: 45%;
-    height: 95px;
-}
-
-.database_menu_icon, game_controller_icon {
-    margin-top: 8px;
-    margin-left: -750px;
+    margin-top: 15px;
+    margin-right: 8px;
+    font-size: 17px;
 }
 
 .find_game_button {
@@ -87,33 +55,4 @@ td {
     margin-top: 15px;
     margin-right: 8px;
     font-size: 17px;
-}
-
-#create_game_object {
-    padding: 15px 23px;
-    background-color: #5c87f3;
-    border: 4px solid #584e9d;
-    color: #ffffff;
-    font-weight: bold;
-}
-
-#logout_button, #login_button {
-    padding: 15px 23px;
-    background-color: #f331bd;
-    border: 4px solid #348bee;
-    color: #ffffff;
-}
-
-body {
-    background: url("../user_interface_images/database_background.jpg") no-repeat;
-    background-size: 500%;
-    float: left;
-    display: block;
-    height: 1180px;
-}
-
-#name, #desc, #stock, #revenue, #price, #tags {
-    width: 280px;
-    height: 55px;
-    font-weight: bolder;
 }
