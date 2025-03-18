@@ -1,7 +1,6 @@
 #choose_desired_file {
     background-color: #fd68a6;
     border: 4px solid #8083ff;
-    font-family: "Times New Roman", serif;
     border-collapse: separate;
     font-weight: bold;
     margin: 8px;
@@ -14,18 +13,31 @@
 #import_file_data {
     background-color: #f83939;
     border: 4px solid #9444dc;
-    font-family: "Times New Roman", serif;
     border-collapse: separate;
     font-weight: bold;
     margin: 8px;
 }
 
-table, th, td {
+table, th {
     border: 1px solid black;
     border-collapse: separate;
-    background-color: #7500de;
+    background-color: #5a01af;
+    color: #ffffff;
     margin: 5px;
 }
+
+tr:nth-child(even) {
+    td {
+        border: 1px solid black;
+        background-color: #8d82e1;
+    }
+}
+
+td {
+    border: 1px solid black;
+    background-color: #5847e1;
+}
+
 
 .row {
     flex-direction: row;
@@ -34,21 +46,37 @@ table, th, td {
 
 * {
     box-sizing: border-box;
+    font-family: "Outfit", sans-serif;
+    font-style: normal;
     font-size: 17px;
 }
 
 .top_nav {
     text-align: center;
     overflow: hidden;
-    background-color: #498ae8;
+    background-color: #494ce8;
+    margin-right: -7px;
 }
 .top_nav input[type="text"]{
     float: right;
     padding: 15px;
     border: none;
     margin-top: 8px;
-    margin-right: 11px;
-    font-size: 17px;
+    margin-right: 15px;
+    font-size: 20px;
+    font-weight: bolder;
+}
+
+.search_bar {
+    margin-bottom: -5px;
+    margin-left: 70px;
+    width: 45%;
+    height: 95px;
+}
+
+.database_menu_icon, game_controller_icon {
+    margin-top: 8px;
+    margin-left: -750px;
 }
 
 .find_game_button {
@@ -61,20 +89,31 @@ table, th, td {
     font-size: 17px;
 }
 
+#create_game_object {
+    padding: 15px 23px;
+    background-color: #5c87f3;
+    border: 4px solid #584e9d;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+#logout_button, #login_button {
+    padding: 15px 23px;
+    background-color: #f331bd;
+    border: 4px solid #348bee;
+    color: #ffffff;
+}
+
 body {
-    background: url("../test_ui_images/database_background.jpg") no-repeat;
+    background: url("../user_interface_images/database_background.jpg") no-repeat;
+    background-size: 500%;
     float: left;
     display: block;
+    height: 1180px;
 }
 
-@media screen and (max-width: 1250px) {
-    table, th, td, #choose_desired_file, #import_file_data, #text_file_name, input {
-        width: 100%;
-    }
-}
-
-@media screen and (max-height: 450px) {
-    table, th, td, #choose_desired_file, #import_file_data, #text_file_name, input{
-        height: 100%;
-    }
+#name, #desc, #stock, #revenue, #price, #tags {
+    width: 280px;
+    height: 55px;
+    font-weight: bolder;
 }

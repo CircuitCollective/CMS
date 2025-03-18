@@ -1,13 +1,18 @@
+* {
+    font-family: "Outfit", sans-serif;
+    font-style: normal;
+}
+
 form {
     border: 10px solid #461fc5;
     background-color: #922cee;
 }
 
 body {
-    font-family: Arial, Helvetica, sans-serif;
-    background: url("../test_ui_images/login_logout_background.jpg") no-repeat;
+    background: url("../user_interface_images/login_logout_background.jpg") no-repeat;
     float: left;
     display: block;
+    width: 90%;
 }
 
 .admin_image_logo {
@@ -16,7 +21,6 @@ body {
 }
 
 button, #login_button {
-    font-family:Georgia, 'Times New Roman', Times, serif;
     font-weight: bold;
     background-color: #b473f9;
     color: white;
@@ -31,7 +35,6 @@ button, #login_button {
 }
 
 input[type="text"], input[type="password"] {
-    font-family: 'Times New Roman', Times, sans-serif;
     font-weight: bold;
     width: 100%;
     padding: 16px 32px;

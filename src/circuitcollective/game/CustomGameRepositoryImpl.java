@@ -19,6 +19,11 @@ public class CustomGameRepositoryImpl implements CustomGameRepository {
 
     @Override
     public List<Game> search(String query, int limit, int offset, String... fields) {
+        try { // TODO: Temp hack
+            Search.session(entityManager).massIndexer(Game.class).startAndWait();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         return Search.session(entityManager).search(Game.class).where(e -> e.match().fields(fields).matching(query).fuzzy()).fetch(offset, limit).hits();
     }
 }

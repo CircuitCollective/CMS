@@ -21,6 +21,7 @@ public class Main {
         SpringApplication.run(Main.class, args);
     }
 
+    /** Sets up swagger docs */
     @Bean
     public GroupedOpenApi apiDocs() { // http://localhost:8080/swagger-ui.html
         return GroupedOpenApi.builder().group("API Docs").packagesToScan("circuitcollective").build();
@@ -41,13 +42,13 @@ public class Main {
                         .anyRequest().permitAll() // All other requests are fine
                 )
                 .formLogin(login -> login // Custom login page
+                        .defaultSuccessUrl("/", true)
                         .loginPage("/login").permitAll()
                 )
                 .logout(LogoutConfigurer::permitAll) // Default logout page
                 .csrf(csrf -> csrf
-//                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-//                Enable CSRF for http requests.disable()
-//                CSRF Doesn't work with localhost and i cant seem to get it to
+//                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()) // Enable CSRF for http requests
+                                .disable() // CSRF Doesn't work with localhost and i cant seem to get it to
                 );
 
         return http.build();

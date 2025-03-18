@@ -1,12 +1,11 @@
 <!DOCTYPE html>
-<html lang="en"
-      xmlns:th="http://www.thymeleaf.org">
-<head>
+<html lang="en"><head>
     <meta charset="UTF-8">
     <title>Games Catalog Administrator Login Page</title>
 </head>
 <body>
-<link rel="stylesheet" href="css/login_ui.css">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/login_ui.css">
 <h1 style="color: #ffffff;">Games Catalog Administrator Login Page</h1>
 
 <div id="invalid_username_password" th:if="${param.error}">
@@ -26,7 +25,7 @@
 
     <form th:action="@{/login}" method="post" class="appearing_login_menu">
         <div class="admin_image_logo">
-            <img src="test_ui_images/Ridgebacks_Spirit_Paw_Shield_RGB_150ppi.png" width="300px" height="300px">
+            <img src="../user_interface_images/Ridgebacks_Spirit_Paw_Shield_RGB_150ppi.png" width="300px" height="300px">
         </div>
 
         <div class="login_info">

@@ -27,7 +27,7 @@ public class GameAdminController {
     @PostMapping(value = "/batch", consumes = "multipart/form-data")
     void uploadMultipart(@RequestParam("file") MultipartFile file) throws IOException {
         var mapper = new CsvMapper();
-        var schema = mapper.typedSchemaFor(Game.class).rebuild().removeColumn(0).build(); // Schema without the ID column.
+        var schema = mapper.typedSchemaFor(Game.class).rebuild().removeColumn(0).build().withHeader().withColumnReordering(true); // Schema without the ID column.
         var reader = mapper.readerFor(Game.class).with(schema);
         reader.<Game>readValues(file.getInputStream()).forEachRemaining(this::create);
     }
@@ -42,19 +42,28 @@ public class GameAdminController {
     }
 
     /** Replaces a game entirely (or saves a new one if it doesn't exist) */
-    @PutMapping
-    Game replace(@Valid @RequestBody Game game) {
-        return repo.findById(game.getId())
-            .map(old -> {
-                gameMapper.updateGame(game, old);
-                return repo.save(old);
-            }).orElseGet(() -> repo.save(game));
+    @PutMapping("/{id}")
+    Game replace(@Valid @RequestBody Game game, @PathVariable long id) {
+        return repo.findById(id)
+                .map(old -> {
+                    gameMapper.updateGame(game, old);
+                    return repo.save(old);
+                }).orElseGet(() -> repo.save(game));
     }
 
     /** Deletes a game */
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     void delete(@PathVariable long id) {
         repo.deleteById(id);
+    }
+
+    /** Sells some number of copies of a game: Decreases stock, increases revenue accordingly. */
+    @PostMapping("/sell/{id}")
+    void sell(@PathVariable long id, @RequestParam("sales") int count) {
+        var game = repo.getReferenceById(id);
+        if (count > game.stock) throw new IllegalArgumentException("Invalid number of sales, (" + count + ") > stock (" + game.stock + ")");
+        game.stock -= count;
+        game.revenue += game.price * count;
     }
 
     //endregion
