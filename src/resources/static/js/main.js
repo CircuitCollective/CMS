@@ -1,7 +1,8 @@
 const api = "http://localhost:8080/api"
 const csrfToken = document.cookie.replace(/(?:(?:^|.*;\s*)XSRF-TOKEN\s*\=\s*([^;]*).*$)|^.*$/, '$1');
 
-const inputs = ["name", "desc", "stock", "tags"] // Maintained list of input values
+const inputs = ["name", "desc", "stock", "revenue", "price", "tags"] // Maintained list of input values
+const colors = {name: "#fc63f0", desc: "#fd68a6", tags: "#7676fa"} // Colors for each field TODO: Use these
 const listInputs = new Set(["tags"]) // Inputs with potentially many values
 
 /** Function that runs on page load. Sets up the game list, search, and csv parsing behavior. */
@@ -75,8 +76,16 @@ function upsertRow(gameData) {
     const row = document.createElement("tr")
     row.innerHTML += `<td>${gameData.id}</td>`
     for (const col of inputs) {
-        let td = document.createElement("td")
-        td.textContent = gameData[col]
+        const td = document.createElement("td")
+        if (listInputs.has(col)) { // Newline for each list input
+            gameData[col][0].split(",").forEach((item, idx) => {
+                const row = document.createElement("p")
+                td.appendChild(row)
+                row.style.backgroundColor = idx % 2 ? "lightgray" : "white" // TODO: Better colors
+                row.style.margin = "0"
+                row.textContent = item
+            })
+        } else td.textContent = gameData[col] // No newline needed: add text directly
         row.appendChild(td)
     }
 

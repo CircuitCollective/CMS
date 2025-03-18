@@ -4,14 +4,16 @@ import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
+import org.hibernate.annotations.*;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.*;
 
 import java.util.*;
 
 @Entity
 @Indexed
-@JsonPropertyOrder({"id", "name", "desc", "stock", "tags"})
+@JsonPropertyOrder({"id", "name", "desc", "stock", "revenue", "price", "tags"})
 @ToString
+@EqualsAndHashCode
 public class Game {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,10 +39,14 @@ public class Game {
     @ElementCollection @CollectionTable
     public Set<String> tags = new HashSet<>();
 
-//    /** Revenue produced by sales of the game */
-//    @Min(0) @Generated @ColumnDefault("0")
-//    public double revenue;
+    /** Revenue produced by sales of the game */
+    @Min(0) @ColumnDefault("0")
+    public double revenue;
+
+    /** The price of a game */
+    @Min(0) @ColumnDefault("0")
+    public double price;
 
     /** No-arg constructor for persistence */
-    protected Game() {}
+    public Game() {}
 }

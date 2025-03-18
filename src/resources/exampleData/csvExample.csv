@@ -1,23 +1,23 @@
-name,desc,stock,tags
-Super Mario Bros.,A game about a plumber (probably),342,"Surprisingly No plumbing,Game about plumbers,Platformer"
-VS. Super Mario Bros.,A game about a plumber (probably),32,"Surprisingly No plumbing,Game about plumbers,Platformer"
-Super Mario Bros.: The Lost Levels,A game about a plumber (probably),234,"Surprisingly No plumbing,Game about plumbers,Platformer"
-Super Mario Bros. 2,A game about a plumber (probably),12,"Surprisingly No plumbing,Game about plumbers,Platformer"
-Super Mario Bros. 3,A game about a plumber (probably),64,"Surprisingly No plumbing,Game about plumbers,Platformer"
-Super Mario World,A game about a plumber (probably),95,"Surprisingly No plumbing,Game about plumbers,Platformer"
-Super Mario World 2: Yoshi's Island,A game about a plumber (probably),823,"Surprisingly No plumbing,Game about plumbers,Platformer"
-Super Mario 64,A game about a plumber (probably),16,"Surprisingly No plumbing,Game about plumbers,Platformer"
-Super Mario Sunshine,A game about a plumber (probably),1,"Surprisingly No plumbing,Game about plumbers,Platformer"
-New Super Mario Bros.,A game about a plumber (probably),0,"Surprisingly No plumbing,Game about plumbers,Platformer"
-Super Mario Galaxy,A game about a plumber (probably),98,"Surprisingly No plumbing,Game about plumbers,Platformer"
-New Super Mario Bros. Wii,A game about a plumber (probably),12,"Surprisingly No plumbing,Game about plumbers,Platformer"
-Super Mario Galaxy 2,A game about a plumber (probably),42,"Surprisingly No plumbing,Game about plumbers,Platformer"
-Super Mario 3D Land,A game about a plumber (probably),83,"Surprisingly No plumbing,Game about plumbers,Platformer"
-New Super Mario Bros. 2,A game about a plumber (probably),71,"Surprisingly No plumbing,Game about plumbers,Platformer"
-New Super Mario Bros. U,A game about a plumber (probably),1,"Surprisingly No plumbing,Game about plumbers,Platformer"
-Super Mario 3D World,A game about a plumber (probably),0,"Surprisingly No plumbing,Game about plumbers,Platformer"
-Super Mario Maker,A game about a plumber (probably),64,"Surprisingly No plumbing,Game about plumbers,Platformer"
-Super Mario Run,A game about a plumber (probably),96,"Surprisingly No plumbing,Game about plumbers,Platformer"
-Super Mario Odyssey,A game about a plumber (probably),72,"Surprisingly No plumbing,Game about plumbers,Platformer"
-Super Mario Maker 2,A game about a plumber (probably),93,"Surprisingly No plumbing,Game about plumbers,Platformer"
-Super Mario Bros. Wonder,A game about a plumber (probably),16,"Surprisingly No plumbing,Game about plumbers,Platformer"
+name,desc,stock,tags,revenue,price
+Super Mario Bros.,A game about a plumber (probably),342,"Surprisingly No plumbing,Game about plumbers,Platformer",0,0
+VS. Super Mario Bros.,A game about a plumber (probably),32,"Surprisingly No plumbing,Game about plumbers,Platformer",0,0
+Super Mario Bros.: The Lost Levels,A game about a plumber (probably),234,"Surprisingly No plumbing,Game about plumbers,Platformer",0,0
+Super Mario Bros. 2,A game about a plumber (probably),12,"Surprisingly No plumbing,Game about plumbers,Platformer",0,0
+Super Mario Bros. 3,A game about a plumber (probably),64,"Surprisingly No plumbing,Game about plumbers,Platformer",0,0
+Super Mario World,A game about a plumber (probably),95,"Surprisingly No plumbing,Game about plumbers,Platformer",0,0
+Super Mario World 2: Yoshi's Island,A game about a plumber (probably),823,"Surprisingly No plumbing,Game about plumbers,Platformer",0,0
+Super Mario 64,A game about a plumber (probably),16,"Surprisingly No plumbing,Game about plumbers,Platformer",0,0
+Super Mario Sunshine,A game about a plumber (probably),1,"Surprisingly No plumbing,Game about plumbers,Platformer",0,0
+New Super Mario Bros.,A game about a plumber (probably),0,"Surprisingly No plumbing,Game about plumbers,Platformer",0,0
+Super Mario Galaxy,A game about a plumber (probably),98,"Surprisingly No plumbing,Game about plumbers,Platformer",0,0
+New Super Mario Bros. Wii,A game about a plumber (probably),12,"Surprisingly No plumbing,Game about plumbers,Platformer",0,0
+Super Mario Galaxy 2,A game about a plumber (probably),42,"Surprisingly No plumbing,Game about plumbers,Platformer",0,0
+Super Mario 3D Land,A game about a plumber (probably),83,"Surprisingly No plumbing,Game about plumbers,Platformer",0,0
+New Super Mario Bros. 2,A game about a plumber (probably),71,"Surprisingly No plumbing,Game about plumbers,Platformer",0,0
+New Super Mario Bros. U,A game about a plumber (probably),1,"Surprisingly No plumbing,Game about plumbers,Platformer",0,0
+Super Mario 3D World,A game about a plumber (probably),0,"Surprisingly No plumbing,Game about plumbers,Platformer",0,0
+Super Mario Maker,A game about a plumber (probably),64,"Surprisingly No plumbing,Game about plumbers,Platformer",0,0
+Super Mario Run,A game about a plumber (probably),96,"Surprisingly No plumbing,Game about plumbers,Platformer",0,0
+Super Mario Odyssey,A game about a plumber (probably),72,"Surprisingly No plumbing,Game about plumbers,Platformer",0,0
+Super Mario Maker 2,A game about a plumber (probably),93,"Surprisingly No plumbing,Game about plumbers,Platformer",0,0
+Super Mario Bros. Wonder,A game about a plumber (probably),16,"Surprisingly No plumbing,Game about plumbers,Platformer",0,0
