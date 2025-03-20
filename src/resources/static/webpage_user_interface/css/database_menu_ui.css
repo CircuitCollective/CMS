@@ -97,11 +97,20 @@ td {
     font-weight: bold;
 }
 
-#logout_button, #login_button {
+#logout_button {
     padding: 15px 23px;
-    background-color: #f331bd;
-    border: 4px solid #348bee;
+    background-color: #f65ac6;
+    border: 4px solid #5398ec;
     color: #ffffff;
+    font-weight: bold;
+}
+
+#login_button {
+    padding: 15px 23px;
+    background-color:#5398ec;
+    border: 4px solid #f65ac6;
+    color: #ffffff;
+    font-weight: bold;
 }
 
 body {
