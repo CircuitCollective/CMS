@@ -18,13 +18,19 @@ CMS is a basic catalogue management system that allows authorated users to add, 
 `./gradlew bootJar` builds a jar under build/libs/jar
 
 `./gradlew bootRun` runs the project directly
+
+`./gradlew test` compiles if needed and runs tests
 ##### Windows
 `gradlew.bat bootJar` builds a jar under build/libs/jar
 
 `gradlew.bat bootRun` runs the project directly
 
+`gradlew.bat test` compiles if needed and runs tests
+
 #### IDE
 Add a Spring task for `Main.java` if possible. Otherwise, add a gradle task for `bootRun`
+
+Add a Gradle task for `test`
 
 ### Accessing the web-ui
 Navigate to http://localhost:8080
