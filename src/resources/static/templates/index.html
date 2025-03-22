@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Games Catalog Administrator Database</title>
+    <script src="../jQuery/jquery-3.7.1.min.js"></script>
+    <script src="../js/main.js"></script>
+    <script src="../js/search_engine.js"></script>
+</head>
+<body>
+<div th:replace="fragments/header :: header"></div>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/database_menu_ui.css">
+
+<div class="top_nav">
+    <img alt="" class="database_menu_icon" src="../user_interface_images/Ridgebacks_Spirit_Paw_Shield_RGB_150ppi.png" width="100px" height="100px">
+    <img alt="" class="game_controller_icon" src="../user_interface_images/abstract_controller_icon.jpg" width="100px" height="100px">
+    <input type="text" class="search_bar" id="search_bar_input" placeholder="Search For Games...">
+</div>
+
+<form method="post" enctype="multipart/form-data" id="form">
+    <input type="file" id="desired_file_upload" accept="text/csv" hidden="hidden">
+    <button type="button" id="choose_desired_file">Choose File</button>
+    <span id="text_file_name" style="color: #ffffff;">No File Chosen</span>
+    <button type="button" id="import_file_data" onclick="import_csv_data()">Import File Data</button>
+</form>
+
+<script src="../js/load_file.js"></script>
+
+<table>
+    <thead id="creation_header">
+    <tr id="creation_header_values">
+        <th style="background-color: #fc63f0">Name</th>
+        <th style="background-color: #fd68a6">Description</th>
+        <th style="background-color: #7676fa">Stock</th>
+        <th style="background-color: #e7287e">Revenue</th>
+        <th style="background-color: #fa8e8e">Price</th>
+        <th style="background-color: #b56bf8">Tags</th>
+    </tr>
+    </thead>
+
+    <tbody id="creation_input">
+    <tr id="creation_input_fields">
+        <td><input type="text" id="name" placeholder="Name"></td>
+        <td><input type="text" id="desc" placeholder="Description"></td>
+        <td><input type="text" id="stock" placeholder="Stock"></td>
+        <td><input type="text" id="revenue" placeholder="Revenue"></td>
+        <td><input type="text" id="price" placeholder="Price"></td>
+        <td><input type="text" id="tags" placeholder="Tags"></td>
+        <td><button type="button" id="create_game_object" onclick="create_game_object_row()">Create Game</button></td>
+    </tr>
+    </tbody>
+</table>
+
+<table id="items_list">
+    <thead id="items_row">
+    <tr id="items_row_headers">
+        <th style="background-color: #5e9eff">ID</th>
+        <th style="background-color: #fc63f0">Name</th>
+        <th style="background-color: #fd68a6">Description</th>
+        <th style="background-color: #7676fa">Stock</th>
+        <th style="background-color: #e7287e">Revenue</th>
+        <th style="background-color: #fa8e8e">Price</th>
+        <th style="background-color: #b56bf8">Tags</th>
+    </tr>
+    </thead>
+
+    <tbody id="game_data">
+    </tbody>
+</table>
+
+</body>
+</html>

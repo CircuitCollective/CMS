@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Games Catalog Administrator Login Page</title>
+</head>
+<body>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/login_ui.css">
+<h1 class="login_title_header" style="color: #ffffff;">Games Catalog Administrator Login Page</h1>
+
+
+<!--/* TODO: Make these prettier */-->
+<div id="invalid_username_password" th:if="${param.error}">
+    Invalid username and password.
+</div>
+<div id="logged_out" th:if="${param.logout}">
+    You have been logged out.
+</div>
+
+<div class="gaming_images_row">
+    <div class="gaming_image_photo_logo">
+        <img alt="" src="../user_interface_images/nintendo_joycons_3D_render_free_image.png" width="300px" height="300px">
+    </div>
+    <div class="gaming_image_photo_logo">
+        <img alt="" src="../user_interface_images/free_transparent_controller_image.png" width="300px" height="300px">
+    </div>
+</div>
+
+<div class="login_design_center">
+    <button id="open_menu" type="button" onclick="document.getElementById('login_menu').style.display='block'">
+        Open Administrator Login Page</button>
+</div>
+
+
+
+<div id="login_menu" class="menu_page">
+    <span onclick="document.getElementById('login_menu').style.display='none'"
+          class="close_menu" title="Exit Login Page">&times;</span>
+
+    <form th:action="@{/login}" method="post" class="appearing_login_menu">
+        <div class="admin_image_logo">
+            <img alt="" src="../user_interface_images/Ridgebacks_Spirit_Paw_Shield_RGB_150ppi.png" width="300px" height="300px">
+        </div>
+
+        <div class="login_info">
+            <label id="username" style="color: #ffffff;"><b>Administrator Username</b></label>
+            <input type="text" placeholder="Enter Username" name="username" required>
+
+            <label id="login_password" style="color: #ffffff;"><b>Password</b></label>
+            <input type="password" placeholder="Enter Password" name="password" required>
+
+            <input type="submit" value="Login" id="login_button">
+        </div>
+
+        <div class="cancel_login_process" style="background-color:#461fc5;">
+            <button type="button" onclick="document.getElementById('login_menu').style.display='none'"
+                    class="cancel_button">Cancel</button>
+        </div>
+    </form>
+
+</div>
+
+</body>
+</html>
