@@ -3,7 +3,6 @@ package circuitcollective.game;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.json.*;
 import jakarta.persistence.*;
-import org.hibernate.search.mapper.orm.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.parallel.*;
 import org.mapstruct.factory.*;
@@ -12,9 +11,9 @@ import org.springframework.boot.test.autoconfigure.jdbc.*;
 import org.springframework.boot.test.context.*;
 import org.springframework.data.util.*;
 import org.springframework.http.*;
+import org.springframework.test.context.*;
 import org.springframework.test.web.servlet.*;
 import org.springframework.test.web.servlet.setup.*;
-import org.springframework.transaction.support.*;
 import org.springframework.web.context.*;
 
 import java.util.*;
@@ -31,6 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureTestDatabase
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @Execution(ExecutionMode.SAME_THREAD)
+@ActiveProfiles("test")
 public class GameControllersTest {
     @Autowired
     private WebApplicationContext context;
@@ -52,9 +52,6 @@ public class GameControllersTest {
         revenue = 160.0;
         price = 80.0;
     }}, g2 = new Game(); // Bad game
-
-    @Autowired
-    TransactionTemplate txTemplate;
 
     @BeforeEach
     public void setup() {
@@ -123,17 +120,6 @@ public class GameControllersTest {
                 throw new RuntimeException(e);
             }
         }
-
-        txTemplate.execute(status -> {
-            try {
-                 Search.session(entityManager).massIndexer(Game.class).startAndWait();
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-            return null;
-        });
-
-
 
         var apple = search("Apple"); // Should have 1 result
         System.out.println(apple);

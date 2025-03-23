@@ -1,7 +1,8 @@
 package circuitcollective.game;
 
-import org.springframework.transaction.annotation.*;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.*;
 
 import java.util.*;
 
@@ -34,16 +35,15 @@ public class GameController {
         @RequestParam(name = "o", required = false, defaultValue = "0") int offset,
         @RequestParam(name = "f", required = false, defaultValue = "name") String... fields // Comma separated list: a,b,c
     ) {
-        if (limit > 25 || limit < 1) throw new IllegalArgumentException("Invalid limit. Must be 1-25");
+        if (limit > 25 || limit < 1) throw new IllegalArgumentException("Invalid limit. Must be 1-25"); // TODO: Replace with ResponseStatusExceptions
         if (offset < 0) throw new IllegalArgumentException("Invalid offset. Cannot be below 0");
         return repo.search(query, limit, offset, fields);
     }
 
     /** Gets a game */
-    @Transactional
     @GetMapping("/{id}")
     Game get(@PathVariable long id) {
-        return repo.findById(id).get();
+        return repo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Game not found with id " + id));
     }
 
     //endregion
