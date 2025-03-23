@@ -24,8 +24,11 @@ function create_game_object_row() {
     const input_price = document.getElementById("price")
     const value_price = input_price.value
 
-    const input_tags = document.getElementById("tags")
-    const value_tags = input_tags.value
+    const input_genres = document.getElementById("genres")
+    const value_genres = input_genres.value
+
+    const input_platforms = document.getElementById("platforms")
+    const value_platforms = input_platforms.value
 
 
     //Statement used to create an alert prompt that prevents the administrator
@@ -35,7 +38,8 @@ function create_game_object_row() {
         value_stock === "" ||
         value_revenue === "" ||
         value_price === "" ||
-        value_tags === "") {
+        value_genres === "" ||
+        value_platforms === "") {
         alert("The input fields cannot be empty!")
         return;
     }
@@ -73,9 +77,13 @@ function create_game_object_row() {
     gamePrice.innerHTML = value_price //Get the game's price value obtained from the input field and store in the table element.
     gameRow.appendChild(gamePrice) //Store the gameStock table element into the row object.
 
-    let gameTags = document.createElement("td") //Initializes gameTags table element.
-    gameTags.innerHTML = value_tags.split(",").join("<br>") //Get the game's genre tags obtained from the input field and store in the table element.
-    gameRow.appendChild(gameTags) //Store the gameTags table element into the row object.
+    let gameGenres = document.createElement("td") //Initializes gameGenres table element.
+    gameGenres.innerHTML = value_genres.split(",").join("<br>") //Get the game's genre tags obtained from the input field and store in the table element.
+    gameRow.appendChild(gameGenres) //Store the gameGenres table element into the row object.
+
+    let gamePlatforms = document.createElement("td") //Initializes gamePlatforms table element.
+    gamePlatforms.innerHTML = value_platforms.split(",").join("<br>") //Get the game's platform tags obtained from the input field and store in the table element.
+    gameRow.appendChild(gamePlatforms) //Store the gamePlatforms table element into the row object.
 
     //Initializes a clickable "Edit Game" button that will initialize a menu below the
     //chosen game object for the administrator to update its contents in both the
@@ -123,7 +131,8 @@ function create_game_object_row() {
     input_stock.value = ""
     input_revenue.value = ""
     input_price.value = ""
-    input_tags.value = ""
+    input_genres.value = ""
+    input_platforms.value = ""
 
     //Using the fetch() method initializes a new game object into the database
     //via JSON using the stores values obtained from the input fields.
@@ -135,7 +144,8 @@ function create_game_object_row() {
             "stock": parseInt(value_stock),
             "revenue": parseFloat(value_revenue),
             "price": parseFloat(value_price),
-            "tags": new Set(value_tags)
+            "genres": new Set(value_genress),
+            "platforms": new Set(value_platforms),
         }),
         headers: {
             "Content-Type": "application/json",
@@ -245,18 +255,31 @@ function edit_game_menu(edit_game_button, game_row_id) {
     newPrice_input.appendChild(edit_price)
     edit_row_inputs.appendChild(newPrice_input)
 
-    //Add editing input field in the editing menu for the game's tags.
-    const newTags_input = document.createElement("td")
-    newTags_input.style.backgroundColor = "#0cabdc"
-    const edit_tags = document.createElement("input")
-    edit_tags.type = "text"
-    edit_tags.id = "new_tags"
-    edit_tags.style.width = "280px"
-    edit_tags.style.height = "55px"
-    edit_tags.style.fontWeight = "bolder"
-    edit_tags.placeholder = "New Tags"
-    newTags_input.appendChild(edit_tags)
-    edit_row_inputs.appendChild(newTags_input)
+    //Add editing input field in the editing menu for the game's genre tags.
+    const newGenres_input = document.createElement("td")
+    newGenres_input.style.backgroundColor = "#0cabdc"
+    const edit_genres = document.createElement("input")
+    edit_genres.type = "text"
+    edit_genres.id = "new_genres"
+    edit_genres.style.width = "280px"
+    edit_genres.style.height = "55px"
+    edit_genres.style.fontWeight = "bolder"
+    edit_genres.placeholder = "New Genre(s)"
+    newGenres_input.appendChild(edit_genres)
+    edit_row_inputs.appendChild(newGenres_input)
+
+    //Add editing input field in the editing menu for the game's platform tags.
+    const newPlatforms_input = document.createElement("td")
+    newPlatforms_input.style.backgroundColor = "#0cabdc"
+    const edit_platforms = document.createElement("input")
+    edit_platforms.type = "text"
+    edit_platforms.id = "new_platforms"
+    edit_platforms.style.width = "280px"
+    edit_platforms.style.height = "55px"
+    edit_platforms.style.fontWeight = "bolder"
+    edit_platforms.placeholder = "New Platform(s)"
+    newPlatforms_input.appendChild(edit_platforms)
+    edit_row_inputs.appendChild(newPlatforms_input)
 
     //Initializes a clickable "Save Updated Game" button that will
     //initialize and update the current game object with new values.
@@ -271,10 +294,9 @@ function edit_game_menu(edit_game_button, game_row_id) {
     saveGame_OnClick.style.fontWeight = "bold"
     saveGame_OnClick.textContent = "Save Updated Game"
     saveGame_OnClick.addEventListener("click", function(){
-        save_edited_game(edit_game_button, edit_row_inputs.id,
-            edit_name, edit_desc,
-            edit_stock, edit_revenue,
-            edit_price, edit_tags)
+        save_edited_game(edit_game_button, edit_row_inputs.id, edit_name,
+            edit_desc, edit_stock, edit_revenue,
+            edit_price, edit_genres, edit_platforms)
     })
     saveGameButton.appendChild(saveGame_OnClick)
     edit_row_inputs.appendChild(saveGameButton)
@@ -308,10 +330,9 @@ function edit_game_menu(edit_game_button, game_row_id) {
 //The purpose of this function is to update the game object and
 //information with new values after the administrator enters their
 //new desired information.
-function save_edited_game(edit_user_button, row_value,
-                          edited_name, edited_desc,
-                          edited_stock, edited_revenue,
-                          edited_price, edited_tags) {
+function save_edited_game(edit_user_button, row_value, edited_name,
+                          edited_desc, edited_stock, edited_revenue,
+                          edited_price, edited_genres, edited_platforms) {
 
     //Statement used to create an alert prompt that prevents
     //the administrator from entering empty information.
@@ -320,7 +341,8 @@ function save_edited_game(edit_user_button, row_value,
         edited_stock.value === "" ||
         edited_revenue.value === "" ||
         edited_price.value === "" ||
-        edited_tags.value === "") {
+        edited_genres.value === "" ||
+        edited_platforms.value === "") {
         alert("The input fields cannot be empty!")
         return
     }
@@ -336,7 +358,8 @@ function save_edited_game(edit_user_button, row_value,
     let newStock_Data = edit_user_row.cells[3]
     let newRevenue_Data = edit_user_row.cells[4]
     let newPrice_Data = edit_user_row.cells[5]
-    let newTags_Data = edit_user_row.cells[6]
+    let newGenres_Data = edit_user_row.cells[6]
+    let newPlatforms_Data = edit_user_row.cells[7]
 
 
     //Replaces the current values of the game object's
@@ -346,7 +369,8 @@ function save_edited_game(edit_user_button, row_value,
     newStock_Data.innerHTML = edited_stock.value
     newRevenue_Data.innerHTML = edited_revenue.value
     newPrice_Data.innerHTML = edited_price.value
-    newTags_Data.innerHTML = edited_tags.value
+    newGenres_Data.innerHTML = edited_genres.value
+    newPlatforms_Data.innerHTML = edited_platforms.value
 
     //After initializing the game object's updated values, set the
     //values of all input fields back to their default values.
@@ -355,7 +379,8 @@ function save_edited_game(edit_user_button, row_value,
     edited_stock.value = ""
     edited_revenue.value = ""
     edited_price.value = "";
-    edited_tags.value = ""
+    edited_genres.value = ""
+    edited_platforms.value = ""
 
     //Delete the editing menu after initializing
     //the updated object values.
@@ -373,7 +398,8 @@ function save_edited_game(edit_user_button, row_value,
             "stock": parseInt(edited_stock),
             "revenue": parseFloat(edited_revenue),
             "price": parseFloat(edited_price),
-            "tags": new Set(edited_tags)
+            "genres": new Set(edited_genres),
+            "platforms": new Set(edited_platforms),
         }),
         headers: {
             "Content-Type": "application/json",
@@ -443,9 +469,13 @@ function obtain_database_data() {
             loadPrice.innerHTML = row_data.price
             loadRow.appendChild(loadPrice)
 
-            let loadTags = document.createElement("td")
-            loadTags.innerHTML = String(row_data.tags).split(",").join("<br>")
-            loadRow.appendChild(loadTags)
+            let loadGenres = document.createElement("td")
+            loadGenres.innerHTML = String(row_data.genres).split(",").join("<br>")
+            loadRow.appendChild(loadGenres)
+
+            let loadPlatforms = document.createElement("td")
+            loadPlatforms.innerHTML = String(row_data.platforms).split(",").join("<br>")
+            loadRow.appendChild(loadPlatforms)
 
             let editGameButton = document.createElement("td")
             const editGame_OnClick = document.createElement("button")

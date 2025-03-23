@@ -121,7 +121,7 @@ body {
     height: 1180px;
 }
 
-#name, #desc, #stock, #revenue, #price, #tags {
+#name, #desc, #stock, #revenue, #price, #genres, #platforms {
     width: 280px;
     height: 55px;
     font-weight: bolder;

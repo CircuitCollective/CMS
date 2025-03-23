@@ -48,7 +48,8 @@ public class GameControllersTest {
         name = "Game1";
         desc = "Desc1";
         stock = 1;
-        tags = Set.of("TagA", "TagB");
+        genres = Set.of("GenreA", "GenreB");
+        platforms = Set.of("Platform1","Platform2");
         revenue = 160.0;
         price = 80.0;
     }}, g2 = new Game(); // Bad game
