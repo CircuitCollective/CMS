@@ -76,7 +76,7 @@ td {
 
 .database_menu_icon, game_controller_icon {
     margin-top: 8px;
-    margin-left: -750px;
+    margin-left: -850px;
 }
 
 .find_game_button {
@@ -115,7 +115,7 @@ td {
 
 body {
     background: url("../user_interface_images/database_background.jpg") no-repeat;
-    background-size: 280%;
+    background-size: 480%;
     float: left;
     display: block;
     height: 1180px;

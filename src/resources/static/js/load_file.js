@@ -19,7 +19,7 @@ inputFile_Location.addEventListener("change", function (){
 //file selector and parse its contents to be displayed to the webpage.
 function import_csv_data() {
     inputFile_Location.addEventListener("change", () =>
-        fetch(`${api_url}/admin/game/batch/`, {
+        fetch(`${api_url}/admin/game/batch`, {
             method: "POST",
             body: new FormData(document.getElementById("form"))
         }).then(obtain_database_data).catch(error => console.log(error.message)));

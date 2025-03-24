@@ -120,10 +120,6 @@ function create_game_object_row() {
     //all the row and its contents to the database's game list table.
     gameData.appendChild(gameRow)
 
-    //After all elements have been initialized and added to the row
-    //all the row and its contents to the database's game list table.
-    gameData.appendChild(gameRow)
-
     //After initializing a new game object, set the values
     //of all input fields back to their default values.
     input_name.value = ""
@@ -136,7 +132,7 @@ function create_game_object_row() {
 
     //Using the fetch() method initializes a new game object into the database
     //via JSON using the stores values obtained from the input fields.
-    fetch(`${api_url}/admin/game`, {
+    fetch(`${api}/admin/game`, {
         method: "POST",
         body: JSON.stringify({
             "name": value_name,
@@ -144,7 +140,7 @@ function create_game_object_row() {
             "stock": parseInt(value_stock),
             "revenue": parseFloat(value_revenue),
             "price": parseFloat(value_price),
-            "genres": new Set(value_genress),
+            "genres": new Set(value_genres),
             "platforms": new Set(value_platforms),
         }),
         headers: {
@@ -390,7 +386,7 @@ function save_edited_game(edit_user_button, row_value, edited_name,
 
     //Using the fetch() method to update the current game object's values in the
     //database via JSON using the stores values obtained from the input fields.
-    fetch(`${api_url}/admin/game/${gameRow_Data.id}`, {
+    fetch(`${api}/admin/game/${gameRow_Data.id}`, {
         method: "PUT",
         body: JSON.stringify({
             "name": edited_name,
@@ -432,7 +428,7 @@ function clearGame_ListData() {
 //stored in the database and display the information of each
 //parameter on the user interface.
 function obtain_database_data() {
-    fetch(`${api}/game/}`)
+    fetch(`${api}/game`)
         .then(response => response.json())
         .then(response => response.forEach(load_database_data))
         .catch(error => {console.log(error.message)})
