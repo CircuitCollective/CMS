@@ -92,7 +92,7 @@ public class GameControllersTest {
     void testListAndGet() throws Exception {
         // Read back the game list (should be the single game)
         var games = list();
-        assertEquals(1, games.size(), "Wrong number of games saved to db"); // Make sure its the only thing in db
+        assertEquals(1, games.size(), "Wrong number of games saved to db"); // Make sure it's the only thing in db
         var out = games.getFirst();
         ReflectionUtils.setField(ReflectionUtils.findRequiredField(Game.class, "id"), out, g1.getId()); // Copy g1's id to out to make sure equality works.
         assertEquals(g1, out, "Incorrect game data saved to database"); // Make sure it serializes properly
