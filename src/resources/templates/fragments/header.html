@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="en"
-      xmlns="http://www.w3.org/1999/html">
+      xmlns="http://www.w3.org/1999/html"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
     <body>
         <div th:fragment="header">
             <div sec:authorize="!isAuthenticated()"> <!--/* TODO: Prettify login and logout buttons */-->
-                <button type="submit" id="login_button" th:href="@{/login}">Login</button>
+                <a th:href="@{/login}">
+                    <button type="button" id="login_button">Login</button>
+                </a>
             </div>
-            <div sec:authorize="!isAuthenticated()">
+            <div sec:authorize="isAuthenticated()">
                 <form th:action="@{/logout}" method="post">
                     <button type="submit" id="logout_button" th:action="@{/logout}">Logout</button>
                 </form>

@@ -5,8 +5,7 @@ const csrfToken = document.cookie.replace(/(?:(?:^|.*;\s*)XSRF-TOKEN\s*\=\s*([^;
 //row value after an object's initialization.
 let initialized_row_value = 0
 
-function create_game_object_row() {
-
+function create_game_object_row(empty_id = undefined) {
     //Collect the data from the input fields submitted by
     //the administrator and store their values in variables.
     const input_name = document.getElementById("name")
@@ -30,7 +29,6 @@ function create_game_object_row() {
     const input_platforms = document.getElementById("platforms")
     const value_platforms = input_platforms.value
 
-
     //Statement used to create an alert prompt that prevents the administrator
     //from initializing an empty game object into the database.
     if (value_name === "" ||
@@ -44,96 +42,10 @@ function create_game_object_row() {
         return;
     }
 
-    initialized_row_value++ //increase the new row value by one
-    let gameData = document.getElementById("game_data") //Gain access to the database table
-    let gameRow = document.createElement("tr") //Initialize a new row to store the game object information
-    gameRow.id = String(initialized_row_value) //Set the row's numerical id value
-
-    //Initializing the game object's ID, Name,
-    //Description, Stock Value, & Tags elements
-    //and add them to the row.
-    const pending_id = "ID Pending" //Sets the new object ID as "ID Pending" as the initialized ID will be showcased upon webpage reload.
-    let gameID  = document.createElement("td") //Initializes gameID table element.
-    gameID.innerHTML = pending_id //Store the "ID Pending" value into the gameID table element as the object's true ID will be uploaded to the front-end upon reload.
-    gameRow.appendChild(gameID) //Store the gameID table element into the row object.
-
-    let gameName = document.createElement("td") //Initializes gameName table element.
-    gameName.innerHTML = value_name //Get the game's name obtained from the input field and store in the table element.
-    gameRow.appendChild(gameName)//Store the gameName table element into the row object.
-
-    let gameDescription = document.createElement("td") //Initializes gameDescription table element.
-    gameDescription.innerHTML = value_desc //Get the game description obtained from the input field and store in the table element.
-    gameRow.appendChild(gameDescription) //Store the gameDescription table element into the row object.
-
-    let gameStock = document.createElement("td") //Initializes gameStock table element.
-    gameStock.innerHTML = value_stock //Get the game's stock value obtained from the input field and store in the table element.
-    gameRow.appendChild(gameStock) //Store the gameStock table element into the row object.
-
-    let gameRevenue = document.createElement("td") //Initializes gameRevenue table element.
-    gameRevenue.innerHTML = value_revenue //Get the game's revenue value obtained from the input field and store in the table element.
-    gameRow.appendChild(gameRevenue) //Store the gameRevenue table element into the row object.
-
-    let gamePrice = document.createElement("td") //Initializes gamePrice table element.
-    gamePrice.innerHTML = value_price //Get the game's price value obtained from the input field and store in the table element.
-    gameRow.appendChild(gamePrice) //Store the gameStock table element into the row object.
-
-    let gameGenres = document.createElement("td") //Initializes gameGenres table element.
-    gameGenres.innerHTML = value_genres.split(",").join("<br>") //Get the game's genre tags obtained from the input field and store in the table element.
-    gameRow.appendChild(gameGenres) //Store the gameGenres table element into the row object.
-
-    let gamePlatforms = document.createElement("td") //Initializes gamePlatforms table element.
-    gamePlatforms.innerHTML = value_platforms.split(",").join("<br>") //Get the game's platform tags obtained from the input field and store in the table element.
-    gameRow.appendChild(gamePlatforms) //Store the gamePlatforms table element into the row object.
-
-    //Initializes a clickable "Edit Game" button that will initialize a menu below the
-    //chosen game object for the administrator to update its contents in both the
-    //front-end and the back-end.
-    let editGameButton = document.createElement("td")
-    let editGame_OnClick = document.createElement("button")
-    editGame_OnClick.type = "button"
-    editGame_OnClick.style.padding = "15px 23px"
-    editGame_OnClick.style.backgroundColor = "#ce6ae0"
-    editGame_OnClick.style.border = "4px solid"
-    editGame_OnClick.style.borderColor = "#584e9d"
-    editGame_OnClick.style.fontWeight = "bold"
-    editGame_OnClick.textContent = "Edit Game"
-    editGame_OnClick.addEventListener("click", function(){edit_game_menu(this, parseInt(gameRow.id))})
-    editGameButton.appendChild(editGame_OnClick)
-    gameRow.appendChild(editGameButton)
-
-    //Initializes a clickable "Remove Game" button that will delete the chosen
-    //game object and its contents from both the front-end and the back-end.
-    let removeGameButton = document.createElement("td")
-    let removeGame_OnClick = document.createElement("button")
-    removeGame_OnClick.type = "button"
-    removeGame_OnClick.style.padding = "15px 23px"
-    removeGame_OnClick.style.backgroundColor = "#ce6ae0"
-    removeGame_OnClick.style.border = "4px solid"
-    removeGame_OnClick.style.borderColor = "#584e9d"
-    removeGame_OnClick.style.fontWeight = "bold"
-    removeGame_OnClick.textContent = "Remove Game"
-    removeGame_OnClick.addEventListener("click", function(){remove_row(parseInt(gameRow.id))})
-    removeGameButton.appendChild(removeGame_OnClick)
-    gameRow.appendChild(removeGameButton)
-
-    //After all elements have been initialized and added to the row
-    //all the row and its contents to the database's game list table.
-    gameData.appendChild(gameRow)
-
-    //After initializing a new game object, set the values
-    //of all input fields back to their default values.
-    input_name.value = ""
-    input_desc.value = ""
-    input_stock.value = ""
-    input_revenue.value = ""
-    input_price.value = ""
-    input_genres.value = ""
-    input_platforms.value = ""
-
     //Using the fetch() method initializes a new game object into the database
     //via JSON using the stores values obtained from the input fields.
-    fetch(`${api}/admin/game`, {
-        method: "POST",
+    fetch(`${api}/admin/game/${empty_id ?? -1}`, {
+        method: "PUT",
         body: JSON.stringify({
             "name": value_name,
             "desc": value_desc,
@@ -148,10 +60,20 @@ function create_game_object_row() {
             'X-XSRF-TOKEN': csrfToken,
         }
     }).then(response => console.log(response))
-        .then(obtain_database_data)
+        .then(response => response.json())
+        .then(load_database_data)
         .catch(error => console.log(error.message))
-}
 
+    //After initializing a new game object, set the values
+    //of all input fields back to their default values.
+    input_name.value = ""
+    input_desc.value = ""
+    input_stock.value = ""
+    input_revenue.value = ""
+    input_price.value = ""
+    input_genres.value = ""
+    input_platforms.value = ""
+}
 
 //The purpose of this function is remove and delete both the game object
 //in the database, but also the game information displayed on the webpage.
@@ -368,6 +290,29 @@ function save_edited_game(edit_user_button, row_value, edited_name,
     newGenres_Data.innerHTML = edited_genres.value
     newPlatforms_Data.innerHTML = edited_platforms.value
 
+
+    //Using the fetch() method to update the current game object's values in the
+    //database via JSON using the stores values obtained from the input fields.
+    fetch(`${api}/admin/game/${gameRow_Data.id}`, {
+        method: "PUT",
+        body: JSON.stringify({
+            "name": edited_name,
+            "desc": edited_desc,
+            "stock": edited_stock,
+            "revenue": edited_revenue,
+            "price": edited_price,
+            "genres": edited_genres,
+            "platforms": edited_platforms
+        }),
+        headers: {
+            "Content-Type": "application/json",
+            'X-XSRF-TOKEN': csrfToken,
+        }
+    }).then(response => console.log(response))
+        .catch(error => {
+            console.log(error.message)
+        })
+
     //After initializing the game object's updated values, set the
     //values of all input fields back to their default values.
     edited_name.value = ""
@@ -383,28 +328,6 @@ function save_edited_game(edit_user_button, row_value, edited_name,
     if (gameData_Table.rows.length > 0) {
         gameData_Table.removeChild(gameRow_Data)
     }
-
-    //Using the fetch() method to update the current game object's values in the
-    //database via JSON using the stores values obtained from the input fields.
-    fetch(`${api}/admin/game/${gameRow_Data.id}`, {
-        method: "PUT",
-        body: JSON.stringify({
-            "name": edited_name,
-            "desc": edited_desc,
-            "stock": parseInt(edited_stock),
-            "revenue": parseFloat(edited_revenue),
-            "price": parseFloat(edited_price),
-            "genres": new Set(edited_genres),
-            "platforms": new Set(edited_platforms),
-        }),
-        headers: {
-            "Content-Type": "application/json",
-            'X-XSRF-TOKEN': csrfToken,
-        }
-    }).then(response => console.log(response))
-        .catch(error => {
-            console.log(error.message)
-        })
 }
 
 //Cancels editing the current game object completely.
@@ -427,81 +350,75 @@ function clearGame_ListData() {
 //The purpose of this function is to obtain the game objects
 //stored in the database and display the information of each
 //parameter on the user interface.
-function obtain_database_data() {
-    fetch(`${api}/game`)
-        .then(response => response.json())
-        .then(response => response.forEach(load_database_data))
-        .catch(error => {console.log(error.message)})
-    function load_database_data(database_data) {
-        let gameRow_Table = document.getElementById("game_data")
+function load_database_data(database_data) {
+    let gameRow_Table = document.getElementById("game_data")
 
-        //id,name,desc,stock,revenue,price,tags
-        for (const row_data of database_data) {
-            initialized_row_value++
-            let loadRow = document.createElement("tr")
-            loadRow.id = String(initialized_row_value++)
+    //id,name,desc,stock,revenue,price,genres,platforms
+    for (const row_data of database_data) {
+        initialized_row_value++
+        let loadRow = document.createElement("tr")
+        loadRow.id = String(initialized_row_value)
 
-            let loadID  = document.createElement("td")
-            loadID.innerHTML = row_data.id
-            loadRow.appendChild(loadID)
+        let loadID  = document.createElement("td")
+        loadID.innerHTML = row_data.id
+        loadRow.appendChild(loadID)
 
-            let loadName = document.createElement("td")
-            loadName.innerHTML = row_data.name
-            loadRow.appendChild(loadName)
+        let loadName = document.createElement("td")
+        loadName.innerHTML = row_data.name
+        loadRow.appendChild(loadName)
 
-            let loadDescription = document.createElement("td")
-            loadDescription.innerHTML = row_data.desc
-            loadRow.appendChild(loadDescription)
+        let loadDescription = document.createElement("td")
+        loadDescription.innerHTML = row_data.desc
+        loadRow.appendChild(loadDescription)
 
-            let loadStock = document.createElement("td")
-            loadStock.innerHTML = row_data.stock
-            loadRow.appendChild(loadStock)
+        let loadStock = document.createElement("td")
+        loadStock.innerHTML = row_data.stock
+        loadRow.appendChild(loadStock)
 
-            let loadRevenue = document.createElement("td")
-            loadRevenue.innerHTML = row_data.revenue
-            loadRow.appendChild(loadRevenue)
+        let loadRevenue = document.createElement("td")
+        loadRevenue.innerHTML = row_data.revenue
+        loadRow.appendChild(loadRevenue)
 
-            let loadPrice = document.createElement("td")
-            loadPrice.innerHTML = row_data.price
-            loadRow.appendChild(loadPrice)
+        let loadPrice = document.createElement("td")
+        loadPrice.innerHTML = row_data.price
+        loadRow.appendChild(loadPrice)
 
-            let loadGenres = document.createElement("td")
-            loadGenres.innerHTML = String(row_data.genres).split(",").join("<br>")
-            loadRow.appendChild(loadGenres)
+        let loadGenres = document.createElement("td")
+        loadGenres.innerHTML = String(row_data.genres).split(",").join("<br>")
+        loadRow.appendChild(loadGenres)
 
-            let loadPlatforms = document.createElement("td")
-            loadPlatforms.innerHTML = String(row_data.platforms).split(",").join("<br>")
-            loadRow.appendChild(loadPlatforms)
+        let loadPlatforms = document.createElement("td")
+        loadPlatforms.innerHTML = String(row_data.platforms).split(",").join("<br>")
+        loadRow.appendChild(loadPlatforms)
 
-            let editGameButton = document.createElement("td")
-            const editGame_OnClick = document.createElement("button")
-            editGame_OnClick.type = "button"
-            editGame_OnClick.style.padding = "15px 23px"
-            editGame_OnClick.style.backgroundColor = "#ce6ae0"
-            editGame_OnClick.style.border = "4px solid"
-            editGame_OnClick.style.borderColor = "#584e9d"
-            editGame_OnClick.style.fontWeight = "bold"
-            editGame_OnClick.textContent = "Edit Game"
-            editGame_OnClick.textContent = "Edit Game"
-            editGame_OnClick.addEventListener("click", function(){edit_game_menu(this, parseInt(gameRow.id))})
-            editGameButton.appendChild(editGame_OnClick)
-            loadRow.appendChild(editGameButton)
+        let editGameButton = document.createElement("td")
+        const editGame_OnClick = document.createElement("button")
+        editGame_OnClick.type = "button"
+        editGame_OnClick.style.padding = "15px 23px"
+        editGame_OnClick.style.backgroundColor = "#ce6ae0"
+        editGame_OnClick.style.border = "4px solid"
+        editGame_OnClick.style.borderColor = "#584e9d"
+        editGame_OnClick.style.fontWeight = "bold"
+        editGame_OnClick.textContent = "Edit Game"
+        editGame_OnClick.textContent = "Edit Game"
+        editGame_OnClick.addEventListener("click", function(){edit_game_menu(this, parseInt(gameRow.id))})
+        editGameButton.appendChild(editGame_OnClick)
+        loadRow.appendChild(editGameButton)
 
-            let removeGameButton = document.createElement("td")
-            const removeGame_OnClick = document.createElement("button")
-            removeGame_OnClick.type = "button"
-            removeGame_OnClick.style.padding = "15px 23px"
-            removeGame_OnClick.style.backgroundColor = "#d52ae8"
-            removeGame_OnClick.style.border = "4px solid"
-            removeGame_OnClick.style.borderColor = "#584e9d"
-            removeGame_OnClick.style.fontWeight = "bold"
-            removeGame_OnClick.textContent = "Remove Game"
-            removeGame_OnClick.addEventListener("click", function(){remove_row(parseInt(gameRow.id))})
-            removeGameButton.appendChild(removeGame_OnClick)
-            loadRow.appendChild(removeGameButton)
+        let removeGameButton = document.createElement("td")
+        const removeGame_OnClick = document.createElement("button")
+        removeGame_OnClick.type = "button"
+        removeGame_OnClick.style.padding = "15px 23px"
+        removeGame_OnClick.style.backgroundColor = "#d52ae8"
+        removeGame_OnClick.style.border = "4px solid"
+        removeGame_OnClick.style.borderColor = "#584e9d"
+        removeGame_OnClick.style.fontWeight = "bold"
+        removeGame_OnClick.textContent = "Remove Game"
+        removeGame_OnClick.addEventListener("click", function(){remove_row(parseInt(gameRow.id))})
+        removeGameButton.appendChild(removeGame_OnClick)
+        loadRow.appendChild(removeGameButton)
 
-            gameRow_Table.appendChild(loadRow)
-        }
+        gameRow_Table.appendChild(loadRow)
     }
 }
 
@@ -509,7 +426,10 @@ function obtain_database_data() {
 //and load in the game objects stored in the database.
 function refresh_the_page() {
     clearGame_ListData()
-    obtain_database_data()
+    fetch(`${api}/game`)
+        .then(response => response.json())
+        .then(response => response.forEach(load_database_data))
+        .catch(response => console.log(response))
 }
 
 //Calls an addEventListener() "DOMContentLoaded" event that refreshes the
