@@ -1,11 +1,11 @@
 const api = "http://localhost:8080/api"
-const csrfToken = document.cookie.replace(/(?:(?:^|.*;\s*)XSRF-TOKEN\s*\=\s*([^;]*).*$)|^.*$/, '$1');
+const csrfToken = document.cookie.replace(/(?:(?:^|.*;\s*)XSRF-TOKEN\s*\=\s*([^;]*).*$)|^.*$/, '$1')
 
 //Used to initialize the value of a game object's
 //row value after an object's initialization.
 let initialized_row_value = 0
 
-function create_game_object_row(empty_id = undefined) {
+function create_game_object_row(initialized_id = undefined) {
     //Collect the data from the input fields submitted by
     //the administrator and store their values in variables.
     const input_name = document.getElementById("name")
@@ -44,7 +44,7 @@ function create_game_object_row(empty_id = undefined) {
 
     //Using the fetch() method initializes a new game object into the database
     //via JSON using the stores values obtained from the input fields.
-    fetch(`${api}/admin/game/${empty_id ?? -1}`, {
+    fetch(`${api}/admin/game/${initialized_id ?? -1}`, {
         method: "PUT",
         body: JSON.stringify({
             "name": value_name,
@@ -52,17 +52,18 @@ function create_game_object_row(empty_id = undefined) {
             "stock": parseInt(value_stock),
             "revenue": parseFloat(value_revenue),
             "price": parseFloat(value_price),
-            "genres": new Set(value_genres),
-            "platforms": new Set(value_platforms),
+            "genres": value_genres.split(","),
+            "platforms": value_platforms.split(","),
         }),
         headers: {
-            "Content-Type": "application/json",
-            'X-XSRF-TOKEN': csrfToken,
+            'Content-Type': 'application/json',
+            'X-XSRF-TOKEN': csrfToken
         }
-    }).then(response => console.log(response))
-        .then(response => response.json())
-        .then(load_database_data)
-        .catch(error => console.log(error.message))
+    }).then(response => {
+        if (response.ok) response.json().then(add_new_game_data)
+        else if (response.status === 400) response.json().then(response => alert(response.message))
+        else response.json().then(error => {console.error(response); console.error(error)})
+    })
 
     //After initializing a new game object, set the values
     //of all input fields back to their default values.
@@ -75,6 +76,73 @@ function create_game_object_row(empty_id = undefined) {
     input_platforms.value = ""
 }
 
+function add_new_game_data(new_game_data) {
+    let gameDataList = document.getElementById("game_data")
+    let addRow = document.createElement("tr")
+    addRow.id = String(new_game_data.id)
+
+    let addID  = document.createElement("td")
+    addID.innerHTML = new_game_data.id
+    addRow.appendChild(addID)
+
+    let addName = document.createElement("td")
+    addName.innerHTML = new_game_data.name
+    addRow.appendChild(addName)
+
+    let addDescription = document.createElement("td")
+    addDescription.innerHTML = new_game_data.desc
+    addRow.appendChild(addDescription)
+
+    let addStock = document.createElement("td")
+    addStock.innerHTML = new_game_data.stock
+    addRow.appendChild(addStock)
+
+    let addRevenue = document.createElement("td")
+    addRevenue.innerHTML = new_game_data.revenue
+    addRow.appendChild(addRevenue)
+
+    let addPrice = document.createElement("td")
+    addPrice.innerHTML = new_game_data.price
+    addRow.appendChild(addPrice)
+
+    let addGenres = document.createElement("td")
+    addGenres.innerHTML = String(new_game_data.genres).split(",").join("<br>")
+    addRow.appendChild(addGenres)
+
+    let addPlatforms = document.createElement("td")
+    addPlatforms.innerHTML = String(new_game_data.platforms).split(",").join("<br>")
+    addRow.appendChild(addPlatforms)
+
+    const editButton = document.createElement("td")
+    const editOnClick = document.createElement("button")
+    editOnClick.type = "button"
+    editOnClick.style.padding = "15px 23px"
+    editOnClick.style.backgroundColor = "#ce6ae0"
+    editOnClick.style.border = "4px solid"
+    editOnClick.style.borderColor = "#584e9d"
+    editOnClick.style.fontWeight = "bold"
+    editOnClick.textContent = "Edit Game"
+    editOnClick.textContent = "Edit Game"
+    editOnClick.addEventListener("click", function(){edit_game_menu(this, parseInt(gameRow.id))})
+    editButton.appendChild(editOnClick)
+    addRow.appendChild(editButton)
+
+    let removeButton = document.createElement("td")
+    const removeOnClick = document.createElement("button")
+    removeOnClick.type = "button"
+    removeOnClick.style.padding = "15px 23px"
+    removeOnClick.style.backgroundColor = "#d52ae8"
+    removeOnClick.style.border = "4px solid"
+    removeOnClick.style.borderColor = "#584e9d"
+    removeOnClick.style.fontWeight = "bold"
+    removeOnClick.textContent = "Remove Game"
+    removeOnClick.addEventListener("click", function(){remove_row(parseInt(addRow.id))})
+    removeButton.appendChild(removeOnClick)
+    addRow.appendChild(removeButton)
+
+    gameDataList.appendChild(addRow)
+}
+
 //The purpose of this function is remove and delete both the game object
 //in the database, but also the game information displayed on the webpage.
 function remove_row(row_value) {
@@ -82,18 +150,17 @@ function remove_row(row_value) {
     let gameRow_Data = document.getElementById(row_value)
     let editing_data_row = document.getElementById("editing_row")
 
-    if (gameData_Table.rows.length > 0) {
-        gameData_Table.removeChild(gameRow_Data)
-        gameData_Table.removeChild(editing_data_row)
-
-        fetch(`${api_url}/admin/game/${gameRow_Data.id}`, {
-            method: "DELETE",
-            headers: {
-                'X-XSRF-TOKEN': csrfToken
-            }
-        }).then(response => console.log(response))
-            .catch(error => console.log(error.message))
-    }
+    fetch(`${api_url}/admin/game/${gameRow_Data.id}`, {
+        method: "DELETE",
+        headers: {
+            'X-XSRF-TOKEN': csrfToken
+        }
+    }).then(response => {
+        if (response.ok && gameData_Table.rows.length > 0) {
+            gameData_Table.removeChild(gameRow_Data)
+            gameData_Table.removeChild(editing_data_row)
+        }
+    }).catch(error => console.log(error.message))
 }
 
 
@@ -298,11 +365,11 @@ function save_edited_game(edit_user_button, row_value, edited_name,
         body: JSON.stringify({
             "name": edited_name,
             "desc": edited_desc,
-            "stock": edited_stock,
-            "revenue": edited_revenue,
-            "price": edited_price,
-            "genres": edited_genres,
-            "platforms": edited_platforms
+            "stock": parseInt(edited_stock),
+            "revenue": parseFloat(edited_revenue),
+            "price": parseFloat(edited_price),
+            "genres": edited_genres.split(","),
+            "platforms": edited_platforms.split(","),
         }),
         headers: {
             "Content-Type": "application/json",
@@ -346,80 +413,76 @@ function clearGame_ListData() {
     document.getElementById("game_data").innerHTML = "";
 }
 
-
 //The purpose of this function is to obtain the game objects
 //stored in the database and display the information of each
 //parameter on the user interface.
 function load_database_data(database_data) {
-    let gameRow_Table = document.getElementById("game_data")
+    let gameDataList = document.getElementById("game_data")
 
     //id,name,desc,stock,revenue,price,genres,platforms
-    for (const row_data of database_data) {
-        initialized_row_value++
-        let loadRow = document.createElement("tr")
-        loadRow.id = String(initialized_row_value)
+    let loadRow = document.createElement("tr")
+    loadRow.id = String(database_data.id)
 
-        let loadID  = document.createElement("td")
-        loadID.innerHTML = row_data.id
-        loadRow.appendChild(loadID)
+    let loadID  = document.createElement("td")
+    loadID.innerHTML = database_data.id
+    loadRow.appendChild(loadID)
 
-        let loadName = document.createElement("td")
-        loadName.innerHTML = row_data.name
-        loadRow.appendChild(loadName)
+    let loadName = document.createElement("td")
+    loadName.innerHTML = database_data.name
+    loadRow.appendChild(loadName)
 
-        let loadDescription = document.createElement("td")
-        loadDescription.innerHTML = row_data.desc
-        loadRow.appendChild(loadDescription)
+    let loadDescription = document.createElement("td")
+    loadDescription.innerHTML = database_data.desc
+    loadRow.appendChild(loadDescription)
 
-        let loadStock = document.createElement("td")
-        loadStock.innerHTML = row_data.stock
-        loadRow.appendChild(loadStock)
+    let loadStock = document.createElement("td")
+    loadStock.innerHTML = database_data.stock
+    loadRow.appendChild(loadStock)
 
-        let loadRevenue = document.createElement("td")
-        loadRevenue.innerHTML = row_data.revenue
-        loadRow.appendChild(loadRevenue)
+    let loadRevenue = document.createElement("td")
+    loadRevenue.innerHTML = database_data.revenue
+    loadRow.appendChild(loadRevenue)
 
-        let loadPrice = document.createElement("td")
-        loadPrice.innerHTML = row_data.price
-        loadRow.appendChild(loadPrice)
+    let loadPrice = document.createElement("td")
+    loadPrice.innerHTML = database_data.price
+    loadRow.appendChild(loadPrice)
 
-        let loadGenres = document.createElement("td")
-        loadGenres.innerHTML = String(row_data.genres).split(",").join("<br>")
-        loadRow.appendChild(loadGenres)
+    let loadGenres = document.createElement("td")
+    loadGenres.innerHTML = String(database_data.genres).split(",").join("<br>")
+    loadRow.appendChild(loadGenres)
 
-        let loadPlatforms = document.createElement("td")
-        loadPlatforms.innerHTML = String(row_data.platforms).split(",").join("<br>")
-        loadRow.appendChild(loadPlatforms)
+    let loadPlatforms = document.createElement("td")
+    loadPlatforms.innerHTML = String(database_data.platforms).split(",").join("<br>")
+    loadRow.appendChild(loadPlatforms)
 
-        let editGameButton = document.createElement("td")
-        const editGame_OnClick = document.createElement("button")
-        editGame_OnClick.type = "button"
-        editGame_OnClick.style.padding = "15px 23px"
-        editGame_OnClick.style.backgroundColor = "#ce6ae0"
-        editGame_OnClick.style.border = "4px solid"
-        editGame_OnClick.style.borderColor = "#584e9d"
-        editGame_OnClick.style.fontWeight = "bold"
-        editGame_OnClick.textContent = "Edit Game"
-        editGame_OnClick.textContent = "Edit Game"
-        editGame_OnClick.addEventListener("click", function(){edit_game_menu(this, parseInt(gameRow.id))})
-        editGameButton.appendChild(editGame_OnClick)
-        loadRow.appendChild(editGameButton)
+    let editGameButton = document.createElement("td")
+    const editGame_OnClick = document.createElement("button")
+    editGame_OnClick.type = "button"
+    editGame_OnClick.style.padding = "15px 23px"
+    editGame_OnClick.style.backgroundColor = "#ce6ae0"
+    editGame_OnClick.style.border = "4px solid"
+    editGame_OnClick.style.borderColor = "#584e9d"
+    editGame_OnClick.style.fontWeight = "bold"
+    editGame_OnClick.textContent = "Edit Game"
+    editGame_OnClick.textContent = "Edit Game"
+    editGame_OnClick.addEventListener("click", function(){edit_game_menu(this, parseInt(loadRow.id))})
+    editGameButton.appendChild(editGame_OnClick)
+    loadRow.appendChild(editGameButton)
 
-        let removeGameButton = document.createElement("td")
-        const removeGame_OnClick = document.createElement("button")
-        removeGame_OnClick.type = "button"
-        removeGame_OnClick.style.padding = "15px 23px"
-        removeGame_OnClick.style.backgroundColor = "#d52ae8"
-        removeGame_OnClick.style.border = "4px solid"
-        removeGame_OnClick.style.borderColor = "#584e9d"
-        removeGame_OnClick.style.fontWeight = "bold"
-        removeGame_OnClick.textContent = "Remove Game"
-        removeGame_OnClick.addEventListener("click", function(){remove_row(parseInt(gameRow.id))})
-        removeGameButton.appendChild(removeGame_OnClick)
-        loadRow.appendChild(removeGameButton)
+    let removeGameButton = document.createElement("td")
+    const removeGame_OnClick = document.createElement("button")
+    removeGame_OnClick.type = "button"
+    removeGame_OnClick.style.padding = "15px 23px"
+    removeGame_OnClick.style.backgroundColor = "#d52ae8"
+    removeGame_OnClick.style.border = "4px solid"
+    removeGame_OnClick.style.borderColor = "#584e9d"
+    removeGame_OnClick.style.fontWeight = "bold"
+    removeGame_OnClick.textContent = "Remove Game"
+    removeGame_OnClick.addEventListener("click", function(){remove_row(parseInt(loadRow.id))})
+    removeGameButton.appendChild(removeGame_OnClick)
+    loadRow.appendChild(removeGameButton)
 
-        gameRow_Table.appendChild(loadRow)
-    }
+    gameDataList.appendChild(loadRow)
 }
 
 //The purpose of this function is to refresh the webpage
@@ -429,7 +492,7 @@ function refresh_the_page() {
     fetch(`${api}/game`)
         .then(response => response.json())
         .then(response => response.forEach(load_database_data))
-        .catch(response => console.log(response))
+        .catch(error => console.log(error))
 }
 
 //Calls an addEventListener() "DOMContentLoaded" event that refreshes the

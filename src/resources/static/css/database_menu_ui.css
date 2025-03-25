@@ -10,14 +10,6 @@
     font-weight: bold;
 }
 
-#import_file_data {
-    background-color: #f83939;
-    border: 4px solid #9444dc;
-    border-collapse: separate;
-    font-weight: bold;
-    margin: 8px;
-}
-
 table, th {
     border: 1px solid black;
     border-collapse: separate;

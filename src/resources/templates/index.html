@@ -20,10 +20,9 @@
 </div>
 
 <form method="post" enctype="multipart/form-data" id="form">
-    <input type="file" id="desired_file_upload" accept="text/csv" hidden="hidden">
     <button type="button" id="choose_desired_file">Choose File</button>
+    <input type="file" id="file" accept="text/csv" style="display: none;">
     <span id="text_file_name" style="color: #ffffff;">No File Chosen</span>
-    <button type="button" id="import_file_data" onclick="import_csv_data()">Import File Data</button>
 </form>
 
 <script src="../js/load_file.js"></script>
