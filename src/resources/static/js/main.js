@@ -51,8 +51,8 @@ function upsertGame(json, id = undefined) {
 
         try {
             if (listInputs.has(input)) { // List inputs are split into a list with trimming applied
-                json[input] = value = value.split(",").map(v => v.trim())
-                if (value.some(v => v.trim() === '')) throw new Error(`The ${input} field cannot be empty!`)
+                json[input] = value = value.trim().split(/[,\n]+/).map(v => v.trim()) // Split at , or \n. Inefficient but shouldn't matter
+                if (value.some(v => v.trim() === '')) throw new Error(`The ${input} list cannot have any blank items!`)
             }
             else if (mapInputs.has(input)) {
                 json[input] = value = JSON.parse(value)
@@ -82,14 +82,13 @@ function upsertGame(json, id = undefined) {
 
 /** Adds a row with a game from json */
 function upsertRow(gameData) {
-    console.debug(gameData)
     const row = document.createElement("tr")
     row.innerHTML += `<td>${gameData.id}</td>`
     for (const col of inputs) {
         const td = document.createElement("td")
         if (listInputs.has(col)) { // Newline for each list input
             if (!gameData[col].length) td.innerHTML += "<p style='color:gray;font-style:italic'>None</p>" // Blank list input
-            else gameData[col][0].split(",").forEach((item, idx) => { // List input with values
+            else gameData[col].forEach((item, idx) => { // List input with values
                 const rowItem = document.createElement("p")
                 td.appendChild(rowItem)
                 rowItem.style.backgroundColor = idx % 2 ? "lightgray" : "white" // TODO: Better colors

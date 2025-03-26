@@ -11,7 +11,7 @@ import java.util.*;
 
 @Entity
 @Indexed
-@JsonPropertyOrder({"id", "name", "desc", "stock", "revenue", "price", "tags", "genres", "platforms"})
+@JsonPropertyOrder({"id", "stockByLocation", "name", "desc", "stock", "revenue", "price", "tags", "genres", "platforms"})
 @ToString
 @EqualsAndHashCode
 public class Game {
@@ -36,13 +36,13 @@ public class Game {
     @Min(0)
     public int stock; // TODO: Base this off of stockByLocation somehow
 
-    @ElementCollection @ColumnDefault("")
+    @ElementCollection
     public Set<String> tags = new HashSet<>();
 
-    @ElementCollection @ColumnDefault("")
+    @ElementCollection
     public Set<String> genres = new HashSet<>();
 
-    @ElementCollection @ColumnDefault("")
+    @ElementCollection
     public Set<String> platforms = new HashSet<>();
 
     /** Revenue produced by sales of the game */
