@@ -53,7 +53,7 @@ public class Game {
     @Min(0) @ColumnDefault("0")
     public double price;
 
-    @ElementCollection @ColumnDefault("")
+    @ElementCollection
     public Map<String, Integer> stockByLocation = new HashMap<>();
 
     /** No-arg constructor for persistence */
