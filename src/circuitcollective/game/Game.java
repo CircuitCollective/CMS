@@ -11,7 +11,7 @@ import java.util.*;
 
 @Entity
 @Indexed
-@JsonPropertyOrder({"id", "name", "desc", "stock", "revenue", "price", "tags", "genres", "platforms"})
+@JsonPropertyOrder({"id", "name", "desc", "stock", "revenue", "price", "tags", "genres", "platforms","stockByLocation"})
 @ToString
 @EqualsAndHashCode
 public class Game {

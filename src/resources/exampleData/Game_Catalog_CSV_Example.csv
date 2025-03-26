@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 name,desc,stock,revenue,price,tags,genres,platforms
 Legend of Zelda: Wind Waker HD,"The game is set on a group of islands in a vast sea, a departure for the series. The player controls series protagonist Link as he attempts to save his sister from the sorcerer Ganon and becomes embroiled in a struggle for the Triforce, a sacred wish-granting relic. Aided by allies including pirate captain Tetra – an incarnation of Princess Zelda – and a talking sailboat named the King of Red Lions, Link sails the ocean, explores islands, and traverses dungeons to acquire the power necessary to defeat Ganon. Wind, which facilitates sailing, plays a prominent role and can be controlled with a magic conductor's baton called the Wind Waker.",40400,868676585.7,345.99,"Fantasy,Action-Adventure,RPG",Nintendo Wii U
 Honkai: Star Rail,"The game features the main character, who is referred to as the Trailblazer, traveling across planets through the Astral Express to help and connect the worlds while resolving disasters caused by Stellarons"" and other third parties.""",56965,2373738844,0,"Turn-based Tactics,Gacha,RPG","Windows,PS5,iOS,Android"
@@ -18,3 +19,28 @@ Legend of Zelda: Breath of the Wild,"Set at the end of the Zelda timeline, the p
 Wii Sports,"Wii Sports is a collection of five sports simulations designed to demonstrate the motion-sensing capabilities of the Wii Remote. The five sports included are tennis, baseball, bowling, golf, and boxing. Players use the Wii Remote to mimic actions performed in real-life sports, such as swinging a tennis racket or rolling a bowling ball. The rules for each game are simplified to make them more accessible to new players. The game also features training and fitness modes that monitor players' progress in the sports.",31495,4474747482,293.99,"Sports,Simulation",Nintendo Wii
 Sonic Frontiers,"As Sonic, the player explores the Starfall Islands to collect the Chaos Emeralds, after Sonic and his friends are separated when falling through a wormhole. Frontiers integrates traditional Sonic the Hedgehog elements—such as platforming, rings, and grind rails—into the series' first open world. While exploring the open world, players can complete challenges, fight robotic enemies, and access Cyber Space"" levels inspired by previous Sonic games.""",20800,5757675849,239.99,"Platform,Action-Adventure","Nintendo Switch,PS4,PS5,Windows,Xbox One,Xbox Series X/S"
 Genshin Impact,"Genshin Impact takes place in the fantasy world of Teyvat, home to seven nations, each of which is tied to a different element and ruled by a different god (archon). The story follows the Traveler, an interstellar adventurer who, at the start of the game, is separated from their twin sibling after the two land in Teyvat. Thereafter, the Traveler journeys across the nations of Teyvat in search of the lost sibling, accompanied by their guide, Paimon. Along the way, the two befriend myriad individuals, become involved in the affairs of its nations, and begin to unravel the mysteries of the land.",30300,3034945994,0,"Open World,Action RPG,Gacha","Windows,iOS,Android,PS4,PS5,Xbox Series X/S"
+=======
+name,desc,stock,tags,revenue,price,genres,platforms
+Super Mario Bros.,A game about a plumber (probably),342,"Surprisingly No plumbing;Game about plumbers;Platformer",0,0,platformer for real,"NSW;NDS"
+VS. Super Mario Bros.,A game about a plumber (probably),32,"Surprisingly No plumbing;Game about plumbers;Platformer",0,0,platformer for real,"NSW;NDS"
+Super Mario Bros.: The Lost Levels,A game about a plumber (probably),234,"Surprisingly No plumbing;Game about plumbers;Platformer",0,0,platformer for real,"NSW;NDS"
+Super Mario Bros. 2,A game about a plumber (probably),12,"Surprisingly No plumbing;Game about plumbers;Platformer",0,0,platformer for real,"NSW;NDS"
+Super Mario Bros. 3,A game about a plumber (probably),64,"Surprisingly No plumbing;Game about plumbers;Platformer",0,0,platformer for real,"NSW;NDS"
+Super Mario World,A game about a plumber (probably),95,"Surprisingly No plumbing;Game about plumbers;Platformer",0,0,platformer for real,"NSW;NDS"
+Super Mario World 2: Yoshi's Island,A game about a plumber (probably),823,"Surprisingly No plumbing;Game about plumbers;Platformer",0,0,platformer for real,"NSW;NDS"
+Super Mario 64,A game about a plumber (probably),16,"Surprisingly No plumbing;Game about plumbers;Platformer",0,0,platformer for real,"NSW;NDS"
+Super Mario Sunshine,A game about a plumber (probably),1,"Surprisingly No plumbing;Game about plumbers;Platformer",0,0,platformer for real,"NSW;NDS"
+New Super Mario Bros.,A game about a plumber (probably),0,"Surprisingly No plumbing;Game about plumbers;Platformer",0,0,platformer for real,"NSW;NDS"
+Super Mario Galaxy,A game about a plumber (probably),98,"Surprisingly No plumbing;Game about plumbers;Platformer",0,0,platformer for real,"NSW;NDS"
+New Super Mario Bros. Wii,A game about a plumber (probably),12,"Surprisingly No plumbing;Game about plumbers;Platformer",0,0,platformer for real,"NSW;NDS"
+Super Mario Galaxy 2,A game about a plumber (probably),42,"Surprisingly No plumbing;Game about plumbers;Platformer",0,0,platformer for real,"NSW;NDS"
+Super Mario 3D Land,A game about a plumber (probably),83,"Surprisingly No plumbing;Game about plumbers;Platformer",0,0,platformer for real,"NSW;NDS"
+New Super Mario Bros. 2,A game about a plumber (probably),71,"Surprisingly No plumbing;Game about plumbers;Platformer",0,0,platformer for real,"NSW;NDS"
+New Super Mario Bros. U,A game about a plumber (probably),1,"Surprisingly No plumbing;Game about plumbers;Platformer",0,0,platformer for real,"NSW;NDS"
+Super Mario 3D World,A game about a plumber (probably),0,"Surprisingly No plumbing;Game about plumbers;Platformer",0,0,platformer for real,"NSW;NDS"
+Super Mario Maker,A game about a plumber (probably),64,"Surprisingly No plumbing;Game about plumbers;Platformer",0,0,platformer for real,"NSW;NDS"
+Super Mario Run,A game about a plumber (probably),96,"Surprisingly No plumbing;Game about plumbers;Platformer",0,0,platformer for real,"NSW;NDS"
+Super Mario Odyssey,A game about a plumber (probably),72,"Surprisingly No plumbing;Game about plumbers;Platformer",0,0,platformer for real,"NSW;NDS"
+Super Mario Maker 2,A game about a plumber (probably),93,"Surprisingly No plumbing;Game about plumbers;Platformer",0,0,platformer for real,"NSW;NDS"
+Super Mario Bros. Wonder,A game about a plumber (probably),16,"Surprisingly No plumbing;Game about plumbers;Platformer",0,0,platformer for real,"NSW;NDS"
+>>>>>>> 68ab1e9f2dcc860cbbe5e1ed73bcdb6ee2aecc6c
