@@ -1,9 +1,10 @@
 const api = "http://localhost:8080/api"
 const csrfToken = document.cookie.replace(/(?:(?:^|.*;\s*)XSRF-TOKEN\s*\=\s*([^;]*).*$)|^.*$/, '$1');
 
-const inputs = ["name", "desc", "stock", "revenue", "price", "tags"] // Maintained list of input values
+const inputs = ["name", "desc", "stock", "revenue", "price", "tags", "genres", "platforms", "stockByLocation"] // Maintained list of input values
 const colors = {name: "#fc63f0", desc: "#fd68a6", tags: "#7676fa"} // Colors for each field TODO: Use these
-const listInputs = new Set(["tags"]) // Inputs with potentially many values
+const listInputs = new Set(["tags", "genres", "platforms"]) // Inputs with potentially many values
+const mapInputs = new Set(["stockByLocation"])
 
 /** Function that runs on page load. Sets up the game list, search, and csv parsing behavior. */
 function init() {
@@ -48,11 +49,19 @@ function upsertGame(json, id = undefined) {
     for (let input in json) {
         let value = json[input]
 
-        // List inputs are split into a list with trimming applied
-        if (listInputs.has(input)) json[input] = value = value.split(",").map(v => v.trim())
-        // Blank values are bad
-        if (value == null || (!Array.isArray(value) && typeof value !== "number" && value.trim() === '' || Array.isArray(value) && value.some(v => v.trim() === ''))) {
-            alert(`The ${input} field cannot be empty!`)
+        try {
+            if (listInputs.has(input)) { // List inputs are split into a list with trimming applied
+                json[input] = value = value.split(",").map(v => v.trim())
+                if (value.some(v => v.trim() === '')) throw new Error(`The ${input} field cannot be empty!`)
+            }
+            else if (mapInputs.has(input)) {
+                json[input] = value = JSON.parse(value)
+                // TODO: No validation for now, fix this? Better error for bad json parsing?
+            }
+            else if (typeof value !== "number" && value.trim() === '') throw new Error(`The ${input} field cannot be empty!`)
+            // Blank values are bad
+        } catch (e) {
+            alert(e.message)
             return
         }
     }
@@ -73,18 +82,22 @@ function upsertGame(json, id = undefined) {
 
 /** Adds a row with a game from json */
 function upsertRow(gameData) {
+    console.debug(gameData)
     const row = document.createElement("tr")
     row.innerHTML += `<td>${gameData.id}</td>`
     for (const col of inputs) {
         const td = document.createElement("td")
         if (listInputs.has(col)) { // Newline for each list input
-            gameData[col][0].split(",").forEach((item, idx) => {
-                const row = document.createElement("p")
-                td.appendChild(row)
-                row.style.backgroundColor = idx % 2 ? "lightgray" : "white" // TODO: Better colors
-                row.style.margin = "0"
-                row.textContent = item
+            if (!gameData[col].length) td.innerHTML += "<p style='color:gray;font-style:italic'>None</p>" // Blank list input
+            else gameData[col][0].split(",").forEach((item, idx) => { // List input with values
+                const rowItem = document.createElement("p")
+                td.appendChild(rowItem)
+                rowItem.style.backgroundColor = idx % 2 ? "lightgray" : "white" // TODO: Better colors
+                rowItem.style.margin = "0"
+                rowItem.textContent = item
             })
+        } else if (mapInputs.has(col)) { // TODO: Parse out the json and display it nicely
+            td.textContent = JSON.stringify(gameData[col], null, 1)
         } else td.textContent = gameData[col] // No newline needed: add text directly
         row.appendChild(td)
     }
@@ -113,6 +126,7 @@ function deleteGame(id) {
 
 /** Begins the edit of a game by inserting a row below the current one */
 function startGameEdit(edit_game_button, gameId) {
+    stopGameEdit()
     const currentRow = document.getElementById(gameId)
 
     const editInputs = document.createElement("tr")
@@ -120,8 +134,32 @@ function startGameEdit(edit_game_button, gameId) {
 
     editInputs.innerHTML += `<td>${gameId}</td>`
     let colI = 1
-    for (const input of inputs)
-        editInputs.innerHTML += `<td><input type="text" id="${input}-${gameId}" placeholder="${input}" value="${currentRow.children.item(colI++).textContent}"></td>`
+    for (const input of inputs) { // Load in the existing values into the edit inputs
+        const td = document.createElement("td")
+        if (listInputs.has(input)) { // List inputs
+            let value = ""
+            for (const c of currentRow.children.item(colI++).children) if (c.style.fontStyle !== "italic") value += c.textContent + "\n" // Build list, ignore italic "none"
+            const area = document.createElement("textarea")
+            area.id = `${input}-${gameId}`
+            area.placeholder = input
+            area.value = value
+            td.appendChild(area)
+        } else if (mapInputs.has(input)) { // TODO: Fill this in properly
+            const area = document.createElement("textarea")
+            area.id = `${input}-${gameId}`
+            area.placeholder = input
+            area.value = currentRow.children.item(colI++).textContent
+            td.appendChild(area)
+        } else {
+            const inp = document.createElement("input")
+            inp.type = "text"
+            inp.id = `${input}-${gameId}`
+            inp.placeholder = input
+            inp.value = currentRow.children.item(colI++).textContent
+            td.appendChild(inp)
+        }
+        editInputs.appendChild(td)
+    }
 
     // TODO: Rewrite
     const saveGameButton = document.createElement("td")
