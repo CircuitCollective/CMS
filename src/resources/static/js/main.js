@@ -76,8 +76,9 @@ function create_game_object_row(initialized_id = undefined) {
     input_platforms.value = ""
 }
 
-function add_new_game_data(new_game_data) {
+function initialize_game_data(new_game_data) {
     let gameDataList = document.getElementById("game_data")
+
     let addRow = document.createElement("tr")
     addRow.id = String(new_game_data.id)
 
@@ -140,15 +141,16 @@ function add_new_game_data(new_game_data) {
     removeButton.appendChild(removeOnClick)
     addRow.appendChild(removeButton)
 
-    gameDataList.appendChild(addRow)
+
+    //Update the row if it exists, create a new row otherwise
+    const existingGameData = document.getElementById(addRow.id)
+    existingGameData ? existingGameData.replaceWith(addRow) : gameDataList.appendChild(addRow)
 }
 
 //The purpose of this function is remove and delete both the game object
 //in the database, but also the game information displayed on the webpage.
 function remove_row(row_value) {
-    let gameData_Table = document.getElementById("game_data") //Gain access to the database table
     let gameRow_Data = document.getElementById(row_value)
-    let editing_data_row = document.getElementById("editing_row")
 
     fetch(`${api_url}/admin/game/${gameRow_Data.id}`, {
         method: "DELETE",
@@ -156,11 +158,12 @@ function remove_row(row_value) {
             'X-XSRF-TOKEN': csrfToken
         }
     }).then(response => {
+        const gameData_Table = document.getElementById("game_data") //Gain access to the database table
         if (response.ok && gameData_Table.rows.length > 0) {
             gameData_Table.removeChild(gameRow_Data)
-            gameData_Table.removeChild(editing_data_row)
+            cancel_row_edit("editing_row")
         }
-    }).catch(error => console.log(error.message))
+    }).catch(error => console.log(error))
 }
 
 
@@ -413,85 +416,13 @@ function clearGame_ListData() {
     document.getElementById("game_data").innerHTML = "";
 }
 
-//The purpose of this function is to obtain the game objects
-//stored in the database and display the information of each
-//parameter on the user interface.
-function load_database_data(database_data) {
-    let gameDataList = document.getElementById("game_data")
-
-    //id,name,desc,stock,revenue,price,genres,platforms
-    let loadRow = document.createElement("tr")
-    loadRow.id = String(database_data.id)
-
-    let loadID  = document.createElement("td")
-    loadID.innerHTML = database_data.id
-    loadRow.appendChild(loadID)
-
-    let loadName = document.createElement("td")
-    loadName.innerHTML = database_data.name
-    loadRow.appendChild(loadName)
-
-    let loadDescription = document.createElement("td")
-    loadDescription.innerHTML = database_data.desc
-    loadRow.appendChild(loadDescription)
-
-    let loadStock = document.createElement("td")
-    loadStock.innerHTML = database_data.stock
-    loadRow.appendChild(loadStock)
-
-    let loadRevenue = document.createElement("td")
-    loadRevenue.innerHTML = database_data.revenue
-    loadRow.appendChild(loadRevenue)
-
-    let loadPrice = document.createElement("td")
-    loadPrice.innerHTML = database_data.price
-    loadRow.appendChild(loadPrice)
-
-    let loadGenres = document.createElement("td")
-    loadGenres.innerHTML = String(database_data.genres).split(",").join("<br>")
-    loadRow.appendChild(loadGenres)
-
-    let loadPlatforms = document.createElement("td")
-    loadPlatforms.innerHTML = String(database_data.platforms).split(",").join("<br>")
-    loadRow.appendChild(loadPlatforms)
-
-    let editGameButton = document.createElement("td")
-    const editGame_OnClick = document.createElement("button")
-    editGame_OnClick.type = "button"
-    editGame_OnClick.style.padding = "15px 23px"
-    editGame_OnClick.style.backgroundColor = "#ce6ae0"
-    editGame_OnClick.style.border = "4px solid"
-    editGame_OnClick.style.borderColor = "#584e9d"
-    editGame_OnClick.style.fontWeight = "bold"
-    editGame_OnClick.textContent = "Edit Game"
-    editGame_OnClick.textContent = "Edit Game"
-    editGame_OnClick.addEventListener("click", function(){edit_game_menu(this, parseInt(loadRow.id))})
-    editGameButton.appendChild(editGame_OnClick)
-    loadRow.appendChild(editGameButton)
-
-    let removeGameButton = document.createElement("td")
-    const removeGame_OnClick = document.createElement("button")
-    removeGame_OnClick.type = "button"
-    removeGame_OnClick.style.padding = "15px 23px"
-    removeGame_OnClick.style.backgroundColor = "#d52ae8"
-    removeGame_OnClick.style.border = "4px solid"
-    removeGame_OnClick.style.borderColor = "#584e9d"
-    removeGame_OnClick.style.fontWeight = "bold"
-    removeGame_OnClick.textContent = "Remove Game"
-    removeGame_OnClick.addEventListener("click", function(){remove_row(parseInt(loadRow.id))})
-    removeGameButton.appendChild(removeGame_OnClick)
-    loadRow.appendChild(removeGameButton)
-
-    gameDataList.appendChild(loadRow)
-}
-
 //The purpose of this function is to refresh the webpage
 //and load in the game objects stored in the database.
 function refresh_the_page() {
     clearGame_ListData()
     fetch(`${api}/game`)
         .then(response => response.json())
-        .then(response => response.forEach(load_database_data))
+        .then(response => response.forEach(initialize_game_data))
         .catch(error => console.log(error))
 }
 
