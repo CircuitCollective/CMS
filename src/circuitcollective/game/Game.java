@@ -44,11 +44,22 @@ public class Game {
     @Min(0) @ColumnDefault("0")
     public double price;
 
+    /** The genres the game falls under */
     @ElementCollection @CollectionTable
     public Set<String> genres = new HashSet<>();
 
+    /** The platforms the game can be played on */
     @ElementCollection @CollectionTable
     public Set<String> platforms = new HashSet<>();
+
+    /** Descriptive tags to better categorize the game */
+    @ElementCollection @CollectionTable
+    public Set<String> tags;
+
+    /** An initialized map to keep of a specific game's stock */
+    @ElementCollection
+    public Map<String, Integer> stockByLocation = new HashMap<>();
+
 
     /** No-arg constructor for persistence */
     public Game() {}

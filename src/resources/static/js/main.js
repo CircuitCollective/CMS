@@ -29,6 +29,12 @@ function create_game_object_row(initialized_id = undefined) {
     const input_platforms = document.getElementById("platforms")
     const value_platforms = input_platforms.value
 
+    const input_tags = document.getElementById("tags")
+    const value_tags = input_tags.value
+
+    const input_stock_location = document.getElementById("stockByLocation")
+    const value_stock_location = input_stock_location.value
+
     //Statement used to create an alert prompt that prevents the administrator
     //from initializing an empty game object into the database.
     if (value_name === "" ||
@@ -37,7 +43,9 @@ function create_game_object_row(initialized_id = undefined) {
         value_revenue === "" ||
         value_price === "" ||
         value_genres === "" ||
-        value_platforms === "") {
+        value_platforms === "" ||
+        value_tags === "" ||
+        value_stock_location === "") {
         alert("The input fields cannot be empty!")
         return;
     }
@@ -54,13 +62,15 @@ function create_game_object_row(initialized_id = undefined) {
             "price": parseFloat(value_price),
             "genres": value_genres.split(","),
             "platforms": value_platforms.split(","),
+            "tags": value_tags.split(","),
+            "stockByLocation": JSON.parse(value_stock_location),
         }),
         headers: {
             'Content-Type': 'application/json',
             'X-XSRF-TOKEN': csrfToken
         }
     }).then(response => {
-        if (response.ok) response.json().then(add_new_game_data)
+        if (response.ok) response.json().then(initialize_game_data) //add new game data!
         else if (response.status === 400) response.json().then(response => alert(response.message))
         else response.json().then(error => {console.error(response); console.error(error)})
     })
@@ -74,6 +84,8 @@ function create_game_object_row(initialized_id = undefined) {
     input_price.value = ""
     input_genres.value = ""
     input_platforms.value = ""
+    input_tags.value = ""
+    input_stock_location.value = ""
 }
 
 function initialize_game_data(new_game_data) {
@@ -114,6 +126,21 @@ function initialize_game_data(new_game_data) {
     addPlatforms.innerHTML = String(new_game_data.platforms).split(",").join("<br>")
     addRow.appendChild(addPlatforms)
 
+    let addTags = document.createElement("td")
+    addTags.innerHTML = String(new_game_data.tags).split(",").join("<br>")
+    addRow.appendChild(addTags)
+
+
+    let addStockLocation = document.createElement("td")
+    const locations = Object.keys(new_game_data.stockByLocation)
+    const values = Object.values(new_game_data.stockByLocation)
+    const stock_by_location = []
+    for (let i = 0; i < locations.length; i++) {
+        stock_by_location[i] = locations[i] + ": " + values[i] + " In Stock"
+    }
+    addStockLocation.innerHTML = String(stock_by_location).split(",").join("<br>")
+    addRow.appendChild(addStockLocation)
+
     const editButton = document.createElement("td")
     const editOnClick = document.createElement("button")
     editOnClick.type = "button"
@@ -124,7 +151,7 @@ function initialize_game_data(new_game_data) {
     editOnClick.style.fontWeight = "bold"
     editOnClick.textContent = "Edit Game"
     editOnClick.textContent = "Edit Game"
-    editOnClick.addEventListener("click", function(){edit_game_menu(this, parseInt(gameRow.id))})
+    editOnClick.addEventListener("click", function(){edit_game_menu(this, parseInt(addRow.id))})
     editButton.appendChild(editOnClick)
     addRow.appendChild(editButton)
 
@@ -178,96 +205,24 @@ function edit_game_menu(edit_game_button, game_row_id) {
     idCannot_BeChanged.style.backgroundColor = "#0cabdc"
     edit_row_inputs.appendChild(idCannot_BeChanged)
 
-    //Add editing input field in the editing menu for the game's name.
-    const newName_input = document.createElement("td")
-    newName_input.style.backgroundColor = "#0cabdc"
-    const edit_name = document.createElement("input")
-    edit_name.type = "text"
-    edit_name.id = "new_name"
-    edit_name.style.width = "280px"
-    edit_name.style.height = "55px"
-    edit_name.style.fontWeight = "bolder"
-    edit_name.placeholder = "New Name"
-    newName_input.appendChild(edit_name)
-    edit_row_inputs.appendChild(newName_input)
 
-    //Add editing input field in the editing menu for the game's description
-    const newDescription_input = document.createElement("td")
-    newDescription_input.style.backgroundColor = "#0cabdc"
-    const edit_desc = document.createElement("input")
-    edit_desc.type = "text"
-    edit_desc.id = "new_desc"
-    edit_desc.style.width = "280px"
-    edit_desc.style.height = "55px"
-    edit_desc.style.fontWeight = "bolder"
-    edit_desc.placeholder = "New Description"
-    newDescription_input.appendChild(edit_desc)
-    edit_row_inputs.appendChild(newDescription_input)
+    const input_headers = ["New Name","New Description","New Stock","New Revenue","New Price","New Genre(s)","New Platform(s)","New Tag(s)","New Stock By Location"]
+    const input_ids = ["new_name","new_desc","new_stock","new_revenue","new_price","new_genres","new_platforms","new_tags","new_stock_location"]
 
-    //Add editing input field in the editing menu for the game's stock
-    const newStock_input = document.createElement("td")
-    newStock_input.style.backgroundColor = "#0cabdc"
-    const edit_stock = document.createElement("input")
-    edit_stock.type = "text"
-    edit_stock.id = "new_stock"
-    edit_stock.style.width = "280px"
-    edit_stock.style.height = "55px"
-    edit_stock.style.fontWeight = "bolder"
-    edit_stock.placeholder = "New Stock"
-    newStock_input.appendChild(edit_stock)
-    edit_row_inputs.appendChild(newStock_input)
-
-    //Add editing input field in the editing menu for the game's revenue generated
-    const newRevenue_input = document.createElement("td")
-    newRevenue_input.style.backgroundColor = "#0cabdc"
-    const edit_revenue = document.createElement("input")
-    edit_revenue.type = "text"
-    edit_revenue.id = "new_revenue"
-    edit_revenue.style.width = "280px"
-    edit_revenue.style.height = "55px"
-    edit_revenue.style.fontWeight = "bolder"
-    edit_revenue.placeholder = "New Revenue"
-    newRevenue_input.appendChild(edit_revenue)
-    edit_row_inputs.appendChild(newRevenue_input)
-
-    //Add editing input field in the editing menu for the game's price
-    const newPrice_input = document.createElement("td")
-    newPrice_input.style.backgroundColor = "#0cabdc"
-    const edit_price = document.createElement("input")
-    edit_price.type = "text"
-    edit_price.id = "new_price"
-    edit_price.style.width = "280px"
-    edit_price.style.height = "55px"
-    edit_price.style.fontWeight = "bolder"
-    edit_price.placeholder = "New Price"
-    newPrice_input.appendChild(edit_price)
-    edit_row_inputs.appendChild(newPrice_input)
-
-    //Add editing input field in the editing menu for the game's genre tags.
-    const newGenres_input = document.createElement("td")
-    newGenres_input.style.backgroundColor = "#0cabdc"
-    const edit_genres = document.createElement("input")
-    edit_genres.type = "text"
-    edit_genres.id = "new_genres"
-    edit_genres.style.width = "280px"
-    edit_genres.style.height = "55px"
-    edit_genres.style.fontWeight = "bolder"
-    edit_genres.placeholder = "New Genre(s)"
-    newGenres_input.appendChild(edit_genres)
-    edit_row_inputs.appendChild(newGenres_input)
-
-    //Add editing input field in the editing menu for the game's platform tags.
-    const newPlatforms_input = document.createElement("td")
-    newPlatforms_input.style.backgroundColor = "#0cabdc"
-    const edit_platforms = document.createElement("input")
-    edit_platforms.type = "text"
-    edit_platforms.id = "new_platforms"
-    edit_platforms.style.width = "280px"
-    edit_platforms.style.height = "55px"
-    edit_platforms.style.fontWeight = "bolder"
-    edit_platforms.placeholder = "New Platform(s)"
-    newPlatforms_input.appendChild(edit_platforms)
-    edit_row_inputs.appendChild(newPlatforms_input)
+    //Adding all the editing input fields in the editing menu for the chosen game.
+    for (let i = 0; i < input_headers.length; i++) {
+        const editInput_Field = document.createElement("td")
+        editInput_Field.style.backgroundColor = "#0cabdc"
+        const edit_field = document.createElement("input")
+        edit_field.type = "text"
+        edit_field.id = input_ids[i]
+        edit_field.style.width = "280px"
+        edit_field.style.height = "55px"
+        edit_field.style.fontWeight = "bolder"
+        edit_field.placeholder = input_headers[i]
+        editInput_Field.appendChild(edit_field)
+        edit_row_inputs.appendChild(editInput_Field)
+    }
 
     //Initializes a clickable "Save Updated Game" button that will
     //initialize and update the current game object with new values.
@@ -282,9 +237,7 @@ function edit_game_menu(edit_game_button, game_row_id) {
     saveGame_OnClick.style.fontWeight = "bold"
     saveGame_OnClick.textContent = "Save Updated Game"
     saveGame_OnClick.addEventListener("click", function(){
-        save_edited_game(edit_game_button, edit_row_inputs.id, edit_name,
-            edit_desc, edit_stock, edit_revenue,
-            edit_price, edit_genres, edit_platforms)
+        save_edited_game(game_row_id)
     })
     saveGameButton.appendChild(saveGame_OnClick)
     edit_row_inputs.appendChild(saveGameButton)
@@ -318,86 +271,70 @@ function edit_game_menu(edit_game_button, game_row_id) {
 //The purpose of this function is to update the game object and
 //information with new values after the administrator enters their
 //new desired information.
-function save_edited_game(edit_user_button, row_value, edited_name,
-                          edited_desc, edited_stock, edited_revenue,
-                          edited_price, edited_genres, edited_platforms) {
+function save_edited_game(game_data_id) {
+    const edit_value_name = document.getElementById("new_name").value,
+        edit_value_desc = document.getElementById("new_desc").value,
+        edit_value_stock = document.getElementById("new_stock").value,
+        edit_value_revenue = document.getElementById("new_revenue").value,
+        edit_value_price = document.getElementById("new_price").value,
+        edit_value_genres = document.getElementById("new_genres").value,
+        edit_value_platforms = document.getElementById("new_platforms").value,
+        edit_value_tags = document.getElementById("new_tags").value,
+        edit_value_stock_location = document.getElementById("new_stock_location").value
 
-    //Statement used to create an alert prompt that prevents
-    //the administrator from entering empty information.
-    if (edited_name.value === "" ||
-        edited_desc.value === "" ||
-        edited_stock.value === "" ||
-        edited_revenue.value === "" ||
-        edited_price.value === "" ||
-        edited_genres.value === "" ||
-        edited_platforms.value === "") {
+    //Statement used to create an alert prompt that prevents the administrator
+    //from initializing an empty game object into the database.
+    if (edit_value_name === "" ||
+        edit_value_desc === "" ||
+        edit_value_stock === "" ||
+        edit_value_revenue === "" ||
+        edit_value_price === "" ||
+        edit_value_genres === "" ||
+        edit_value_platforms === "" ||
+        edit_value_tags === "" ||
+        edit_value_stock_location === "") {
         alert("The input fields cannot be empty!")
-        return
+        return;
     }
 
-
-    let gameData_Table = document.getElementById("game_data") //Gain access to the database table
-    let gameRow_Data = document.getElementById(row_value) //Gain access to the game object through its row value.
-    let edit_user_row = edit_user_button.parentNode.parentNode //Gain access to the values of the game object through the location of the edit button.
-
-    //Gain access to the contents of the chosen game object.
-    let newName_Data = edit_user_row.cells[1]
-    let newDescription_Data = edit_user_row.cells[2]
-    let newStock_Data = edit_user_row.cells[3]
-    let newRevenue_Data = edit_user_row.cells[4]
-    let newPrice_Data = edit_user_row.cells[5]
-    let newGenres_Data = edit_user_row.cells[6]
-    let newPlatforms_Data = edit_user_row.cells[7]
-
-
-    //Replaces the current values of the game object's
-    //information with brand-new information.
-    newName_Data.innerHTML = edited_name.value
-    newDescription_Data.innerHTML = edited_desc.value
-    newStock_Data.innerHTML = edited_stock.value
-    newRevenue_Data.innerHTML = edited_revenue.value
-    newPrice_Data.innerHTML = edited_price.value
-    newGenres_Data.innerHTML = edited_genres.value
-    newPlatforms_Data.innerHTML = edited_platforms.value
-
-
-    //Using the fetch() method to update the current game object's values in the
-    //database via JSON using the stores values obtained from the input fields.
-    fetch(`${api}/admin/game/${gameRow_Data.id}`, {
+    //Using the fetch() method initializes a new game object into the database
+    //via JSON using the stores values obtained from the input fields.
+    fetch(`${api}/admin/game/${game_data_id}`, {
         method: "PUT",
         body: JSON.stringify({
-            "name": edited_name,
-            "desc": edited_desc,
-            "stock": parseInt(edited_stock),
-            "revenue": parseFloat(edited_revenue),
-            "price": parseFloat(edited_price),
-            "genres": edited_genres.split(","),
-            "platforms": edited_platforms.split(","),
+            "name": edit_value_name,
+            "desc": edit_value_desc,
+            "stock": parseInt(edit_value_stock),
+            "revenue": parseFloat(edit_value_revenue),
+            "price": parseFloat(edit_value_price),
+            "genres": String(edit_value_genres).split(","),
+            "platforms": String(edit_value_platforms).split(","),
+            "tags": String(edit_value_tags).split(","),
+            "stockByLocation": JSON.parse(edit_value_stock_location),
         }),
         headers: {
-            "Content-Type": "application/json",
-            'X-XSRF-TOKEN': csrfToken,
+            'Content-Type': 'application/json',
+            'X-XSRF-TOKEN': csrfToken
         }
-    }).then(response => console.log(response))
-        .catch(error => {
-            console.log(error.message)
-        })
+    }).then(response => {
+        if (response.ok) response.json().then(initialize_game_data) //add new game data!
+        else if (response.status === 400) response.json().then(response => alert(response.message))
+        else response.json().then(error => {console.error(response); console.error(error)})
+    })
 
-    //After initializing the game object's updated values, set the
-    //values of all input fields back to their default values.
-    edited_name.value = ""
-    edited_desc.value = ""
-    edited_stock.value = ""
-    edited_revenue.value = ""
-    edited_price.value = "";
-    edited_genres.value = ""
-    edited_platforms.value = ""
+    //After initializing a new game object, set the values
+    //of all input fields back to their default values.
+    edit_value_name.value = ""
+    edit_value_desc.value = ""
+    edit_value_stock.value = ""
+    edit_value_revenue.value = ""
+    edit_value_price.value = ""
+    edit_value_genres.value = ""
+    edit_value_platforms.value = ""
+    edit_value_tags.value = ""
+    edit_value_stock_location.value = ""
 
-    //Delete the editing menu after initializing
-    //the updated object values.
-    if (gameData_Table.rows.length > 0) {
-        gameData_Table.removeChild(gameRow_Data)
-    }
+    cancel_row_edit("editing_row")
 }
 
 //Cancels editing the current game object completely.

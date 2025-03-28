@@ -68,7 +68,7 @@ td {
 
 .database_menu_icon, game_controller_icon {
     margin-top: 8px;
-    margin-left: -850px;
+    margin-left: -1250px;
 }
 
 .find_game_button {
@@ -113,7 +113,7 @@ body {
     height: 1180px;
 }
 
-#name, #desc, #stock, #revenue, #price, #genres, #platforms {
+#name, #desc, #stock, #revenue, #price, #genres, #platforms, #tags, #stockByLocation {
     width: 280px;
     height: 55px;
     font-weight: bolder;
