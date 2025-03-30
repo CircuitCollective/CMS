@@ -106,11 +106,11 @@ td {
 }
 
 body {
-    background: url("../user_interface_images/database_background.jpg") no-repeat;
-    background-size: 580%;
+    background-size: 1000%;
+    background: url("../user_interface_images/database_background.jpg") left;
     float: left;
     display: block;
-    height: 1180px;
+    height: 1180%;
 }
 
 #name, #desc, #stock, #revenue, #price, #genres, #platforms, #tags, #stockByLocation {
