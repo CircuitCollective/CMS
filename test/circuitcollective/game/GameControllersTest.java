@@ -48,7 +48,8 @@ public class GameControllersTest {
         name = "Game1";
         desc = "Desc1";
         stock = 1;
-        tags = Set.of("TagA", "TagB");
+        genres = Set.of("GenreA", "GenreB");
+        platforms = Set.of("Platform1","Platform2");
         revenue = 160.0;
         price = 80.0;
     }}, g2 = new Game(); // Bad game
@@ -91,7 +92,7 @@ public class GameControllersTest {
     void testListAndGet() throws Exception {
         // Read back the game list (should be the single game)
         var games = list();
-        assertEquals(1, games.size(), "Wrong number of games saved to db"); // Make sure its the only thing in db
+        assertEquals(1, games.size(), "Wrong number of games saved to db"); // Make sure it's the only thing in db
         var out = games.getFirst();
         ReflectionUtils.setField(ReflectionUtils.findRequiredField(Game.class, "id"), out, g1.getId()); // Copy g1's id to out to make sure equality works.
         assertEquals(g1, out, "Incorrect game data saved to database"); // Make sure it serializes properly
