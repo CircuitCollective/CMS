@@ -10,9 +10,11 @@ form {
 
 body {
     background: url("../user_interface_images/login_logout_background.jpg") no-repeat;
+    background-size: 180%;
     float: left;
     display: block;
-    width: 90%;
+    width: 100%;
+    height: 1180%;
 }
 
 .admin_image_logo {
@@ -73,12 +75,11 @@ button:hover {
     margin-left: auto;
     margin-right: auto;
     text-align: center;
-    width: 50%;
+    width: 1%;
 }
 
 .gaming_image_photo_logo {
-    float: right;
-    padding-right: 20%;
+    margin-left: 5%;
     text-align: center;
 }
 
@@ -88,9 +89,9 @@ button:hover {
     font-size: 30px;
     color: #ffff;
     align-content: center;
-    width: 85%;
-    height: 90px;
-    margin-left: 10%;
+    width: 78%;
+    height: 180px;
+    margin-left: 12%;
 }
 
 .menu_page {
