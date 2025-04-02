@@ -1,4 +1,3 @@
-const direct_to_api = "http://localhost:8080/api"
 const recommended_searches = []
 
 function search_engine() {
@@ -17,7 +16,7 @@ function search_engine() {
         }
         else {
             clearGame_ListData()
-            fetch(`${direct_to_api}/game/search?l-25&q=${desired_games_search}`)
+            fetch(`${api}/game/search?l-25&q=${desired_games_search}`)
                 .then(response => response.json())
                 .then(response => response.forEach(initialize_game_data))
                 .catch(error => console.error(error))
@@ -26,7 +25,7 @@ function search_engine() {
 }
 
 function get_all_recommended_name_searches() {
-    fetch(`${direct_to_api}/game`)
+    fetch(`${api}/game`)
         .then(response => response.json())
         .then(response => response.forEach(get_all_game_names))
         .catch(error => console.error(error))
