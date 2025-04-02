@@ -16,7 +16,7 @@ function search_engine() {
         }
         else {
             clearGame_ListData()
-            fetch(`${direct_to_api}/game/search?l-25&q=${desired_games_search}`)
+            fetch(`${direct_to_api}/game/search?l=25&q=${desired_games_search}`)
                 .then(response => response.json())
                 .then(response => response.forEach(initialize_game_data))
                 .catch(error => console.error(error))
