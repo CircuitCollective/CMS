@@ -367,5 +367,5 @@ function refresh_the_page() {
 //webpage and showcases the all the game objects from the database.
 document.addEventListener("DOMContentLoaded", function() {
     refresh_the_page()
-    search_engine()
+    search_engine_functionality()
 }, false)
