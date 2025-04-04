@@ -48,7 +48,7 @@ public class GameControllersTest {
         name = "Game1";
         desc = "Desc1";
         stock = 1;
-        genres = Set.of("GenreA", "GenreB");
+        tags = Set.of("TagA", "TagB");
         platforms = Set.of("Platform1","Platform2");
         revenue = 160.0;
         price = 80.0;
