@@ -3,65 +3,57 @@ const csrfToken = document.cookie.replace(/(?:(?:^|.*;\s*)XSRF-TOKEN\s*\=\s*([^;
 const headers = ["name","desc","stock","revenue","price","genres","platforms","tags","stockByLocation"]
 
 function create_game_object_row(initialized_id = undefined) {
+    //For loop  used to create an alert prompt that prevents the administrator
+    //from initializing an empty game object into the database.
+    for (let input_header of headers) {
+        if(document.getElementById(input_header).value === "") {
+            alert("The input fields cannot be empty!")
+            return
+        }
+    }
+
     //Collect the data from the input fields submitted by
     //the administrator and store their values in variables.
-    const input_name = document.getElementById("name")
-    const value_name = input_name.value
+    const input_values = []
 
-    const input_desc = document.getElementById("desc")
-    const value_desc = input_desc.value
+    for (let input_header of headers) {
+        const get_header_element  = document.getElementById(input_header)
+        let value_input = "";
+        if (get_header_element) {
+            value_input = get_header_element.value;
+        }
 
-    const input_stock = document.getElementById("stock")
-    const value_stock = input_stock.value
+        if (input_header === "name" || input_header === "desc") {
+            input_values.push(value_input)
+        }
 
-    const input_revenue = document.getElementById("revenue")
-    const value_revenue = input_revenue.value
+        if (input_header === "stock") {
+            input_values.push(parseInt(value_input))
+        }
 
-    const input_price = document.getElementById("price")
-    const value_price = input_price.value
+        if (input_header === "revenue" || input_header === "price") {
+            input_values.push(parseFloat(value_input))
+        }
 
-    const input_genres = document.getElementById("genres")
-    const value_genres = input_genres.value
+        if (input_header === "genres" || input_header === "platforms" || input_header === "tags") {
+            input_values.push(value_input.split(","))
+        }
 
-    const input_platforms = document.getElementById("platforms")
-    const value_platforms = input_platforms.value
-
-    const input_tags = document.getElementById("tags")
-    const value_tags = input_tags.value
-
-    const input_stock_location = document.getElementById("stockByLocation")
-    const value_stock_location = input_stock_location.value
-
-    //Statement used to create an alert prompt that prevents the administrator
-    //from initializing an empty game object into the database.
-    if (value_name === "" ||
-        value_desc === "" ||
-        value_stock === "" ||
-        value_revenue === "" ||
-        value_price === "" ||
-        value_genres === "" ||
-        value_platforms === "" ||
-        value_tags === "" ||
-        value_stock_location === "") {
-        alert("The input fields cannot be empty!")
-        return;
+        if (input_header === "stockByLocation") {
+            input_values.push(JSON.parse(value_input))
+        }
     }
+
+    //console.log(input_values)
+
+    const initializedGameObject = {}
+    headers.forEach((key,input_value) => initializedGameObject[key] = input_values[input_value])
 
     //Using the fetch() method initializes a new game object into the database
     //via JSON using the stores values obtained from the input fields.
     fetch(`${api}/admin/game/${initialized_id ?? -1}`, {
         method: "PUT",
-        body: JSON.stringify({
-            "name": value_name,
-            "desc": value_desc,
-            "stock": parseInt(value_stock),
-            "revenue": parseFloat(value_revenue),
-            "price": parseFloat(value_price),
-            "genres": value_genres.split(","),
-            "platforms": value_platforms.split(","),
-            "tags": value_tags.split(","),
-            "stockByLocation": JSON.parse(value_stock_location),
-        }),
+        body: JSON.stringify(initializedGameObject),
         headers: {
             'Content-Type': 'application/json',
             'X-XSRF-TOKEN': csrfToken
@@ -74,15 +66,9 @@ function create_game_object_row(initialized_id = undefined) {
 
     //After initializing a new game object, set the values
     //of all input fields back to their default values.
-    input_name.value = ""
-    input_desc.value = ""
-    input_stock.value = ""
-    input_revenue.value = ""
-    input_price.value = ""
-    input_genres.value = ""
-    input_platforms.value = ""
-    input_tags.value = ""
-    input_stock_location.value = ""
+    for (let input_header of headers) {
+        document.getElementById(input_header).value = ""
+    }
 }
 
 function initialize_game_data(new_game_data) {
@@ -234,7 +220,7 @@ function edit_game_menu(edit_game_button, game_row_id) {
     saveGame_OnClick.style.fontWeight = "bold"
     saveGame_OnClick.textContent = "Save Updated Game"
     saveGame_OnClick.addEventListener("click", function(){
-        save_edited_game(game_row_id,input_ids)
+        save_edited_game(game_row_id)
     })
     saveGameButton.appendChild(saveGame_OnClick)
     edit_row_inputs.appendChild(saveGameButton)
@@ -309,11 +295,8 @@ function save_edited_game(game_data_id) {
         }
     }
 
-    console.log(edit_value_inputs)
-
-
     const editedGameObject = {}
-    headers.forEach((key,input_value) => editedGameObject[key] = edit_value_inputs[input_value])
+    headers.forEach((key,edited_value) => editedGameObject[key] = edit_value_inputs[edited_value])
 
     //Using the fetch() method initializes a new game object into the database
     //via JSON using the stores values obtained from the input fields.
