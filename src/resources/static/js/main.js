@@ -44,8 +44,6 @@ function create_game_object_row(initialized_id = undefined) {
         }
     }
 
-    //console.log(input_values)
-
     const initializedGameObject = {}
     headers.forEach((key,input_value) => initializedGameObject[key] = input_values[input_value])
 
