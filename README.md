@@ -7,6 +7,7 @@ This project was developed as a course project for the course Software Design an
 
 ### Description
 CMS is a basic catalogue management system that allows authorized users to sign-in as an administrator to add, delete, and edit video game stock stored in it's catalogue. Unauthorized users can only view items in the catalogue, and must login using the administrator username and password to become authorized user. CMS offers a search function to search the catalogue, and the ability to load in inventory from a CSV file.
+![image](https://github.com/user-attachments/assets/b9263425-56c1-402d-bafc-4682f87e01e1)
 
 ### Circuit Collective Team Associates
 - **William Wedemire - *Project Manager***
