@@ -59,6 +59,10 @@ Keep in mind that login is required for mutation of data.
 ### REST
 Interactive API docs are available at http://localhost:8080/swagger-ui.html once the project is running.
 
+## Software Demonstration Video
+https://github.com/user-attachments/assets/68e87292-e5c0-4247-9f25-0b392ef6a1a7
+
+
 ## Authors
 - **William Wedemire**
 
