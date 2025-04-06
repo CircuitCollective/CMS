@@ -44,6 +44,9 @@ CMS is a basic catalogue management system that allows authorized users to sign-
 
 #### JAR Distribution
 Ensure that Java 21 is installed. You can [install a copy from adoptium](https://adoptium.net/temurin/releases/?version=21) by selecting the correct OS.
+
+Download the [latest release](https://github.com/CircuitCollective/CMS/releases/latest).
+
 On windows double clicking the jar should work assuming that you have installed Java 21 as your default program for the .jar extension.
 
 Otherwise, opening a terminal and running `java -jar <path>` and replacing `<path>` with the path to the jar file will boot the jar.
