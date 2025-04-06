@@ -42,15 +42,21 @@ CMS is a basic catalogue management system that allows authorized users to sign-
 
 `gradlew.bat test` compiles if needed and runs tests
 
-#### IDE
-Add a Spring task for `Main.java` if possible. Otherwise, add a gradle task for `bootRun`
+#### JAR Distribution
+Ensure that Java 21 is installed. You can [install a copy from adoptium](https://adoptium.net/temurin/releases/?version=21) by selecting the correct OS.
+On windows double clicking the jar should work assuming that you have installed Java 21 as your default program for the .jar extension.
 
-Add a Gradle task for `test`
+Otherwise, opening a terminal and running `java -jar <path>` and replacing `<path>` with the path to the jar file will boot the jar.
+
+#### IDE
+Add and run a Spring task for `Main.java` if possible. Otherwise, add and run a gradle task for `bootRun`
+
+To run the test suite, add and run a Gradle task for `test`
 
 ### Accessing the Web-UI
 Navigate to http://localhost:8080
 
-Keep in mind that login is required for mutation of data.
+Keep in mind that login is required for mutation of data. Currently the relevant buttons are not hidden when not logged in.
 
 ### Structure
 `src` contains the java source, all work is under the `circuitcollective` package.
